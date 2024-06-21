@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { CamelCasePipe } from './camel-case.pipe';
 import { UppercaseWordsPipe } from './uppercase-words.pipe';
 import { GetPriorityColorPipe } from './get-priority-color.pipe';
+import { ItemFormComponent } from './item-form/item-form.component';
+import { MatchPasswordDirective } from './directives/password-pattern.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { GetPriorityColorPipe } from './get-priority-color.pipe';
     ItemsListComponent,
     CamelCasePipe,
     UppercaseWordsPipe,
-    GetPriorityColorPipe
+    GetPriorityColorPipe,
+    ItemFormComponent,
+    MatchPasswordDirective
   ],
   imports: [
     BrowserModule,
