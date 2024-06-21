@@ -8,7 +8,8 @@
           [class.active]="i == currentIndex"
           (click)="setActiveItem(item, i)"
         >
-          {{ item.title }}
+            <div class="badge badge-pill badge-dark {{item.priority}}">{{item.priority}}</div>
+            {{ item.title }}
         </li>
       </ul>
     </div>

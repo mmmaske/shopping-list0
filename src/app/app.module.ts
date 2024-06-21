@@ -12,13 +12,19 @@ import { AddItemComponent } from './components/add-item/add-item.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { ItemsListComponent } from './components/items-list/items-list.component';
 import { FormsModule } from '@angular/forms';
+import { CamelCasePipe } from './camel-case.pipe';
+import { UppercaseWordsPipe } from './uppercase-words.pipe';
+import { GetPriorityColorPipe } from './get-priority-color.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddItemComponent,
     ItemDetailsComponent,
-    ItemsListComponent
+    ItemsListComponent,
+    CamelCasePipe,
+    UppercaseWordsPipe,
+    GetPriorityColorPipe
   ],
   imports: [
     BrowserModule,

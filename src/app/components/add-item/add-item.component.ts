@@ -9,6 +9,7 @@ import { ItemService } from 'src/app/services/items.service';
 })
 export class AddItemComponent implements OnInit {
   item: Item = new Item();
+  priorities = ['extra high','high','medium','low'];
   submitted = false;
 
   constructor(private itemService: ItemService) { }

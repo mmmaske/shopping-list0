@@ -12,10 +12,14 @@ export class ItemDetailsComponent implements OnInit {
   @Output() refreshList: EventEmitter<any> = new EventEmitter();
   currentItem: Item = {
     title: '',
+    quantity: 0,
     description: '',
-    published: false
+    priority: '',
+    purchased: false
   };
   message = '';
+  edit = false;
+  priorities = ['extra high','high','medium','low'];
 
   constructor(private itemService: ItemService) { }
 
@@ -26,13 +30,14 @@ export class ItemDetailsComponent implements OnInit {
   ngOnChanges(): void {
     this.message = '';
     this.currentItem = { ...this.item };
+    this.edit=false;
   }
 
-  updatePublished(status: boolean): void {
+  updatePurchased(status: boolean): void {
     if (this.currentItem.id) {
-      this.itemService.update(this.currentItem.id, { published: status })
+      this.itemService.update(this.currentItem.id, { purchased: status })
       .then(() => {
-        this.currentItem.published = status;
+        this.currentItem.purchased = status;
         this.message = 'The status was updated successfully!';
       })
       .catch(err => console.log(err));
@@ -42,14 +47,24 @@ export class ItemDetailsComponent implements OnInit {
   updateItem(): void {
     const data = {
       title: this.currentItem.title,
-      description: this.currentItem.description
+      description: this.currentItem.description,
+      quantity: this.currentItem.quantity,
+      priority: this.currentItem.priority,
     };
 
     if (this.currentItem.id) {
       this.itemService.update(this.currentItem.id, data)
         .then(() => this.message = 'The item was updated successfully!')
         .catch(err => console.log(err));
+      this.edit=false;
     }
+  }
+
+  editItem(): void {
+    this.edit=true;
+  }
+  cancelEdit(): void {
+    this.edit=false;
   }
 
   deleteItem(): void {

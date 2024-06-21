@@ -19,10 +19,12 @@ export class ItemService {
   }
 
   create(item: Item): any {
-    return this.itemsRef.add({ ...item });
+    let now = new Date();
+    return this.itemsRef.add({ ...item,createdOn: now});
   }
 
   update(id: string, data: any): Promise<void> {
+    data.updatedOn = new Date();
     return this.itemsRef.doc(id).update(data);
   }
 

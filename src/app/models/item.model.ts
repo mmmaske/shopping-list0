@@ -1,6 +1,11 @@
+
 export class Item {
     id?: string;
     title?: string;
+    quantity?: number;
     description?: string;
-    published?: boolean;
+    purchased?: boolean;
+    priority?: string;
+    createdOn?: Date;
+    updatedOn?: Date;
 }

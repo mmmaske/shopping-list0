@@ -1,55 +1,100 @@
 <div *ngIf="currentItem" class="edit-form">
-    <h4>Item</h4>
+    <h4 *ngIf="edit">Item</h4>
     <form>
+        <div class="form-group">
+          <div *ngIf="edit">
+              <label for="title">Title</label>
+              <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  [(ngModel)]="currentItem.title"
+                  name="title"
+              />
+          </div>
+          <h4 *ngIf="!edit">
+            <b>{{currentItem.title}}</b>
+            <small *ngIf="currentItem.quantity"> x{{currentItem.quantity}}</small>
+        </h4>
+        </div>
+        <div class="form-group">
+          <div *ngIf="edit">
+              <label for="quantity">Quantity</label>
+              <input
+                  type="text"
+                  class="form-control"
+                  id="quantity"
+                  [(ngModel)]="currentItem.quantity"
+                  name="quantity"
+              />
+          </div>
+        </div>
       <div class="form-group">
-        <label for="title">Title</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          [(ngModel)]="currentItem.title"
-          name="title"
-        />
+        <div *ngIf="edit">
+            <label for="description">Description</label>
+            <textarea
+                *ngIf="edit"
+                type="text"
+                class="form-control"
+                id="description"
+                [(ngModel)]="currentItem.description"
+                name="description"
+            >{{currentItem.description}}</textarea>
+        </div>
+        <p *ngIf="!edit">{{currentItem.description}}</p>
       </div>
+
+
       <div class="form-group">
-        <label for="description">Description</label>
-        <input
-          type="text"
-          class="form-control"
-          id="description"
-          [(ngModel)]="currentItem.description"
-          name="description"
-        />
+        <div *ngIf="edit">
+            <label for="priority">Priority</label>
+            <select
+            class="form-control"
+            id="priority"
+            required
+            [(ngModel)]="currentItem.priority"
+            name="priority"
+            >
+                <option *ngFor="let priority of priorities" value="{{priority}}">{{priority|uppercaseWords}}</option>
+            </select>
+        </div>
       </div>
 
       <div class="form-group">
         <label><strong>Status:</strong></label>
-        {{ currentItem.published ? "Published" : "Pending" }}
+        {{ currentItem.purchased ? "Purchased" : "Pending" }}
       </div>
     </form>
 
     <button
-      class="badge badge-primary mr-2"
-      *ngIf="currentItem.published"
-      (click)="updatePublished(false)"
+      class="btn btn-primary mr-2"
+      *ngIf="currentItem.purchased && edit"
+      (click)="updatePurchased(false)"
     >
-      UnPublish
+      Consume
     </button>
     <button
-      *ngIf="!currentItem.published"
-      class="badge badge-primary mr-2"
-      (click)="updatePublished(true)"
+      *ngIf="!currentItem.purchased && edit"
+      class="btn btn-primary mr-2"
+      (click)="updatePurchased(true)"
     >
-      Publish
+      Purchase
     </button>
 
-    <button class="badge badge-danger mr-2" (click)="deleteItem()">
-      Delete
+    <button *ngIf="edit" class="btn btn-danger mr-2" (click)="deleteItem()">
+        Delete
+    </button>
+      <button *ngIf="edit" class="btn btn-secondary mr-2" (click)="cancelEdit()">
+        Cancel
     </button>
 
-    <button type="submit" class="badge badge-success" (click)="updateItem()">
-      Update
+    <button *ngIf="!edit" type="submit" class="btn btn-success" (click)="editItem()">
+        Edit
     </button>
+
+    <button *ngIf="edit" type="submit" class="btn btn-success" (click)="updateItem()">
+        Update
+      </button>
     <p>{{ message }}</p>
   </div>
 
