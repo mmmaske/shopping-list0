@@ -20,7 +20,6 @@ export class ItemService {
 
     async getItem(item_id:string) {
         const doc = this.itemsRef.doc(item_id);
-        console.log(doc);
         return doc.get();
     }
 
