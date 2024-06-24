@@ -3,32 +3,38 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { Item } from '../models/item.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ItemService {
-  private dbPath = '/items';
+    private dbPath = '/items';
 
-  itemsRef: AngularFirestoreCollection<Item>;
+    itemsRef: AngularFirestoreCollection<Item>;
 
-  constructor(private db: AngularFirestore) {
-    this.itemsRef = db.collection(this.dbPath);
+    constructor(private db: AngularFirestore) {
+        this.itemsRef = db.collection(this.dbPath);
+    }
+
+    getAll(): AngularFirestoreCollection<Item> {
+        return this.itemsRef;
+    }
+
+    async getItem(item_id:string) {
+        const doc = this.itemsRef.doc(item_id);
+        console.log(doc);
+        return doc.get();
+    }
+
+    create(item: Item): any {
+        let now = new Date();
+        return this.itemsRef.add({ ...item,createdOn: now});
   }
 
-  getAll(): AngularFirestoreCollection<Item> {
-    return this.itemsRef;
+    update(id: string, data: any): Promise<void> {
+        data.updatedOn = new Date();
+        return this.itemsRef.doc(id).update(data);
   }
 
-  create(item: Item): any {
-    let now = new Date();
-    return this.itemsRef.add({ ...item,createdOn: now});
-  }
-
-  update(id: string, data: any): Promise<void> {
-    data.updatedOn = new Date();
-    return this.itemsRef.doc(id).update(data);
-  }
-
-  delete(id: string): Promise<void> {
-    return this.itemsRef.doc(id).delete();
-  }
+    delete(id: string): Promise<void> {
+        return this.itemsRef.doc(id).delete();
+    }
 }
