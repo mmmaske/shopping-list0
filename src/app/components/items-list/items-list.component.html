@@ -8,7 +8,7 @@
           [class.active]="i == currentIndex"
           (click)="setActiveItem(item, i)"
         >
-            <div class="badge badge-pill badge-dark {{item.priority | getPriorityColor}}">{{item.priority | uppercaseWords}}</div>
+            <div class="badge badge-pill {{item.priority | getPriorityColor}}">{{item.priority | uppercaseWords}}</div>
             {{ item.title }}
         </li>
       </ul>

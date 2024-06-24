@@ -5,9 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GetPriorityColorPipe implements PipeTransform {
 
-  transform(value: string, ...args: unknown[]): unknown {
+  transform(value: any, ...args: unknown[]): string {
     let color = 'badge-secondary';
-    console.log(value);
     if(value=='extra high') {
         color = 'badge-danger';
     }
