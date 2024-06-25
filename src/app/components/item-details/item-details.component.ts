@@ -31,12 +31,13 @@ export class ItemDetailsComponent implements OnInit {
     setActiveFromRoute() {
         const item_id = String(this.route.snapshot.paramMap.get('item_id'));
         const retrieved = this.retrieveItem(item_id);
-
         this.setActiveItem(retrieved);
     }
-    setActiveItem(item: any, index: number=-1): void {
+
+    setActiveItem(item: any): void {
         this.currentItem = item;
     }
+
     retrieveItem(item_id: string) {
         const fb_item = this.itemService.getItem(item_id);
         fb_item.then((retrieved) => {
@@ -97,17 +98,4 @@ export class ItemDetailsComponent implements OnInit {
             .catch(err => console.log(err));
         }
     }
-
-    // retrieveItem(item_id: string) {
-    //     const fb_item = this.itemService.getItem(item_id);
-    //     const data = fb_item.then((retrieved) => {
-    //         retrieved.forEach((value) => {
-    //             console.log('item data: ');
-    //             console.log(value.data()); // data can be accessed here
-    //             this.currentItem = {...value.data()};
-    //             return value.data();
-    //         });
-    //     });
-    //     console.log(data);
-    // }
 }
