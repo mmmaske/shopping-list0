@@ -43,6 +43,7 @@ export class ItemDetailsComponent implements OnInit {
         fb_item.then((retrieved) => {
             retrieved.forEach((value) => {
                 this.currentItem = value.data(); // data can be accessed here
+                this.currentItem.id = item_id;
                 return value.data();
             });
         });
