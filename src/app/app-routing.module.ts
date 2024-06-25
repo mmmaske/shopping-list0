@@ -7,6 +7,7 @@ import { ItemFormComponent } from './item-form/item-form.component';
 const routes: Routes = [
     {path:'', redirectTo:'/list',pathMatch:"full"},
     {path:'list', component:ItemsListComponent },
+    {path:'list/:item_id', component:ItemsListComponent },
     {path:'form', component:ItemFormComponent },
     {path:'add', component:AddItemComponent},
     {path:'details/:id', component:ItemDetailsComponent}
