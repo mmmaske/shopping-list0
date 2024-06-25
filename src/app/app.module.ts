@@ -16,7 +16,12 @@ import { CamelCasePipe } from './camel-case.pipe';
 import { UppercaseWordsPipe } from './uppercase-words.pipe';
 import { GetPriorityColorPipe } from './get-priority-color.pipe';
 import { ItemFormComponent } from './item-form/item-form.component';
+
 import { MatchPasswordDirective } from './directives/password-pattern.directive';
+import { QuantityValidatorDirective } from './directives/quantity-validator.directive';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AuthService } from './services/auth';
+import { FireAuthComponent } from './fire-auth/fire-auth.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,9 @@ import { MatchPasswordDirective } from './directives/password-pattern.directive'
     UppercaseWordsPipe,
     GetPriorityColorPipe,
     ItemFormComponent,
-    MatchPasswordDirective
+    MatchPasswordDirective,
+    QuantityValidatorDirective,
+    FireAuthComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,8 +43,11 @@ import { MatchPasswordDirective } from './directives/password-pattern.directive'
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    AngularFireAuthModule,
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

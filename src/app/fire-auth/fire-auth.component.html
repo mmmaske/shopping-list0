@@ -1,0 +1,17 @@
+<form>
+    <label for="email">Email: </label>
+    <input
+    name="email"
+    [(ngModel)]="this.email"
+    type="text"
+    />
+<br/>
+    <label for="password">Password: </label>
+    <input
+    name="password"
+    [(ngModel)]="this.password"
+    type="text"
+    />
+<br/>
+    <input type="button" class="btn btn-primary" value="Save" (click)="signUp()" />
+</form>
