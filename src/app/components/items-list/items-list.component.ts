@@ -26,6 +26,7 @@ export class ItemsListComponent implements OnInit {
     constructor(
         private itemService: ItemService,
         private router : Router,
+        private route : ActivatedRoute,
     ) { }
 
     debug(debuggable: any) : void {
@@ -36,6 +37,7 @@ export class ItemsListComponent implements OnInit {
 
     ngOnInit(): void {
         this.retrieveItems();
+        this.setActiveFromRoute();
     }
 
     refreshList(): void {
@@ -53,24 +55,28 @@ export class ItemsListComponent implements OnInit {
 
     retrieveItem(item_id: string) {
         const fb_item = this.itemService.getItem(item_id);
-        const data = fb_item.then((retrieved) => {
+        fb_item.then((retrieved) => {
             retrieved.forEach((value) => {
                 this.currentItem = value.data(); // data can be accessed here
                 return value.data();
             });
         });
-
     }
 
-    setActiveItem(item: Item, index: number): void {
+    redirectToItem(item_id: any, index:number): void {
+        this.router.navigate([`/list/${item_id}`]); // update the URL
+        this.setActiveFromRoute(index); // update the component
+    }
+
+    setActiveFromRoute(index:number=-1) {
+        const item_id = String(this.route.snapshot.paramMap.get('item_id'));
+        const retrieved = this.retrieveItem(item_id);
+        this.setActiveItem(retrieved,index);
+    }
+
+    setActiveItem(item: any, index: number=-1): void {
         this.currentItem = item;
         this.currentIndex = index;
-
-        // sample to query firestore for document
-        const item_id = item.id?item.id:'';
-        this.router.navigate([`/list/${item_id}`]); // redirect
-        this.debug(item_id);
-        const retrieved = this.retrieveItem(item_id);
     }
 
 }

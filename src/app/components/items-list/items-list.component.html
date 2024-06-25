@@ -9,7 +9,7 @@
           class="list-group-item"
           *ngFor="let item of items; let i = index"
           [class.active]="i == currentIndex"
-          (click)="setActiveItem(item, i)"
+          (click)="redirectToItem(item.id,i)"
         >
             <div class="badge badge-pill {{item.priority | getPriorityColor}}">{{item.priority | uppercaseWords}}</div>
             {{ item.title }}
