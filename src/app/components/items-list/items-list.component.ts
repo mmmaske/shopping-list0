@@ -14,11 +14,12 @@ export class ItemsListComponent implements OnInit {
     currentItem?: Item;
     currentIndex = -1;
     title = '';
+    hasItems = false;
     data = this.itemService.getAll().snapshotChanges().pipe(
         map(changes =>
-        changes.map(c =>
-            ({ id: c.payload.doc.id, ...c.payload.doc.data() })
-        )
+            changes.map(c =>
+                ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+            )
         )
     );
 
@@ -39,7 +40,8 @@ export class ItemsListComponent implements OnInit {
 
     retrieveItems(): void {
         this.data.subscribe(data => {
-        this.items = data;
+            this.items = data;
+            this.hasItems = true;
         });
     }
 
