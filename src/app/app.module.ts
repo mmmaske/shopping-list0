@@ -22,6 +22,10 @@ import { QuantityValidatorDirective } from './directives/quantity-validator.dire
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AuthService } from './services/auth';
 import { FireAuthComponent } from './fire-auth/fire-auth.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,10 @@ import { FireAuthComponent } from './fire-auth/fire-auth.component';
     MatchPasswordDirective,
     QuantityValidatorDirective,
     FireAuthComponent,
+    SignUpComponent,
+    SignInComponent,
+    ForgotPasswordComponent,
+    VerifyEmailComponent,
   ],
   imports: [
     BrowserModule,

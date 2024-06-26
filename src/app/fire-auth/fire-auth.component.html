@@ -13,5 +13,11 @@
     type="text"
     />
 <br/>
-    <input type="button" class="btn btn-primary" value="Save" (click)="signUp()" />
+    <div *ngIf="!loggedin">
+        <input type="button" class="btn btn-primary" value="Save" (click)="signUp()" />
+        <input type="button" class="btn btn-success" value="Log In" (click)="signIn()" />
+    </div>
+    <div *ngIf="loggedin">
+        <input type="button" class="btn btn-warning" value="Log Out" (click)="signOut()" />
+    </div>
 </form>

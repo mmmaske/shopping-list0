@@ -8,10 +8,19 @@
         <li class="nav-item">
           <a routerLink="add" class="nav-link">Add</a>
         </li>
-          <a routerLink="signup" class="nav-link">Signup</a>
+        <li class="nav-item">
+          <a routerLink="auth" class="nav-link">User</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="signup" class="nav-link">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="signin" class="nav-link">Sign In</a>
+        </li>
       </div>
     </nav>
 
+    <span class="glyphicon glyphicon-refresh glyphicon-spin spinner"></span>
     <div class="container mt-3">
       <h2>{{ title }}</h2>
       <router-outlet></router-outlet>
