@@ -11,11 +11,14 @@
         <li class="nav-item">
           <a routerLink="auth" class="nav-link">User</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!this.authServ.isLoggedIn">
           <a routerLink="signup" class="nav-link">Sign Up</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!this.authServ.isLoggedIn">
           <a routerLink="signin" class="nav-link">Sign In</a>
+        </li>
+        <li class="nav-item" *ngIf="this.authServ.isLoggedIn">
+          <a (click)="handleSignOut()" class="nav-link">Sign Out</a>
         </li>
       </div>
     </nav>

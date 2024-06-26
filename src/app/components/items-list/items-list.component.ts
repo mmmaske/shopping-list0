@@ -34,12 +34,6 @@ export class ItemsListComponent implements OnInit {
         return String(this.route.snapshot.paramMap.get('item_id'));
     }
 
-    debug(debuggable: any) : void {
-        console.log(`debug: ${String(debuggable)}`);
-        console.log(typeof(debuggable));
-        console.log(debuggable);
-    }
-
     ngOnInit(): void {
         this.retrieveItems();
         this.setActiveFromRoute();
@@ -70,9 +64,6 @@ export class ItemsListComponent implements OnInit {
     }
 
     redirectToItem(item_id: any, index:number): void {
-        // this.debug(this.currentItemId);
-        // this.currentItemId = String(item_id);
-        // this.debug(this.currentItemId);
         this.router.navigate([`/list/${item_id}`]); // update the URL
         this.setActiveFromRoute(index); // update the component
     }
