@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth';
+import { debug,loginDetails } from '../utils/common';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,6 +16,7 @@ export class SignInComponent {
 
     handleSignIn():void {
         this.authServ.SignIn(this.email, this.password).then((returned) => {
+            debug(loginDetails());
             alert(returned);
         })
         .catch((error) => {

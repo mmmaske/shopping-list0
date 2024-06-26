@@ -1,55 +1,27 @@
-<div class="displayTable">
-    <div class="displayTableCell">
-      <div class="authBlock">
-        <h3>Sign In</h3>
-        <div class="formGroup">
-          <input
-            type="text"
-            class="formControl"
-            placeholder="Username"
-            #userName
-            required
-          />
-        </div>
+<section class="vh-100" style="background-color: #508bfc;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
 
-        <div class="formGroup">
-          <input
-            type="password"
-            class="formControl"
-            placeholder="Password"
-            #userPassword
-            required
-          />
-        </div>
+              <h3 class="mb-5">Sign in</h3>
 
-        <!-- Calling SignIn Api from AuthService -->
-        <div class="formGroup">
-          <input
-            type="button"
-            class="btn btnPrimary"
-            value="Log in"
-            (click)="handleSignIn()"
-          />
-        </div>
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="email" id="typeEmailX-2" [(ngModel)]="this.email" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX-2">Email</label>
+              </div>
 
-        <div class="formGroup">
-          <span class="or"><span class="orInner">Or</span></span>
-        </div>
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="password" id="typePasswordX-2" [(ngModel)]="this.password" class="form-control form-control-lg" />
+                <label class="form-label" for="typePasswordX-2">Password</label>
+              </div>
 
-        <div class="forgotPassword">
-          <span routerLink="/forgot-password">Forgot Password?</span>
-        </div>
-      </div>
+              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" (click)="handleSignIn()">Login</button>
 
-      <div class="redirectToLogin">
-        <span
-          >Don't have an account?<span
-            class="redirect"
-            routerLink="/signup"
-          >
-            Sign Up</span
-          ></span
-        >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
