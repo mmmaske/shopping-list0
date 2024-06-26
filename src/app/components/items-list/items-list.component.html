@@ -8,7 +8,7 @@
         <li
           class="list-group-item"
           *ngFor="let item of items; let i = index"
-          [class.active]="i == currentIndex"
+          [class.active]="item.id==currentItemId"
           (click)="redirectToItem(item.id,i)"
         >
             <div class="badge badge-pill {{item.priority | getPriorityColor}}">{{item.priority | uppercaseWords}}</div>
@@ -20,10 +20,8 @@
       <div *ngIf="currentItem">
         <app-item-details
           (refreshList)="refreshList()"
-          [item]="currentItem"
         ></app-item-details>
       </div>
-
       <div *ngIf="!currentItem">
         <br />
         <p>Please click on a Item...</p>

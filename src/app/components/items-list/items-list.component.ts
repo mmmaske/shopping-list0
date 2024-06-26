@@ -13,6 +13,7 @@ export class ItemsListComponent implements OnInit {
     items?: Item[];
     currentItem?: Item;
     currentIndex = -1;
+    currentItemId:string = this.currentItemIdGetter;
     title = '';
     hasItems = false;
     data = this.itemService.getAll().snapshotChanges().pipe(
@@ -28,6 +29,10 @@ export class ItemsListComponent implements OnInit {
         private router : Router,
         private route : ActivatedRoute,
     ) { }
+
+    get currentItemIdGetter() {
+        return String(this.route.snapshot.paramMap.get('item_id'));
+    }
 
     debug(debuggable: any) : void {
         console.log(`debug: ${String(debuggable)}`);
@@ -58,25 +63,27 @@ export class ItemsListComponent implements OnInit {
         fb_item.then((retrieved) => {
             retrieved.forEach((value) => {
                 this.currentItem = value.data(); // data can be accessed here
-                return value.data();
+                this.currentItemId=this.currentItemIdGetter;
+                return value.data(); // needs to be transformed into Item object(?)
             });
         });
     }
 
     redirectToItem(item_id: any, index:number): void {
+        // this.debug(this.currentItemId);
+        // this.currentItemId = String(item_id);
+        // this.debug(this.currentItemId);
         this.router.navigate([`/list/${item_id}`]); // update the URL
         this.setActiveFromRoute(index); // update the component
     }
 
     setActiveFromRoute(index:number=-1) {
-        const item_id = String(this.route.snapshot.paramMap.get('item_id'));
-        const retrieved = this.retrieveItem(item_id);
+        const retrieved = this.retrieveItem(this.currentItemIdGetter);
         this.setActiveItem(retrieved,index);
     }
 
-    setActiveItem(item: any, index: number=-1): void {
+    setActiveItem(item: /*Item*/any, index: number=-1): void {
         this.currentItem = item;
         this.currentIndex = index;
     }
-
 }

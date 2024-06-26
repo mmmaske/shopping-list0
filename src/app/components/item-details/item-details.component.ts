@@ -12,6 +12,7 @@ export class ItemDetailsComponent implements OnInit {
     @Input() item?: Item;
     @Output() refreshList: EventEmitter<any> = new EventEmitter();
     currentItem: Item | any = {
+        id:'',
         title: '',
         quantity: 0,
         description: '',
