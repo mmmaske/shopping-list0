@@ -3,32 +3,44 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { Item } from '../models/item.model';
 import { debug,loginDetails } from '../utils/common';
 import { User } from '../models/user';
+import { AuthService } from './auth';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ItemService {
+    private allowGetAll:boolean = true;
     private dbPath = '/items';
-    private localUser:User = loginDetails();
+    public localUser:User = /*this.authServ.userData*/loginDetails();
     itemsRef: AngularFirestoreCollection<Item>;
     usersRef: AngularFirestoreCollection<User>;
 
     constructor(
         private db: AngularFirestore,
+        public authServ: AuthService
     ) {
         this.itemsRef = db.collection(this.dbPath);
         this.usersRef = db.collection('users');
     }
 
     getAll(): AngularFirestoreCollection<Item> {
-        if(loginDetails()) {
-            return this.getUsersItems();
-        }
-        return this.itemsRef;
+        return this.getUsersItems();
+        // if(this.localUser) return this.getUsersItems();
+        // return this.itemsRef;
     }
 
     getUsersItems(): AngularFirestoreCollection<Item> {
-        return this.db.collection(this.dbPath,ref=>ref.where('createdById','==',`${this.localUser.uid}`));
+        const localUserData = this.localUser ? this.localUser : {uid:'x'};
+        //*
+        // query by string field
+        return this.db.collection(
+            this.dbPath,ref=>ref.where('createdById','==',`${localUserData.uid}`));
+        /*/
+        //query by reference field
+        const user = this.usersRef.doc(this.localUser.uid);
+        debug(user);
+        return this.db.collection(this.dbPath,ref=>ref.where('createdBy','==',user));
+        //*/
     }
 
     async getItem(item_id:string) {
@@ -38,7 +50,12 @@ export class ItemService {
 
     create(item: Item): any {
         let now = new Date();
-        return this.itemsRef.add({ ...item,createdOn: now});
+        if(this.localUser) {
+            return this.itemsRef.add({ ...item,createdOn: now,createdById:this.localUser.uid});
+        }
+        else {
+            return this.itemsRef.add({ ...item,createdOn: now});
+        }
   }
 
     update(id: string, data: any): Promise<void> {
