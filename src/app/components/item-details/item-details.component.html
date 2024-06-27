@@ -2,6 +2,11 @@
     <h4 *ngIf="edit">Item</h4>
     <form>
         <div class="form-group">
+            <div *ngIf="edit">
+                <app-camera-input (dataEvent)="handleDataFromChild($event)"></app-camera-input>
+            </div>
+        </div>
+        <div class="form-group">
           <div *ngIf="edit">
               <label for="title">Title</label>
               <input

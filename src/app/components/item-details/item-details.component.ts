@@ -100,4 +100,10 @@ export class ItemDetailsComponent implements OnInit {
             .catch(err => console.log(err));
         }
     }
+
+    handleDataFromChild(data: any) {
+        console.log('Data received from child component:', data);
+        // Do whatever you need with the received data
+        // this.productImage = data.
+      }
 }
