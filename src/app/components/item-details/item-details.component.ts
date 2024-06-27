@@ -3,6 +3,8 @@ import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/items.service';
 import { ActivatedRoute } from '@angular/router';
 import { debug } from 'src/app/utils/common';
+import { getStorage, ref,getDownloadURL, StorageReference } from 'firebase/storage';
+import { environment } from 'src/app/environments/environment';
 
 @Component({
   selector: 'app-item-details',
@@ -24,6 +26,7 @@ export class ItemDetailsComponent implements OnInit {
     edit = false;
     priorities = ['extra high','high','medium','low'];
     webcamdata:any=null;
+    fs_image:any=null;
 
     constructor(private itemService: ItemService, private route: ActivatedRoute) { }
 
@@ -46,12 +49,24 @@ export class ItemDetailsComponent implements OnInit {
         fb_item.then((retrieved) => {
             retrieved.forEach((value) => {
                 this.currentItem = value.data(); // data can be accessed here
+                this.retrieveItemImage(item_id);
                 this.currentItem.id = item_id;
                 return value.data();
             });
         });
     }
 
+    retrieveItemImage(item_id:string) {
+        const storage = getStorage();
+        const gsReference = ref(storage, `${item_id}`);
+        getDownloadURL(gsReference).then((url)=> {
+            this.fs_image = url;
+            return url;
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+    }
     ngOnChanges(): void {
         this.message = '';
         this.currentItem = { ...this.item };
@@ -106,9 +121,5 @@ export class ItemDetailsComponent implements OnInit {
 
     handleDataFromChild(data: any) {
         this.webcamdata = data;
-        console.log('Data received from child component:', data);
-        debug(data);
-        // Do whatever you need with the received data
-        // this.productImage = data.
-      }
+    }
 }
