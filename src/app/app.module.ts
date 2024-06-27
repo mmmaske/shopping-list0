@@ -26,6 +26,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { JsonStringifyPipe } from './json-stringify.pipe';
+import { CameraInputComponent } from './camera-input/camera-input.component';
+import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,8 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
     SignInComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
+    JsonStringifyPipe,
+    CameraInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +57,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    WebcamModule
   ],
   providers: [
     AuthService
