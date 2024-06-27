@@ -73,6 +73,10 @@ export class CameraInputComponent implements OnInit {
     return this.nextWebcam.asObservable();
   }
 
+  public resetCamera():void {
+    delete this.webcamImage;
+  }
+
   sendDataToParent() {
     const dataToSend = this.webcamImage?.imageAsDataUrl;
     this.dataEvent.emit(dataToSend);
