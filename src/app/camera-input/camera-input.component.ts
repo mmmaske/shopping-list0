@@ -74,7 +74,7 @@ export class CameraInputComponent implements OnInit {
   }
 
   sendDataToParent() {
-    const dataToSend = this.webcamImage;
+    const dataToSend = this.webcamImage?.imageAsDataUrl;
     this.dataEvent.emit(dataToSend);
   }
 }

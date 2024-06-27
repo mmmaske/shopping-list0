@@ -5,6 +5,9 @@
             <div *ngIf="edit">
                 <app-camera-input (dataEvent)="handleDataFromChild($event)"></app-camera-input>
             </div>
+            <div *ngIf="!edit">
+                <img src="{{currentItem.webcamdata}}" />
+            </div>
         </div>
         <div class="form-group">
           <div *ngIf="edit">

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angu
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/items.service';
 import { ActivatedRoute } from '@angular/router';
+import { debug } from 'src/app/utils/common';
 
 @Component({
   selector: 'app-item-details',
@@ -22,6 +23,7 @@ export class ItemDetailsComponent implements OnInit {
     message = '';
     edit = false;
     priorities = ['extra high','high','medium','low'];
+    webcamdata:any=null;
 
     constructor(private itemService: ItemService, private route: ActivatedRoute) { }
 
@@ -69,10 +71,11 @@ export class ItemDetailsComponent implements OnInit {
 
     updateItem(): void {
         const data = {
-        title: this.currentItem.title,
-        description: this.currentItem.description,
-        quantity: this.currentItem.quantity,
-        priority: this.currentItem.priority,
+            title: this.currentItem.title,
+            description: this.currentItem.description,
+            quantity: this.currentItem.quantity,
+            priority: this.currentItem.priority,
+            webcamdata: this.webcamdata,
         };
 
         if (this.currentItem.id) {
@@ -102,7 +105,9 @@ export class ItemDetailsComponent implements OnInit {
     }
 
     handleDataFromChild(data: any) {
+        this.webcamdata = data;
         console.log('Data received from child component:', data);
+        debug(data);
         // Do whatever you need with the received data
         // this.productImage = data.
       }
