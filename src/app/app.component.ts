@@ -9,7 +9,7 @@ import { debug } from './utils/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent{
-    loggedin:boolean = this.isLoggedIn;
+    loggedin:boolean = this.authServ.isLoggedIn;
     title = 'Shopping List';
 
 
@@ -27,7 +27,7 @@ export class AppComponent{
         this.authServ.SignOut().then((returned)=>{
             debug(returned);
             alert(returned);
-            this.router.navigate(['items']);
+            this.router.navigate(['list']);
         })
     }
 }
