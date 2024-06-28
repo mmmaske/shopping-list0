@@ -5,7 +5,7 @@ import { debug,loginDetails } from '../utils/common';
 import { User } from '../models/user';
 import { AuthService } from './auth';
 import { getStorage, ref, uploadString } from "firebase/storage";
-
+import { Query,QuerySnapshot } from '@angular/fire/compat/firestore';
 @Injectable({
     providedIn: 'root'
 })
@@ -45,17 +45,8 @@ export class ItemService {
     }
 
     getUsersItems(): AngularFirestoreCollection<Item> {
-        const localUserData = this.localUser ? this.localUser : {uid:'x'};
-        //*
-        // query by string field
-        return this.db.collection(
-            this.dbPath,ref=>ref.where('createdById','==',`${localUserData.uid}`));
-        /*/
-        //query by reference field
-        const user = this.usersRef.doc(this.localUser.uid);
-        debug(user);
+        const user = this.db.firestore.doc(`user/${this.localUser.uid}`);
         return this.db.collection(this.dbPath,ref=>ref.where('createdBy','==',user));
-        //*/
     }
 
     async getItem(item_id:string) {
