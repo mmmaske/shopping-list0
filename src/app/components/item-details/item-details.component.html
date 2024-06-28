@@ -76,13 +76,13 @@
 
     <button
       class="btn btn-primary mr-2"
-      *ngIf="currentItem.purchased && edit"
+      *ngIf="currentItem.purchased && !edit"
       (click)="updatePurchased(false)"
     >
       Consume
     </button>
     <button
-      *ngIf="!currentItem.purchased && edit"
+      *ngIf="!currentItem.purchased && !edit"
       class="btn btn-primary mr-2"
       (click)="updatePurchased(true)"
     >
