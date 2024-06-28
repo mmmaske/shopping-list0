@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth';
 import { debug,loginDetails } from '../utils/common';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sign-in',
@@ -19,11 +20,21 @@ export class SignInComponent {
     handleSignIn():void {
         this.authServ.SignIn(this.email, this.password).then((returned) => {
             debug(loginDetails());
-            alert(returned);
+            Swal.fire({
+                title: "You did it",
+                text: `You're logged in as ${this.email}!`,
+                icon:'success',
+                confirmButtonText:"Thank you for letting me log in, shopping list website!"
+            });
             this.router.navigate(['list']);
         })
         .catch((error) => {
-            alert(error);
+            Swal.fire({
+                title: "Login failure!",
+                text: error,
+                icon:'error',
+                confirmButtonText:"Oops, I'm sorry, I'll try to do better"
+            });
         });
     }
 }

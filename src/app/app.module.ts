@@ -29,6 +29,9 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { JsonStringifyPipe } from './json-stringify.pipe';
 import { CameraInputComponent } from './camera-input/camera-input.component';
 import { WebcamModule } from 'ngx-webcam';
+import { HomeComponent } from './home/home.component';
+import { NotfoundComponent } from './notfound/notfound.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,9 @@ import { WebcamModule } from 'ngx-webcam';
     VerifyEmailComponent,
     JsonStringifyPipe,
     CameraInputComponent,
+    HomeComponent,
+    NotfoundComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,17 +8,22 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { HomeComponent } from './home/home.component';
+import { NotfoundComponent } from './notfound/notfound.component';
+import { AuthGuard } from './guard/auth.guard';
+import { SignedinGuard } from './guard/signedin.guard';
 const routes: Routes = [
-    {path:'', redirectTo:'/list',pathMatch:"full"},
-    {path:'list', component:ItemsListComponent },
-    {path:'list/:item_id', component:ItemsListComponent },
-    {path:'form', component:ItemFormComponent },
-    {path:'add', component:AddItemComponent},
+    {path:'', component:HomeComponent},
+    {path:'list', component:ItemsListComponent, canActivate:[AuthGuard] },
+    {path:'list/:item_id', component:ItemsListComponent, canActivate:[AuthGuard] },
+    {path:'form', component:ItemFormComponent},
+    {path:'add', component:AddItemComponent, canActivate:[AuthGuard]},
     {path:'auth', component:FireAuthComponent},
-    {path:'signup', component:SignUpComponent},
-    {path:'signin', component:SignInComponent},
-    {path:'forgot', component:ForgotPasswordComponent},
-    {path:'verifyt', component:VerifyEmailComponent},
+    {path:'signup', component:SignUpComponent, canActivate:[SignedinGuard]},
+    {path:'signin', component:SignInComponent, canActivate:[SignedinGuard]},
+    {path:'forgot', component:ForgotPasswordComponent, canActivate:[SignedinGuard]},
+    {path:'verify', component:VerifyEmailComponent, canActivate:[SignedinGuard]},
+    {path:'**',component:NotfoundComponent}
 ];
 
 @NgModule({
