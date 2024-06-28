@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/items.service';
-import { ActivatedRoute } from '@angular/router';
-import { debug } from 'src/app/utils/common';
-import { getStorage, ref,getDownloadURL, StorageReference } from 'firebase/storage';
-import { environment } from 'src/app/environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
+import { getStorage, ref,getDownloadURL } from 'firebase/storage';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-item-details',
@@ -28,7 +27,7 @@ export class ItemDetailsComponent implements OnInit {
     webcamdata:any=null;
     fs_image:any=null;
 
-    constructor(private itemService: ItemService, private route: ActivatedRoute) { }
+    constructor(private itemService: ItemService, private route: ActivatedRoute,private router:Router) { }
 
     ngOnInit(): void {
         this.message = '';
@@ -95,7 +94,17 @@ export class ItemDetailsComponent implements OnInit {
 
         if (this.currentItem.id) {
         this.itemService.update(this.currentItem.id, data)
-            .then(() => this.message = 'The item was updated successfully!')
+            .then(() => {
+                this.message = 'The item was updated successfully!';
+                Swal.fire({
+                    title: `${this.currentItem.title} updated successfully.`,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+            })
             .catch(err => console.log(err));
         this.edit=false;
         }
@@ -110,12 +119,33 @@ export class ItemDetailsComponent implements OnInit {
 
     deleteItem(): void {
         if (this.currentItem.id) {
-        this.itemService.delete(this.currentItem.id)
-            .then(() => {
-            this.refreshList.emit();
-            this.message = 'The item was updated successfully!';
-            })
-            .catch(err => console.log(err));
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.itemService.delete(this.currentItem.id)
+                    .then(() => {
+                        this.router.navigate(['list']);
+                        this.refreshList.emit();
+                        Swal.fire({
+                            title: `${this.currentItem.title} was removed from your shopping list.`,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+                        this.message = 'The item was updated successfully!';
+                    })
+                    .catch(err => console.log(err));
+                }
+            });
         }
     }
 
