@@ -46,7 +46,7 @@ export class ItemService {
 
     getUsersItems(): AngularFirestoreCollection<Item> {
         const user = this.db.firestore.doc(`user/${this.localUser.uid}`);
-        return this.db.collection(this.dbPath,ref=>ref.where('createdBy','==',user).orderBy('createdOn', 'asc'));
+        return this.db.collection(this.dbPath,ref=>ref.where('createdBy','==',user).orderBy('updatedOn', 'desc'));
     }
 
     async getItem(item_id:string) {
