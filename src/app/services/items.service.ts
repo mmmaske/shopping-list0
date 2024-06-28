@@ -13,6 +13,7 @@ export class ItemService {
     private allowGetAll:boolean = true;
     private dbPath = '/items';
     public localUser:User = /*this.authServ.userData*/loginDetails();
+    public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
     itemsRef: AngularFirestoreCollection<Item>;
     usersRef: AngularFirestoreCollection<User>;
 
@@ -45,7 +46,7 @@ export class ItemService {
     }
 
     getUsersItems(): AngularFirestoreCollection<Item> {
-        const user = this.db.firestore.doc(`user/${this.localUser.uid}`);
+        const user = this.userRef;
         return this.db.collection(this.dbPath,ref=>ref.where('createdBy','==',user).orderBy('updatedOn', 'desc'));
     }
 
@@ -57,10 +58,19 @@ export class ItemService {
     create(item: Item): any {
         let now = new Date();
         if(this.localUser) {
-            return this.itemsRef.add({ ...item,createdOn: now,createdById:this.localUser.uid});
+            return this.itemsRef.add({
+                ...item,
+                createdOn: now,
+                updatedOn: now,
+                createdBy:this.userRef,
+            });
         }
         else {
-            return this.itemsRef.add({ ...item,createdOn: now});
+            return this.itemsRef.add({
+                ...item,
+                createdOn: now,
+                updatedOn: now,
+            });
         }
   }
 
