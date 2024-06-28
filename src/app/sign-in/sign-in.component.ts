@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth';
 import { debug,loginDetails } from '../utils/common';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 @Component({
   selector: 'app-sign-in',
@@ -17,16 +18,38 @@ export class SignInComponent {
         private router: Router
     ) {}
 
-    handleSignIn():void {
-        this.authServ.SignIn(this.email, this.password).then((returned) => {
+    handleGoogleSSO():void {
+        const provider = new GoogleAuthProvider();
+        this.authServ.GoogleAuth(provider).then((returned) => {
             debug(loginDetails());
+            this.router.navigate(['list']);
             Swal.fire({
                 title: "You did it",
                 text: `You're logged in as ${this.email}!`,
                 icon:'success',
                 confirmButtonText:"Thank you for letting me log in, shopping list website!"
             });
+        })
+        .catch((error) => {
+            Swal.fire({
+                title: "Login failure!",
+                text: error,
+                icon:'error',
+                confirmButtonText:"Oops, I'm sorry, I'll try to do better"
+            });
+        });
+    }
+
+    handleSignIn():void {
+        this.authServ.SignIn(this.email, this.password).then((returned) => {
+            debug(loginDetails());
             this.router.navigate(['list']);
+            Swal.fire({
+                title: "You did it",
+                text: `You're logged in as ${this.email}!`,
+                icon:'success',
+                confirmButtonText:"Thank you for letting me log in, shopping list website!"
+            });
         })
         .catch((error) => {
             Swal.fire({

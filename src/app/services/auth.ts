@@ -5,8 +5,11 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -120,5 +123,9 @@ export class AuthService {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
     });
+  }
+
+  GoogleAuth(provider:GoogleAuthProvider) {
+    return this.afAuth.signInWithRedirect(provider);
   }
 }
