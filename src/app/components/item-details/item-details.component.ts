@@ -107,6 +107,7 @@ export class ItemDetailsComponent implements OnInit {
             })
             .catch(err => console.log(err));
         this.edit=false;
+        this.fs_image = this.webcamdata;
         }
     }
 
