@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/items.service';
 import Swal from 'sweetalert2';
@@ -13,7 +14,7 @@ export class AddItemComponent {
   priorities = ['extra high','high','medium','low'];
   submitted = false;
 
-  constructor(private itemService: ItemService) { }
+  constructor(private itemService: ItemService,private router: Router) { }
 
   saveItem(): void {
     this.itemService.create(this.item).then(() => {
@@ -30,6 +31,7 @@ export class AddItemComponent {
             /* Read more about handling dismissals below */
             if (result.dismiss === Swal.DismissReason.timer) {
                 console.log("I was closed by the timer");
+                this.router.navigate(['list']);
             }
         });
     });
