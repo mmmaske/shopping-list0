@@ -21,8 +21,9 @@ export class SignInComponent {
     handleGoogleSSO():void {
         const provider = new GoogleAuthProvider();
         this.authServ.GoogleAuth(provider).then((returned) => {
+            debug(returned);
             debug(loginDetails());
-            this.router.navigate(['list']);
+            this.router.navigate(['']);
             Swal.fire({
                 title: "You did it",
                 text: `You're logged in as ${this.email}!`,

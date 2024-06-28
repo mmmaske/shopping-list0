@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
 import Swal from 'sweetalert2';
+import { debug } from '../utils/common';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +27,7 @@ export class NavbarComponent {
 
     handleSignOut(): void {
         this.authServ.SignOut().then((returned)=>{
-            console.log(returned);
+            debug(returned);
             Swal.fire({
                 title: `Why are you leaving?`,
                 html: `Where are you going? How will you remember what to get there? <h2>🥺</h2> <h3>${this.imsorry}</h3><h1>${this.dontgo}</h1>`,
