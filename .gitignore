@@ -46,3 +46,5 @@ src/app/environments/environment.ts
 ui-debug.log
 firestore-debug.log
 .firebase/hosting.*.cache
+capacitor.config.ts
+android
