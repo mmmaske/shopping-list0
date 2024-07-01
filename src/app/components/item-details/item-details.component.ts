@@ -50,6 +50,8 @@ export class ItemDetailsComponent implements OnInit {
                 this.currentItem = value.data(); // data can be accessed here
                 this.retrieveItemImage(item_id);
                 this.currentItem.id = item_id;
+                this.currentItem.createdOnDisplay = new Date(this.currentItem.createdOn.seconds * 1000);
+                this.currentItem.updatedOnDisplay = new Date(this.currentItem.updatedOn.seconds * 1000);
                 return value.data();
             });
         });
