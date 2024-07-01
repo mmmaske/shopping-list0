@@ -10,7 +10,6 @@ import 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
-import { debug } from '../utils/common';
 
 @Injectable({
   providedIn: 'root',
@@ -127,6 +126,8 @@ export class AuthService {
   }
 
   GoogleAuth(provider:GoogleAuthProvider) {
-    return this.afAuth.signInWithPopup(provider);
+    return this.afAuth.signInWithPopup(provider).then((val)=>{
+        this.SetUserData(val.user);
+    });
   }
 }

@@ -11,7 +11,8 @@ import { Query,QuerySnapshot } from '@angular/fire/compat/firestore';
 })
 export class ItemService {
     private allowGetAll:boolean = true;
-    private dbPath = '/items';
+    private itemPath = '/items';
+    private usersPath = '/users';
     public localUser:User = /*this.authServ.userData*/loginDetails();
     public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
     itemsRef: AngularFirestoreCollection<Item>;
@@ -26,8 +27,8 @@ export class ItemService {
         private db: AngularFirestore,
         public authServ: AuthService
     ) {
-        this.itemsRef = db.collection(this.dbPath);
-        this.usersRef = db.collection('users');
+        this.itemsRef = db.collection(this.itemPath);
+        this.usersRef = db.collection(this.usersPath);
     }
 
     uploadToFireStore(id:string,file:string): void {
@@ -47,7 +48,7 @@ export class ItemService {
 
     getUsersItems(): AngularFirestoreCollection<Item> {
         const user = this.userRef;
-        return this.db.collection(this.dbPath,ref=>ref.where('createdBy','==',user).orderBy('updatedOn', 'desc'));
+        return this.db.collection(this.itemPath,ref=>ref.where('createdBy','==',user).orderBy('updatedOn', 'desc'));
     }
 
     async getItem(item_id:string) {
