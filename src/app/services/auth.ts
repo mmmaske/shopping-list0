@@ -10,6 +10,7 @@ import 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
+
+    // for firebase emulator
+    if(!environment.production) this.afAuth.useEmulator('http://localhost:9099');
+
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
@@ -99,6 +104,17 @@ export class AuthService {
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
+  GetUserData(user:any) {
+      const userData: User = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        emailVerified: user.emailVerified,
+      };
+      return userData;
+  }
+
   /* Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
@@ -125,9 +141,12 @@ export class AuthService {
     });
   }
 
-  GoogleAuth(provider:GoogleAuthProvider) {
-    return this.afAuth.signInWithPopup(provider).then((val)=>{
-        this.SetUserData(val.user);
+  async GoogleAuth() {
+    const provider = new GoogleAuthProvider();
+    const userData = await this.afAuth.signInWithPopup(provider).then((val)=>{
+        return val.user;
     });
+    await this.SetUserData(userData);
+    return this.GetUserData(userData);
   }
 }

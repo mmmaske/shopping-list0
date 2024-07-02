@@ -31,6 +31,9 @@ import { WebcamModule } from 'ngx-webcam';
 import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AngularFireAuth, USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/compat/auth';
+import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/compat/firestore';
+import { connectStorageEmulator } from 'firebase/storage';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,14 @@ import { NavbarComponent } from './navbar/navbar.component';
     WebcamModule
   ],
   providers: [
-    AuthService
+    AuthService, // auth emulator code found here
+
+    // apply firebase firestore emulator
+    {
+        provide: DATABASE_EMULATOR,
+        useValue: environment.production ? undefined : ['localhost', 8080],
+    },
+
   ],
   bootstrap: [AppComponent]
 })

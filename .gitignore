@@ -42,7 +42,7 @@ testem.log
 Thumbs.db
 
 # environment file
-src/app/environments/environment.ts
+src/app/environments/*
 ui-debug.log
 firestore-debug.log
 .firebase/hosting.*.cache

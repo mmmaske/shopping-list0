@@ -19,14 +19,13 @@ export class SignInComponent {
     ) {}
 
     handleGoogleSSO():void {
-        const provider = new GoogleAuthProvider();
-        this.authServ.GoogleAuth(provider).then((returned) => {
-            debug(returned);
-            debug(loginDetails());
+        this.authServ.GoogleAuth().then((returned) => {
+            const userData = this.authServ.userData;
+            debug(userData.toJSON());
             this.router.navigate(['']);
             Swal.fire({
                 title: "You did it",
-                text: `You're logged in as ${this.email}!`,
+                text: `You're logged in as ${userData.email}!`,
                 icon:'success',
                 confirmButtonText:"Thank you for letting me log in, shopping list website!"
             });
@@ -38,7 +37,7 @@ export class SignInComponent {
                 icon:'error',
                 confirmButtonText:"Oops, I'm sorry, I'll try to do better"
             });
-        });
+        })
     }
 
     handleSignIn():void {

@@ -4,7 +4,8 @@ import { ItemService } from 'src/app/services/items.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getStorage, ref,getDownloadURL } from 'firebase/storage';
 import Swal from 'sweetalert2';
-
+import { connectStorageEmulator } from 'firebase/storage';
+import { connect } from 'rxjs';
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
@@ -44,21 +45,24 @@ export class ItemDetailsComponent implements OnInit {
     }
 
     retrieveItem(item_id: string) {
-        const fb_item = this.itemService.getItem(item_id);
-        fb_item.then((retrieved) => {
-            retrieved.forEach((value) => {
-                this.currentItem = value.data(); // data can be accessed here
-                this.retrieveItemImage(item_id);
-                this.currentItem.id = item_id;
-                this.currentItem.createdOnDisplay = new Date(this.currentItem.createdOn.seconds * 1000);
-                this.currentItem.updatedOnDisplay = new Date(this.currentItem.updatedOn.seconds * 1000);
-                return value.data();
+        if(item_id !== 'null') {
+            const fb_item = this.itemService.getItem(item_id);
+            fb_item.then((retrieved) => {
+                retrieved.forEach((value) => {
+                    this.currentItem = value.data(); // data can be accessed here
+                    this.retrieveItemImage(item_id);
+                    this.currentItem.id = item_id;
+                    this.currentItem.createdOnDisplay = new Date(this.currentItem.createdOn.seconds * 1000);
+                    this.currentItem.updatedOnDisplay = new Date(this.currentItem.updatedOn.seconds * 1000);
+                    return value.data();
+                });
             });
-        });
+        }
     }
 
     retrieveItemImage(item_id:string) {
         const storage = getStorage();
+        connectStorageEmulator(storage,'localhost',9199);
         const gsReference = ref(storage, `${item_id}`);
         getDownloadURL(gsReference).then((url)=> {
             this.fs_image = url;
