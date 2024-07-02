@@ -12,4 +12,5 @@ export class Item {
     createdBy?:Reference;
     createdById?:string;
     updatedOn?: Date;
+    sharedWith?:any;
 }

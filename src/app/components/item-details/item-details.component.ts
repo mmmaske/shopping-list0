@@ -6,6 +6,9 @@ import { getStorage, ref,getDownloadURL } from 'firebase/storage';
 import Swal from 'sweetalert2';
 import { connectStorageEmulator } from 'firebase/storage';
 import { connect } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs';
+import { loginDetails } from 'src/app/utils/common';
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
@@ -20,15 +23,22 @@ export class ItemDetailsComponent implements OnInit {
         quantity: 0,
         description: '',
         priority: '',
-        purchased: false
+        purchased: false,
+        sharedWith: [],
     };
     message = '';
     edit = false;
     priorities = ['extra high','high','medium','low'];
     webcamdata:any=null;
     fs_image:any=null;
+    usersOptions = [];
 
-    constructor(private itemService: ItemService, private route: ActivatedRoute,private router:Router) { }
+    constructor(
+        private itemService: ItemService,
+        private route: ActivatedRoute,
+        private router:Router,
+        private afs: AngularFirestore
+    ) { }
 
     ngOnInit(): void {
         this.message = '';
@@ -47,6 +57,7 @@ export class ItemDetailsComponent implements OnInit {
     retrieveItem(item_id: string) {
         if(item_id !== 'null') {
             const fb_item = this.itemService.getItem(item_id);
+            this.usersOptions = this.retrieveActiveUsers();
             fb_item.then((retrieved) => {
                 retrieved.forEach((value) => {
                     this.currentItem = value.data(); // data can be accessed here
@@ -58,6 +69,20 @@ export class ItemDetailsComponent implements OnInit {
                 });
             });
         }
+    }
+
+    retrieveActiveUsers() {
+        const usersOptions:any = [];
+        const users = this.afs.collection('/users').get().subscribe((val)=>{
+            val.docs.map((user)=>{
+                const userData:any = user.data();
+                const localUserData = loginDetails();
+                if(localUserData.uid != userData.uid) {
+                    usersOptions.push({"id":userData.uid,"email":userData.email});
+                }
+            })
+        });
+        return usersOptions;
     }
 
     retrieveItemImage(item_id:string) {
@@ -96,6 +121,7 @@ export class ItemDetailsComponent implements OnInit {
             quantity: this.currentItem.quantity,
             priority: this.currentItem.priority,
             webcamdata: this.webcamdata,
+            sharedWith: this.currentItem.sharedWith,
         };
 
         if (this.currentItem.id) {
