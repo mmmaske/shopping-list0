@@ -6,6 +6,9 @@ import { User } from '../models/user';
 import { AuthService } from './auth';
 import { getStorage, ref, uploadString } from "firebase/storage";
 import { Query,QuerySnapshot } from '@angular/fire/compat/firestore';
+import { environment } from '../environments/environment';
+import { connectStorageEmulator } from 'firebase/storage';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -27,6 +30,7 @@ export class ItemService {
         private db: AngularFirestore,
         public authServ: AuthService
     ) {
+        connectStorageEmulator(this.storage, 'localhost',9199);
         this.itemsRef = db.collection(this.itemPath);
         this.usersRef = db.collection(this.usersPath);
     }
