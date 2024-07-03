@@ -55,22 +55,20 @@ export class ItemService {
         const sharedItems = this.getSharedWith().valueChanges().pipe(
             map(sharedItems$ => {
                 const sharedItems = sharedItems$;
-                collectedItems.push(sharedItems$.map((sharedItem)=>{
-                    console.log('sharedItem',sharedItem);
+                sharedItems$.map((sharedItem)=>{
+                    collectedItems.push(sharedItem);
                     return sharedItem;
-                }));
-                console.log('sharedItems',sharedItems);
+                });
                 return sharedItems;
             })
         );
         const ownedItems = this.getUsersItems().valueChanges().pipe(
             map(ownedItems$ => {
                 const ownedItems = ownedItems$;
-                collectedItems.push(ownedItems$.map((ownedItem)=>{
-                    console.log('ownedItem',ownedItem);
+                ownedItems$.map((ownedItem)=>{
+                    collectedItems.push(ownedItem);
                     return ownedItem;
-                }));
-                console.log('ownedItems',ownedItems);
+                });
                 return ownedItems;
             })
         );
