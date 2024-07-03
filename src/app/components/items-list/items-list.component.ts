@@ -37,14 +37,6 @@ export class ItemsListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const combined = async () => {
-            this.itemService.getCombined().subscribe((res: any) => this.combinedData = res)
-        };
-        const combinedItems = combined().then((val)=>{
-            console.log('itemCollection',this.itemService.itemCollection);
-            this.combinedData=this.itemService.itemCollection;
-            return this.itemService.itemCollection;
-        });
         this.retrieveItems();
         this.setActiveFromRoute();
     }
@@ -56,8 +48,14 @@ export class ItemsListComponent implements OnInit {
     }
 
     retrieveItems(): void {
-        this.data.subscribe(data => {
-            this.items = data;
+        this.combinedData = [];
+        this.itemService.getCombined().subscribe(data => {
+            data.map((itemArray)=>{
+                itemArray.forEach((item)=>{
+                    this.combinedData.push(item);
+                })
+            });
+            this.items = this.combinedData;
             this.hasItems = true;
         });
     }
