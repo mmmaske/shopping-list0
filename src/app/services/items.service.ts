@@ -18,6 +18,7 @@ export class ItemService {
     private usersPath = '/users';
     public localUser:User = /*this.authServ.userData*/loginDetails();
     public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
+    public itemCollection: any;
     itemsRef: AngularFirestoreCollection<Item>;
     usersRef: AngularFirestoreCollection<User>;
 
@@ -73,6 +74,7 @@ export class ItemService {
             })
         );
         console.log('collectedItems',collectedItems);
+        this.itemCollection = collectedItems;
         const combined = combineLatest(sharedItems,ownedItems);
         return combined;
     }

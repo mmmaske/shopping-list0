@@ -24,7 +24,7 @@ export class ItemsListComponent implements OnInit {
             )
         )
     );
-    combinedData:any = {}
+    combinedData:any;
 
     constructor(
         private itemService: ItemService,
@@ -40,7 +40,11 @@ export class ItemsListComponent implements OnInit {
         const combined = async () => {
             this.itemService.getCombined().subscribe((res: any) => this.combinedData = res)
         };
-        console.log(combined());
+        const combinedItems = combined().then((val)=>{
+            console.log('itemCollection',this.itemService.itemCollection);
+            this.combinedData=this.itemService.itemCollection;
+            return this.itemService.itemCollection;
+        });
         this.retrieveItems();
         this.setActiveFromRoute();
     }
