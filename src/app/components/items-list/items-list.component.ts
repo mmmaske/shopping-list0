@@ -24,6 +24,7 @@ export class ItemsListComponent implements OnInit {
             )
         )
     );
+    combinedData:any = {}
 
     constructor(
         private itemService: ItemService,
@@ -36,6 +37,10 @@ export class ItemsListComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        const combined = async () => {
+            this.itemService.getCombined().subscribe((res: any) => this.combinedData = res)
+        };
+        console.log(combined());
         this.retrieveItems();
         this.setActiveFromRoute();
     }

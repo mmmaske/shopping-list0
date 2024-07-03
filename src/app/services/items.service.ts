@@ -6,8 +6,8 @@ import { User } from '../models/user';
 import { AuthService } from './auth';
 import { getStorage, ref, uploadString } from "firebase/storage";
 import { connectStorageEmulator } from 'firebase/storage';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs';
+import { Observable, combineLatest, concat, of } from 'rxjs';
+import { map, take } from 'rxjs';
 import { environment } from '../environments/environment';
 @Injectable({
     providedIn: 'root'
@@ -50,26 +50,22 @@ export class ItemService {
         return this.getUsersItems();
     }
 
-    getCombined(): Observable<Item> {
+    getCombined(): Observable<[Item[], Item[]]> {
         const sharedItems = this.getSharedWith().valueChanges().pipe(
-            map(items => {
-                const item = items[0];
-                console.log(item);
-                return item;
+            map(sharedItems$ => {
+                const sharedItems = sharedItems$;
+                console.log('sharedItems',sharedItems);
+                return sharedItems;
             })
         );
         const ownedItems = this.getUsersItems().valueChanges().pipe(
-            map(items => {
-                const item = items[0];
-                console.log(item);
-                return item;
+            map(ownedItems$ => {
+                const ownedItems = ownedItems$;
+                console.log('ownedItems',ownedItems);
+                return ownedItems;
             })
         );
-        const combined = combineLatest([sharedItems,ownedItems]).pipe(
-            map(changes => {
-                console.log(changes);
-            })
-        );
+        const combined = combineLatest(sharedItems,ownedItems);
         return combined;
     }
 
