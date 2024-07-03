@@ -52,6 +52,7 @@ export class ItemsListComponent implements OnInit {
             this.combinedData = []; // clear the combinedData array
             data.map((itemArray)=>{
                 itemArray.forEach((item)=>{
+                    console.log(item);
                     this.combinedData.push(item); // insert into combinedData array
                 })
             });

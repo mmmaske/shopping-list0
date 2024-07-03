@@ -8,6 +8,7 @@ import { getStorage, ref, uploadString } from "firebase/storage";
 import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest, concat, of } from 'rxjs';
 import { environment } from '../environments/environment';
+import { map } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -50,7 +51,13 @@ export class ItemService {
     }
 
     getCombined(): Observable<[Item[], Item[]]> {
-        const sharedItems = this.getSharedWith().valueChanges();
+        const sharedItems = this.getSharedWith().valueChanges().pipe(
+            map(changes =>
+                changes.map(c =>
+                    ({ id: c.id, ...c })
+                )
+            )
+        );
         const ownedItems = this.getUsersItems().valueChanges();
         const combined = combineLatest(sharedItems,ownedItems);
         return combined;
