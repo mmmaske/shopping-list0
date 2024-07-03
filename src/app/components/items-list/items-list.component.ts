@@ -48,14 +48,14 @@ export class ItemsListComponent implements OnInit {
     }
 
     retrieveItems(): void {
-        this.combinedData = [];
         this.itemService.getCombined().subscribe(data => {
+            this.combinedData = []; // clear the combinedData array
             data.map((itemArray)=>{
                 itemArray.forEach((item)=>{
-                    this.combinedData.push(item);
+                    this.combinedData.push(item); // insert into combinedData array
                 })
             });
-            this.items = this.combinedData;
+            this.items = this.combinedData; // output to item list
             this.hasItems = true;
         });
     }
