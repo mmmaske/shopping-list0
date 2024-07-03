@@ -16,6 +16,7 @@ export class ItemsListComponent implements OnInit {
     currentItemId:string = this.currentItemIdGetter;
     title = '';
     hasItems = false;
+    isSelect = false;
     data = this.itemService.getAll().snapshotChanges().pipe(
         map(changes =>
             changes.map(c =>
@@ -76,5 +77,11 @@ export class ItemsListComponent implements OnInit {
     setActiveItem(item: /*Item*/any, index: number=-1): void {
         this.currentItem = item;
         this.currentIndex = index;
+    }
+    toggleSelect() {
+        this.isSelect = !this.isSelect;
+    }
+    deleteSelected() {
+        // todo: use firebase transactions to delete the selected items
     }
 }
