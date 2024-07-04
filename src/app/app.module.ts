@@ -34,6 +34,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AngularFireAuth, USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/compat/auth';
 import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/compat/firestore';
 import { connectStorageEmulator } from 'firebase/storage';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list'
+import { MatListItemIcon } from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -64,7 +72,14 @@ import { connectStorageEmulator } from 'firebase/storage';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    WebcamModule
+    WebcamModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatCardModule,
+    MatDividerModule,
+    MatListModule,
+    MatIconModule
   ],
   providers: [
     AuthService, // auth emulator code found here
