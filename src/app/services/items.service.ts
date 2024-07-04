@@ -5,19 +5,19 @@ import { debug,loginDetails } from '../utils/common';
 import { User } from '../models/user';
 import { AuthService } from './auth';
 import { getStorage, ref, uploadString } from "firebase/storage";
-import { Query,QuerySnapshot } from '@angular/fire/compat/firestore';
-import { environment } from '../environments/environment';
 import { connectStorageEmulator } from 'firebase/storage';
-
+import { Observable, combineLatest, concat, of } from 'rxjs';
+import { environment } from '../environments/environment';
+import { map } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
 export class ItemService {
-    private allowGetAll:boolean = true;
     private itemPath = '/items';
     private usersPath = '/users';
     public localUser:User = /*this.authServ.userData*/loginDetails();
     public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
+    public itemCollection: any;
     itemsRef: AngularFirestoreCollection<Item>;
     usersRef: AngularFirestoreCollection<User>;
 
@@ -30,7 +30,9 @@ export class ItemService {
         private db: AngularFirestore,
         public authServ: AuthService
     ) {
-        connectStorageEmulator(this.storage, 'localhost',9199);
+        if(!environment.production) {
+            connectStorageEmulator(this.storage, 'localhost',9199);
+        }
         this.itemsRef = db.collection(this.itemPath);
         this.usersRef = db.collection(this.usersPath);
     }
@@ -46,13 +48,35 @@ export class ItemService {
 
     getAll(): AngularFirestoreCollection<Item> {
         return this.getUsersItems();
-        // if(this.localUser) return this.getUsersItems();
-        // return this.itemsRef;
+    }
+
+    getCombined(): Observable<[Item[], Item[]]> {
+        const sharedItems = this.getSharedWith().snapshotChanges().pipe(
+            map(changes =>
+                changes.map(c =>
+                    ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+                )
+            )
+        );
+        const ownedItems = this.getUsersItems().snapshotChanges().pipe(
+            map(changes =>
+                changes.map(c =>
+                    ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+                )
+            )
+        );
+        const combined = combineLatest(sharedItems,ownedItems);
+        return combined;
     }
 
     getUsersItems(): AngularFirestoreCollection<Item> {
         const user = this.userRef;
         return this.db.collection(this.itemPath,ref=>ref.where('createdBy','==',user).orderBy('updatedOn', 'desc'));
+    }
+
+    getSharedWith(): AngularFirestoreCollection<Item> {
+        const user = this.userRef;
+        return this.db.collection(this.itemPath,ref=>ref.where('sharedWith','array-contains',user.id).orderBy('updatedOn', 'desc'));
     }
 
     async getItem(item_id:string) {

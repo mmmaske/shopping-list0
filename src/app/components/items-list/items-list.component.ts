@@ -24,6 +24,7 @@ export class ItemsListComponent implements OnInit {
             )
         )
     );
+    combinedData:any;
 
     constructor(
         private itemService: ItemService,
@@ -47,8 +48,15 @@ export class ItemsListComponent implements OnInit {
     }
 
     retrieveItems(): void {
-        this.data.subscribe(data => {
-            this.items = data;
+        this.itemService.getCombined().subscribe(data => {
+            this.combinedData = []; // clear the combinedData array
+            data.map((itemArray)=>{
+                itemArray.forEach((item)=>{
+                    console.log(item);
+                    this.combinedData.push(item); // insert into combinedData array
+                })
+            });
+            this.items = this.combinedData; // output to item list
             this.hasItems = true;
         });
     }
