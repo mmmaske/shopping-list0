@@ -78,6 +78,8 @@ export class ItemDetailsComponent implements OnInit {
                 const userData:any = user.data();
                 const localUserData = loginDetails();
                 if(localUserData.uid != userData.uid) {
+                    console.log(userData);
+                    userData.displayName = userData.displayName ? userData.displayName : userData.email;
                     usersOptions.push(userData);
                 }
             })
