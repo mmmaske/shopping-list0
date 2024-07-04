@@ -15,8 +15,6 @@
             [class.active]="item.id==currentItemId"
             (click)="redirectToItem(item.id,i)"
             >
-            {{i}}
-            {{item.id}}
             <input type="checkbox" name="{{item.id}}" *ngIf="isSelect" />
                 <div class="badge badge-pill {{item.priority | getPriorityColor}}">{{item.priority | uppercaseWords}}</div>
                 {{ item.title }}

@@ -51,14 +51,20 @@ export class ItemService {
     }
 
     getCombined(): Observable<[Item[], Item[]]> {
-        const sharedItems = this.getSharedWith().valueChanges().pipe(
+        const sharedItems = this.getSharedWith().snapshotChanges().pipe(
             map(changes =>
                 changes.map(c =>
-                    ({ id: c.id, ...c })
+                    ({ id: c.payload.doc.id, ...c.payload.doc.data() })
                 )
             )
         );
-        const ownedItems = this.getUsersItems().valueChanges();
+        const ownedItems = this.getUsersItems().snapshotChanges().pipe(
+            map(changes =>
+                changes.map(c =>
+                    ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+                )
+            )
+        );
         const combined = combineLatest(sharedItems,ownedItems);
         return combined;
     }
