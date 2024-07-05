@@ -1,13 +1,24 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
 import Swal from 'sweetalert2';
 import { debug } from '../utils/common';
+import {
+    MAT_DIALOG_DATA,
+    MatDialog,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle,
+  } from '@angular/material/dialog';
+  import { AddItemComponent } from '../components/add-item/add-item.component';
+
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
     loggedin:boolean = this.authServ.isLoggedIn;
@@ -24,6 +35,8 @@ export class NavbarComponent {
         public authServ:AuthService,
         private router: Router
     ) {}
+    public name:string='';
+    readonly dialog = inject(MatDialog);
 
     handleSignOut(): void {
         this.authServ.SignOut().then((returned)=>{
@@ -37,4 +50,32 @@ export class NavbarComponent {
             this.router.navigate(['']);
         })
     }
+
+    openAddDialog(): void {
+        const dialogRef = this.dialog.open(AddItemComponent);
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            if (result !== undefined) {
+                this.name= result;
+            }
+        });
+    }
 }
+
+
+
+// @Component({
+//     selector: 'dialog-overview-example-dialog',
+//     templateUrl: 'dialog-overview-example-dialog.html',
+//     standalone: true,
+//   })
+// export class DialogOverviewExampleDialog {
+//     readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
+//     readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+//     readonly animal = this.data.animal;
+
+//     onNoClick(): void {
+//       this.dialogRef.close();
+//     }
+//   }

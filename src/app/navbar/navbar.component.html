@@ -1,23 +1,28 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">mmmaske</a>
-    <div class="navbar-nav mr-auto">
-    <li class="nav-item">
-        <a routerLink="list" *ngIf="this.authServ.isLoggedIn" class="nav-link">Items</a>
-    </li>
-    <li class="nav-item">
-        <a routerLink="add" *ngIf="this.authServ.isLoggedIn" class="nav-link">Add</a>
-    </li>
-    <!--li class="nav-item">
-        <a routerLink="auth" class="nav-link">User</a>
-    </li-->
-    <li class="nav-item" *ngIf="!this.authServ.isLoggedIn">
-        <a routerLink="signup" class="nav-link">Sign Up</a>
-    </li>
-    <li class="nav-item" *ngIf="!this.authServ.isLoggedIn">
-        <a routerLink="signin" class="nav-link">Sign In</a>
-    </li>
-    <li class="nav-item" *ngIf="this.authServ.isLoggedIn">
-        <a (click)="handleSignOut()" class="nav-link">Sign Out</a>
-    </li>
-    </div>
-</nav>
+<mat-toolbar-row class="flex-navbar">
+    <button mat-icon-button routerLink="list" *ngIf="this.authServ.isLoggedIn"
+        matTooltip="Lists"
+    >
+        <mat-icon fontIcon="menu"></mat-icon>
+    </button>
+    <button mat-icon-button (click)="openAddDialog()" *ngIf="this.authServ.isLoggedIn"
+    matTooltip="Add item"
+    >
+        <mat-icon fontIcon="add"></mat-icon>
+    </button>
+    <span class="center-spacer"></span>
+    <button mat-icon-button routerLink="signup"  *ngIf="!this.authServ.isLoggedIn"
+    matTooltip="Sign Up"
+    >
+        <mat-icon fontIcon="app_registration"></mat-icon>
+    </button>
+    <button mat-icon-button routerLink="signin" *ngIf="!this.authServ.isLoggedIn"
+    matTooltip="Sign In"
+    >
+        <mat-icon fontIcon="login"></mat-icon>
+    </button>
+    <button mat-icon-button (click)="handleSignOut()" *ngIf="this.authServ.isLoggedIn"
+    matTooltip="Sign out"
+    >
+        <mat-icon fontIcon="logout"></mat-icon>
+    </button>
+</mat-toolbar-row>

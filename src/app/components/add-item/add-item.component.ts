@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/items.service';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
+import {
+    MAT_DIALOG_DATA,
+    MatDialog,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle,
+  } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-add-item',
@@ -15,6 +24,7 @@ export class AddItemComponent {
     form = this.item;
     priorities = ['extra high','high','medium','low'];
     submitted = false;
+    readonly dialogRef = inject(MatDialogRef<AddItemComponent>)
 
     constructor(private itemService: ItemService,private router: Router) { }
 
@@ -40,6 +50,7 @@ export class AddItemComponent {
     }
 
     onSubmit(): void {
+        this.dialogRef.close();
         console.log(JSON.stringify(this.form, null, 2));
         this.saveItem();
     }

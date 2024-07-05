@@ -3,6 +3,7 @@ import { ItemService } from 'src/app/services/items.service';
 import { map } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
 import { Router,ActivatedRoute } from '@angular/router';
+import { CamelCasePipe } from 'src/app/camel-case.pipe';
 
 @Component({
     selector: 'app-items-list',
@@ -53,6 +54,7 @@ export class ItemsListComponent implements OnInit {
             data.map((itemArray)=>{
                 itemArray.forEach((item)=>{
                     console.log(item);
+                    item.priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
                     this.combinedData.push(item); // insert into combinedData array
                 })
             });
