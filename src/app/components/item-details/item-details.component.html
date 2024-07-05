@@ -99,47 +99,53 @@
   </form>
 
   <button
-    class="btn btn-primary mr-2"
+  mat-fab extended
     *ngIf="currentItem.purchased && !edit"
     (click)="updatePurchased(false)"
   >
+  <mat-icon fontIcon="add_reaction"></mat-icon>
     Consume
   </button>
   <button
+  mat-fab extended
     *ngIf="!currentItem.purchased && !edit"
-    class="btn btn-primary mr-2"
     (click)="updatePurchased(true)"
   >
+  <mat-icon fontIcon="shopping_cart_checkout"></mat-icon>
     Purchase
   </button>
 
-  <button *ngIf="edit" class="btn btn-danger mr-2" (click)="deleteItem()">
+  <button mat-flat-button *ngIf="edit" (click)="deleteItem()">
+    <mat-icon fontIcon="delete"></mat-icon>
     Delete
   </button>
-  <button *ngIf="edit" class="btn btn-secondary mr-2" (click)="cancelEdit()">
+  <button mat-flat-button *ngIf="edit" (click)="cancelEdit()">
+    <mat-icon fontIcon="undo"></mat-icon>
     Cancel
   </button>
 
   <button
+  mat-fab extended
     *ngIf="!edit"
     type="submit"
-    class="btn btn-success"
     (click)="editItem()"
   >
+  <mat-icon fontIcon="edit"></mat-icon>
     Edit
   </button>
 
   <button
+  mat-flat-button
     *ngIf="edit"
     type="submit"
-    class="btn btn-success"
     (click)="updateItem()"
   >
+  <mat-icon fontIcon="save"></mat-icon>
     Update
   </button>
   <p>{{ message }}</p>
 </div>
 
 <div class="loadingicon" *ngIf="!currentItem">
-  <img src="https://i.sstatic.net/7luvR.gif" />
+    <mat-spinner></mat-spinner>
 </div>
