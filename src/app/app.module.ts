@@ -52,6 +52,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,6 +99,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatRippleModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     AuthService, // auth emulator code found here

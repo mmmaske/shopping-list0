@@ -12,10 +12,16 @@ import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest, concat, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { map } from 'rxjs';
+import Swal from 'sweetalert2';
+import { Transaction, deleteDoc, runTransaction } from 'firebase/firestore';
+import { writeBatch } from 'firebase/firestore';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ItemService {
+  public selectMultiple: boolean = false;
+  public selectedItems: String[] = [];
   private itemPath = '/items';
   private usersPath = '/users';
   public localUser: User = /*this.authServ.userData*/ loginDetails();
@@ -126,5 +132,44 @@ export class ItemService {
 
   delete(id: string): Promise<void> {
     return this.itemsRef.doc(id).delete();
+  }
+
+  getSelectedItems(item_id_array: String[]): Observable<unknown[]> {
+    return this.db.collection(this.itemPath, (ref) =>
+      ref.where('id', 'in', item_id_array),
+    )
+    .valueChanges('idField');
+  }
+
+  handleDeleteSelected() {
+    if (this.selectedItems.length > 0) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `You're going to be deleting ${this.selectedItems.length} items and they can't be recovered.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteSelected(this.selectedItems);
+          alert('use transaction to delete here');
+        }
+      });
+    }
+  }
+
+  deleteSelected(item_id_array: String[]) {
+    const selectedItems = this.getSelectedItems(item_id_array)
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          })),
+        ),
+      );
+    console.log('selected', selectedItems);
   }
 }

@@ -4,7 +4,12 @@ import { map } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CamelCasePipe } from 'src/app/camel-case.pipe';
+import { Injectable } from '@angular/core';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.component.html',
@@ -17,7 +22,6 @@ export class ItemsListComponent implements OnInit {
   currentItemId: string = this.currentItemIdGetter;
   title = '';
   hasItems = false;
-  isSelect = false;
   data = this.itemService
     .getAll()
     .snapshotChanges()
@@ -29,7 +33,7 @@ export class ItemsListComponent implements OnInit {
   combinedData: any;
 
   constructor(
-    private itemService: ItemService,
+    public itemService: ItemService,
     private router: Router,
     private route: ActivatedRoute,
   ) {}
@@ -76,6 +80,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   redirectToItem(item_id: any, index: number): void {
+    if (this.itemService.selectMultiple) return;
     this.router.navigate([`/list/${item_id}`]); // update the URL
     this.setActiveFromRoute(index); // update the component
   }
@@ -89,10 +94,19 @@ export class ItemsListComponent implements OnInit {
     this.currentItem = item;
     this.currentIndex = index;
   }
-  toggleSelect() {
-    this.isSelect = !this.isSelect;
-  }
-  deleteSelected() {
-    // todo: use firebase transactions to delete the selected items
+
+  updateCheckbox(event: MatCheckboxChange) {
+    if (event.checked)
+      this.itemService.selectedItems.push(event.source.value); // save document ID selectedItems
+    else {
+      //remove item ID from selectedItems
+      const index = this.itemService.selectedItems.indexOf(event.source.value);
+      if (index > -1) {
+        this.itemService.selectedItems.splice(index, 1);
+      }
+    }
+    this.itemService.selectedItems.length;
+    console.log('event', this.itemService.selectedItems.length);
+    // get checked elements from checkboxes
   }
 }

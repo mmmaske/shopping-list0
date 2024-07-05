@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card>
     <div class="loadingicon" *ngIf="!hasItems">
-      <img src="https://i.sstatic.net/7luvR.gif" />
+      <mat-spinner></mat-spinner>
     </div>
     <mat-list *ngIf="hasItems">
       <div matRipple *ngFor="let item of items; let i = index">
@@ -11,9 +11,15 @@
           [class.active]="item.id == currentItemId"
           (click)="redirectToItem(item.id, i)"
         >
+          <mat-checkbox
+            value="{{ item.id }}"
+            *ngIf="this.itemService.selectMultiple"
+            (change)="updateCheckbox($event)"
+          ></mat-checkbox>
+
           <mat-icon
             fontIcon="priority_high"
-            *ngIf="item.priority == 'extra high' || item.priority == 'high'"
+            *ngIf="item.priority == 'extra high'"
           ></mat-icon>
           {{ item.title }}
         </mat-list-item>
