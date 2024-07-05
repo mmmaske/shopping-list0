@@ -48,3 +48,4 @@ firestore-debug.log
 .firebase/hosting.*.cache
 capacitor.config.ts
 android
+.vscode/settings.json
