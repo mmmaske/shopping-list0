@@ -156,7 +156,7 @@ export class ItemService {
         confirmButtonText: 'Yes, delete it!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.deleteSelected(this.selectedItems).subscribe(
+          const delete$ = this.deleteSelected(this.selectedItems).subscribe(
             () => {
               Swal.fire({
                 title: `${this.selectedItems.length} items deleted!`,
@@ -164,6 +164,8 @@ export class ItemService {
                 confirmButtonText:
                   'Thank you for deleting those items, shopping list website!',
               });
+              this.selectMultiple = false;
+              this.selectedItems = [];
             },
             (error) => {
               Swal.fire({
@@ -172,10 +174,14 @@ export class ItemService {
                 icon: 'error',
                 confirmButtonText: "I'm sorry, I'll try to do better next time",
               });
+              this.selectMultiple = false;
+              this.selectedItems = [];
             },
           );
+
         }
-      });
+      })
+      ;
     }
   }
 

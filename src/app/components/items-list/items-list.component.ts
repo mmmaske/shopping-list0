@@ -48,6 +48,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   refreshList(): void {
+    this.itemService.selectedItems=[];
     this.currentItem = undefined;
     this.currentIndex = -1;
     this.retrieveItems();
