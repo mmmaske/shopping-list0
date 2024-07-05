@@ -1,134 +1,145 @@
 <div *ngIf="currentItem" class="edit-form">
-    <h4 *ngIf="edit">Item</h4>
-    <form>
-        <div class="form-group">
-            <div *ngIf="edit">
-                <app-camera-input (dataEvent)="handleDataFromChild($event)"></app-camera-input>
-            </div>
-            <div *ngIf="!edit && fs_image">
-                <img class="gentle-glow" src="{{fs_image}}" />
-            </div>
-        </div>
-        <div class="form-group">
-          <div *ngIf="edit">
-              <label for="title">Title</label>
-              <input
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  [(ngModel)]="currentItem.title"
-                  name="title"
-              />
-          </div>
-          <h4 *ngIf="!edit">
-            <b>{{currentItem.title}}</b>
-            <small *ngIf="currentItem.quantity"> x{{currentItem.quantity}}</small>
-        </h4>
-        </div>
-        <div class="form-group">
-          <div *ngIf="edit">
-              <label for="quantity">Quantity</label>
-              <input
-                  type="text"
-                  class="form-control"
-                  id="quantity"
-                  [(ngModel)]="currentItem.quantity"
-                  name="quantity"
-              />
-          </div>
-        </div>
-      <div class="form-group">
-        <div *ngIf="edit">
-            <label for="description">Description</label>
-            <textarea
-                *ngIf="edit"
-                type="text"
-                class="form-control"
-                id="description"
-                [(ngModel)]="currentItem.description"
-                name="description"
-            >{{currentItem.description}}</textarea>
-        </div>
-        <p *ngIf="!edit">{{currentItem.description}}</p>
+  <form>
+    <div class="form-group">
+      <div *ngIf="edit">
+        <app-camera-input
+          (dataEvent)="handleDataFromChild($event)"
+        ></app-camera-input>
       </div>
-
-
-      <div class="form-group">
-        <div *ngIf="edit">
-            <label for="priority">Priority</label>
-            <select
-            class="form-control"
-            id="priority"
-            required
-            [(ngModel)]="currentItem.priority"
-            name="priority"
-            >
-                <option *ngFor="let priority of priorities" value="{{priority}}">{{priority|uppercaseWords}}</option>
-            </select>
-        </div>
+      <div *ngIf="!edit && fs_image">
+        <img class="gentle-glow" src="{{ fs_image }}" />
       </div>
-      <div class="form-group">
-        <div *ngIf="edit">
-            <label for="sharedWith">Share With:</label>
-            <select
-            class="form-control"
-            id="sharedWith"
-            required
-            [(ngModel)]="currentItem.sharedWith"
-            name="sharedWith"
-            multiple
-            >
-                <option *ngFor="let user of usersOptions" value="{{user['uid']}}">{{user['displayName']}}</option>
-            </select>
-        </div>
+    </div>
+    <div *ngIf="edit">
+      <mat-form-field>
+        <mat-label for="title">Title</mat-label>
+        <input
+          matInput
+          type="text"
+          id="title"
+          [(ngModel)]="currentItem.title"
+          name="title"
+        />
+      </mat-form-field>
+    </div>
+    <h4 *ngIf="!edit">
+      <b>{{ currentItem.title }}</b>
+      <small *ngIf="currentItem.quantity"> x{{ currentItem.quantity }}</small>
+    </h4>
+
+    <mat-form-field *ngIf="edit">
+      <mat-label for="quantity">Quantity</mat-label>
+      <input
+        matInput
+        type="text"
+        id="quantity"
+        [(ngModel)]="currentItem.quantity"
+        name="quantity"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="edit">
+      <mat-label for="description">Description</mat-label>
+      <textarea
+        matInput
+        type="text"
+        id="description"
+        [(ngModel)]="currentItem.description"
+        name="description"
+        >{{ currentItem.description }}</textarea
+      >
+    </mat-form-field>
+    <p *ngIf="!edit">{{ currentItem.description }}</p>
+
+    <mat-form-field *ngIf="edit">
+      <mat-label for="priority">Priority</mat-label>
+      <mat-select
+        matNativeControl
+        id="priority"
+        required
+        [(ngModel)]="currentItem.priority"
+        name="priority"
+      >
+        <mat-option
+          *ngFor="let priority of priorities"
+          value="{{ priority }}"
+          >{{ priority | uppercaseWords }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <div class="form-group">
+      <div *ngIf="edit">
+        <label for="sharedWith">Share With:</label>
+        <select
+          class="form-control"
+          id="sharedWith"
+          required
+          [(ngModel)]="currentItem.sharedWith"
+          name="sharedWith"
+          multiple
+        >
+          <option *ngFor="let user of usersOptions" value="{{ user['uid'] }}">
+            {{ user["displayName"] }}
+          </option>
+        </select>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label><strong>Status:</strong></label>
-        {{ currentItem.purchased ? "Purchased" : "Pending" }}
-      </div>
-      <div class="form-group">
-        <label><strong>Created On:</strong></label>
-        {{ currentItem.createdOnDisplay | date:'YYYY-MM-dd HH:mm:ss' }}
-      </div>
-      <div class="form-group">
-        <label><strong>Updated On:</strong></label>
-        {{ currentItem.updatedOnDisplay | date:'YYYY-MM-dd HH:mm:ss' }}
-      </div>
-    </form>
+    <div class="form-group">
+      <label><strong>Status:</strong></label>
+      {{ currentItem.purchased ? "Purchased" : "Pending" }}
+    </div>
+    <div class="form-group">
+      <label><strong>Created On:</strong></label>
+      {{ currentItem.createdOnDisplay | date : "YYYY-MM-dd HH:mm:ss" }}
+    </div>
+    <div class="form-group">
+      <label><strong>Updated On:</strong></label>
+      {{ currentItem.updatedOnDisplay | date : "YYYY-MM-dd HH:mm:ss" }}
+    </div>
+  </form>
 
-    <button
-      class="btn btn-primary mr-2"
-      *ngIf="currentItem.purchased && !edit"
-      (click)="updatePurchased(false)"
-    >
-      Consume
-    </button>
-    <button
-      *ngIf="!currentItem.purchased && !edit"
-      class="btn btn-primary mr-2"
-      (click)="updatePurchased(true)"
-    >
-      Purchase
-    </button>
+  <button
+    class="btn btn-primary mr-2"
+    *ngIf="currentItem.purchased && !edit"
+    (click)="updatePurchased(false)"
+  >
+    Consume
+  </button>
+  <button
+    *ngIf="!currentItem.purchased && !edit"
+    class="btn btn-primary mr-2"
+    (click)="updatePurchased(true)"
+  >
+    Purchase
+  </button>
 
-    <button *ngIf="edit" class="btn btn-danger mr-2" (click)="deleteItem()">
-        Delete
-    </button>
-      <button *ngIf="edit" class="btn btn-secondary mr-2" (click)="cancelEdit()">
-        Cancel
-    </button>
+  <button *ngIf="edit" class="btn btn-danger mr-2" (click)="deleteItem()">
+    Delete
+  </button>
+  <button *ngIf="edit" class="btn btn-secondary mr-2" (click)="cancelEdit()">
+    Cancel
+  </button>
 
-    <button *ngIf="!edit" type="submit" class="btn btn-success" (click)="editItem()">
-        Edit
-    </button>
+  <button
+    *ngIf="!edit"
+    type="submit"
+    class="btn btn-success"
+    (click)="editItem()"
+  >
+    Edit
+  </button>
 
-    <button *ngIf="edit" type="submit" class="btn btn-success" (click)="updateItem()">
-        Update
-      </button>
-    <p>{{ message }}</p>
-  </div>
+  <button
+    *ngIf="edit"
+    type="submit"
+    class="btn btn-success"
+    (click)="updateItem()"
+  >
+    Update
+  </button>
+  <p>{{ message }}</p>
+</div>
 
-  <div *ngIf="!currentItem">
-    <img src="https://i.sstatic.net/7luvR.gif" />
-  </div>
+<div class="loadingicon" *ngIf="!currentItem">
+  <img src="https://i.sstatic.net/7luvR.gif" />
+</div>

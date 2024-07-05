@@ -13,7 +13,7 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SignedinGuard } from './guard/signedin.guard';
 const routes: Routes = [
-    {path:'', component:HomeComponent},
+    {path:'', component:HomeComponent, canActivate:[SignedinGuard]},
     {path:'list', component:ItemsListComponent, canActivate:[AuthGuard] },
     {path:'list/:item_id', component:ItemsListComponent, canActivate:[AuthGuard] },
     {path:'form', component:ItemFormComponent},

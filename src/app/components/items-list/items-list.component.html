@@ -1,31 +1,28 @@
-<div class="list row">
-    <div class="col-md-6">
-        <h4>Items List</h4>
-        <span class="pull-right" *ngIf="hasItems">
-            <button class="btn btn-toggle btn-secondary" (click)="toggleSelect()">{{!isSelect ? 'Select' : 'Cancel'}}</button>
-            <button class="btn btn-danger" (click)="deleteSelected()" *ngIf="isSelect">Delete Selected</button>
-        </span>
-        <div *ngIf="!hasItems">
+<mat-card>
+    <mat-card>
+        <div class="loadingicon" *ngIf="!hasItems">
             <img src="https://i.sstatic.net/7luvR.gif" />
         </div>
-        <ul class="list-group" *ngIf="hasItems">
-            <li
-            class="list-group-item"
-            *ngFor="let item of items; let i = index"
-            [class.active]="item.id==currentItemId"
-            (click)="redirectToItem(item.id,i)"
-            >
-            <input type="checkbox" name="{{item.id}}" *ngIf="isSelect" />
-                <div class="badge badge-pill {{item.priority | getPriorityColor}}">{{item.priority | uppercaseWords}}</div>
+        <mat-list *ngIf="hasItems">
+            <div matRipple *ngFor="let item of items; let i = index">
+                <mat-divider *ngIf="i!==0"></mat-divider>
+                <mat-list-item
+                    [ngClass]="item.priorityClass"
+                    [class.active]="item.id==currentItemId"
+                    (click)="redirectToItem(item.id,i)"
+                >
+                <mat-icon fontIcon="priority_high" *ngIf="item.priority=='extra high'||item.priority=='high'"></mat-icon>
                 {{ item.title }}
-            </li>
-        </ul>
-    </div>
-    <div class="col-md-6">
-        <div *ngIf="currentItem">
-            <app-item-details
-            (refreshList)="refreshList()"
-            ></app-item-details>
-        </div>
-    </div>
-  </div>
+                </mat-list-item>
+            </div>
+        </mat-list>
+    </mat-card>
+    <mat-card *ngIf="currentItem">
+        <app-item-details
+        (refreshList)="refreshList()"
+        ></app-item-details>
+    </mat-card>
+</mat-card>
+
+
+
