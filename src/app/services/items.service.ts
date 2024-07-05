@@ -11,7 +11,7 @@ import { getStorage, ref, uploadString } from 'firebase/storage';
 import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest, concat, of } from 'rxjs';
 import { environment } from '../environments/environment';
-import { map } from 'rxjs';
+import { catchError, from, map } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Transaction, deleteDoc, runTransaction } from 'firebase/firestore';
 import { writeBatch } from 'firebase/firestore';
@@ -21,11 +21,11 @@ import { writeBatch } from 'firebase/firestore';
 })
 export class ItemService {
   public selectMultiple: boolean = false;
-  public selectedItems: String[] = [];
+  public selectedItems: string[] = [];
   private itemPath = '/items';
   private usersPath = '/users';
   public localUser: User = /*this.authServ.userData*/ loginDetails();
-  public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
+  public userRef = this.db.firestore.doc(`user/${this.localUser?.uid}`);
   public itemCollection: any;
   itemsRef: AngularFirestoreCollection<Item>;
   usersRef: AngularFirestoreCollection<User>;
@@ -110,11 +110,13 @@ export class ItemService {
         ...item,
         createdOn: now,
         updatedOn: now,
+        sharedWith: [],
         createdBy: this.userRef,
       });
     } else {
       return this.itemsRef.add({
         ...item,
+        sharedWith: [],
         createdOn: now,
         updatedOn: now,
       });
@@ -134,11 +136,12 @@ export class ItemService {
     return this.itemsRef.doc(id).delete();
   }
 
-  getSelectedItems(item_id_array: String[]): Observable<unknown[]> {
+  getSelectedItems(
+    item_id_array: String[],
+  ): AngularFirestoreCollection<unknown> {
     return this.db.collection(this.itemPath, (ref) =>
       ref.where('id', 'in', item_id_array),
-    )
-    .valueChanges('idField');
+    );
   }
 
   handleDeleteSelected() {
@@ -153,23 +156,43 @@ export class ItemService {
         confirmButtonText: 'Yes, delete it!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.deleteSelected(this.selectedItems);
-          alert('use transaction to delete here');
+          this.deleteSelected(this.selectedItems).subscribe(
+            () => {
+              Swal.fire({
+                title: `${this.selectedItems.length} items deleted!`,
+                icon: 'success',
+                confirmButtonText:
+                  'Thank you for deleting those items, shopping list website!',
+              });
+            },
+            (error) => {
+              Swal.fire({
+                title: `Unable to delete ${this.selectedItems.length} items!`,
+                text: error,
+                icon: 'error',
+                confirmButtonText: "I'm sorry, I'll try to do better next time",
+              });
+            },
+          );
         }
       });
     }
   }
 
-  deleteSelected(item_id_array: String[]) {
-    const selectedItems = this.getSelectedItems(item_id_array)
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data(),
-          })),
-        ),
-      );
-    console.log('selected', selectedItems);
+  deleteSelected(documentIds: string[]): Observable<void> {
+    return from(
+      this.db.firestore.runTransaction(async (transaction) => {
+        for (const docId of documentIds) {
+          const docRef = this.db.collection('items').doc(docId).ref;
+          transaction.delete(docRef);
+        }
+      }),
+    ).pipe(
+      map(() => {}),
+      catchError((error) => {
+        console.error('Error deleting documents in transaction:', error);
+        throw error;
+      }),
+    );
   }
 }

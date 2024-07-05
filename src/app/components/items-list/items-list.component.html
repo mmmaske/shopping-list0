@@ -16,7 +16,10 @@
             *ngIf="this.itemService.selectMultiple"
             (change)="updateCheckbox($event)"
           ></mat-checkbox>
-
+          <mat-icon
+          fontIcon="arrow_right"
+          *ngIf="item.id == currentItemId"
+        ></mat-icon>
           <mat-icon
             fontIcon="priority_high"
             *ngIf="item.priority == 'extra high'"

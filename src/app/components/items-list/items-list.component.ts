@@ -106,7 +106,8 @@ export class ItemsListComponent implements OnInit {
       }
     }
     this.itemService.selectedItems.length;
-    console.log('event', this.itemService.selectedItems.length);
+    console.log('count selectedItems', this.itemService.selectedItems.length);
+    console.log('selectedItems', this.itemService.selectedItems);
     // get checked elements from checkboxes
   }
 }
