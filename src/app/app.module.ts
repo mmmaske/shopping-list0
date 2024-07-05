@@ -52,6 +52,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ListContainerComponent } from './components/list-container/list-container.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +75,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     HomeComponent,
     NotfoundComponent,
     NavbarComponent,
+    ListContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,6 +100,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatRippleModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatGridListModule,
   ],
   providers: [
     AuthService, // auth emulator code found here

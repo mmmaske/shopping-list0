@@ -12,12 +12,18 @@ import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SignedinGuard } from './guard/signedin.guard';
+import { ListContainerComponent } from './components/list-container/list-container.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [SignedinGuard] },
   { path: 'list', component: ItemsListComponent, canActivate: [AuthGuard] },
   {
     path: 'list/:item_id',
     component: ItemsListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'containers',
+    component: ListContainerComponent,
     canActivate: [AuthGuard],
   },
   { path: 'form', component: ItemFormComponent },
