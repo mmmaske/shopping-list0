@@ -40,7 +40,7 @@ export class ItemDetailsComponent implements OnInit {
     private itemService: ItemService,
     private route: ActivatedRoute,
     private router: Router,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
   ) {}
 
   ngOnInit(): void {
@@ -67,10 +67,10 @@ export class ItemDetailsComponent implements OnInit {
           this.retrieveItemImage(item_id);
           this.currentItem.id = item_id;
           this.currentItem.createdOnDisplay = new Date(
-            this.currentItem.createdOn.seconds * 1000
+            this.currentItem.createdOn.seconds * 1000,
           );
           this.currentItem.updatedOnDisplay = new Date(
-            this.currentItem.updatedOn.seconds * 1000
+            this.currentItem.updatedOn.seconds * 1000,
           );
           return value.data();
         });
@@ -158,7 +158,7 @@ export class ItemDetailsComponent implements OnInit {
         })
         .catch((err) => console.log(err));
       this.edit = false;
-      if(this.webcamdata) {
+      if (this.webcamdata) {
         this.fs_image = this.webcamdata;
       }
     }

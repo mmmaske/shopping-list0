@@ -7,19 +7,19 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./item-form.component.css'],
 })
 export class ItemFormComponent {
-    priorities = ['extra high','high','medium','low'];
-    form = {
-        title: '',
-        description: '',
-        quantity: '',
-        priority: '',
-    };
+  priorities = ['extra high', 'high', 'medium', 'low'];
+  form = {
+    title: '',
+    description: '',
+    quantity: '',
+    priority: '',
+  };
 
-    onSubmit(): void {
-        console.log(JSON.stringify(this.form, null, 2));
-    }
+  onSubmit(): void {
+    console.log(JSON.stringify(this.form, null, 2));
+  }
 
-    onReset(form: NgForm): void {
-        form.reset();
-    }
+  onReset(form: NgForm): void {
+    form.reset();
+  }
 }

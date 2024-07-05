@@ -13,21 +13,33 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SignedinGuard } from './guard/signedin.guard';
 const routes: Routes = [
-    {path:'', component:HomeComponent, canActivate:[SignedinGuard]},
-    {path:'list', component:ItemsListComponent, canActivate:[AuthGuard] },
-    {path:'list/:item_id', component:ItemsListComponent, canActivate:[AuthGuard] },
-    {path:'form', component:ItemFormComponent},
-    {path:'add', component:AddItemComponent, canActivate:[AuthGuard]},
-    {path:'auth', component:FireAuthComponent},
-    {path:'signup', component:SignUpComponent, canActivate:[SignedinGuard]},
-    {path:'signin', component:SignInComponent, canActivate:[SignedinGuard]},
-    {path:'forgot', component:ForgotPasswordComponent, canActivate:[SignedinGuard]},
-    {path:'verify', component:VerifyEmailComponent, canActivate:[SignedinGuard]},
-    {path:'**',component:NotfoundComponent}
+  { path: '', component: HomeComponent, canActivate: [SignedinGuard] },
+  { path: 'list', component: ItemsListComponent, canActivate: [AuthGuard] },
+  {
+    path: 'list/:item_id',
+    component: ItemsListComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'form', component: ItemFormComponent },
+  { path: 'add', component: AddItemComponent, canActivate: [AuthGuard] },
+  { path: 'auth', component: FireAuthComponent },
+  { path: 'signup', component: SignUpComponent, canActivate: [SignedinGuard] },
+  { path: 'signin', component: SignInComponent, canActivate: [SignedinGuard] },
+  {
+    path: 'forgot',
+    component: ForgotPasswordComponent,
+    canActivate: [SignedinGuard],
+  },
+  {
+    path: 'verify',
+    component: VerifyEmailComponent,
+    canActivate: [SignedinGuard],
+  },
+  { path: '**', component: NotfoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

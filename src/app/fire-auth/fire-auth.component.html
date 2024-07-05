@@ -1,25 +1,31 @@
-
 <div *ngIf="!loggedin">
-    <form>
-        <label for="email">Email: </label>
-        <input
-        name="email"
-        [(ngModel)]="this.email"
-        type="text"
-        />
-    <br/>
-        <label for="password">Password: </label>
-        <input
-        name="password"
-        [(ngModel)]="this.password"
-        type="text"
-        />
-    <br/>
-    <input type="button" class="btn btn-primary" value="Save" (click)="signUp()" />
-    <input type="button" class="btn btn-success" value="Log In" (click)="signIn()" />
-    </form>
+  <form>
+    <label for="email">Email: </label>
+    <input name="email" [(ngModel)]="this.email" type="text" />
+    <br />
+    <label for="password">Password: </label>
+    <input name="password" [(ngModel)]="this.password" type="text" />
+    <br />
+    <input
+      type="button"
+      class="btn btn-primary"
+      value="Save"
+      (click)="signUp()"
+    />
+    <input
+      type="button"
+      class="btn btn-success"
+      value="Log In"
+      (click)="signIn()"
+    />
+  </form>
 </div>
 <div *ngIf="loggedin">
-    Login details: {{this.login | jsonStringify}}
-    <input type="button" class="btn btn-warning" value="Log Out" (click)="signOut()" />
+  Login details: {{ this.login | jsonStringify }}
+  <input
+    type="button"
+    class="btn btn-warning"
+    value="Log Out"
+    (click)="signOut()"
+  />
 </div>

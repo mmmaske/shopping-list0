@@ -22,11 +22,11 @@ export class AuthService {
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone, // NgZone service to remove outside scope warning
   ) {
-
     // for firebase emulator
-    if(!environment.production) this.afAuth.useEmulator('http://localhost:9099');
+    if (!environment.production)
+      this.afAuth.useEmulator('http://localhost:9099');
 
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -49,7 +49,7 @@ export class AuthService {
       .then((result) => {
         this.SetUserData(result.user);
         return this.afAuth.authState.subscribe((user) => {
-            return user;
+          return user;
         });
       })
       .catch((error) => {
@@ -76,10 +76,10 @@ export class AuthService {
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
     return this.afAuth.currentUser
-        .then((u: any) => u.sendEmailVerification())
-        .then(() => {
-            this.router.navigate(['verify']);
-        });
+      .then((u: any) => u.sendEmailVerification())
+      .then(() => {
+        this.router.navigate(['verify']);
+      });
   }
 
   // Reset Forggot password
@@ -104,15 +104,15 @@ export class AuthService {
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-  GetUserData(user:any) {
-      const userData: User = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        emailVerified: user.emailVerified,
-      };
-      return userData;
+  GetUserData(user: any) {
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
+    };
+    return userData;
   }
 
   /* Setting up user data when sign in with username/password,
@@ -120,7 +120,7 @@ export class AuthService {
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user: any) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
+      `users/${user.uid}`,
     );
     const userData: User = {
       uid: user.uid,
@@ -143,8 +143,8 @@ export class AuthService {
 
   async GoogleAuth() {
     const provider = new GoogleAuthProvider();
-    const userData = await this.afAuth.signInWithPopup(provider).then((val)=>{
-        return val.user;
+    const userData = await this.afAuth.signInWithPopup(provider).then((val) => {
+      return val.user;
     });
     await this.SetUserData(userData);
     return this.GetUserData(userData);

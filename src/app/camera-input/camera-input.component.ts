@@ -1,20 +1,20 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import {Subject, Observable} from 'rxjs';
-import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
+import { Subject, Observable } from 'rxjs';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 
 @Component({
   selector: 'app-camera-input',
   templateUrl: './camera-input.component.html',
-  styleUrls: ['./camera-input.component.css']
+  styleUrls: ['./camera-input.component.css'],
 })
 export class CameraInputComponent implements OnInit {
-    @Output() dataEvent: EventEmitter<any> = new EventEmitter();
+  @Output() dataEvent: EventEmitter<any> = new EventEmitter();
 
-    // toggle webcam on/off
+  // toggle webcam on/off
   public showWebcam = true;
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
-  public deviceId: string='';
+  public deviceId: string = '';
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
     // height: {ideal: 576}
@@ -22,18 +22,21 @@ export class CameraInputComponent implements OnInit {
   public errors: WebcamInitError[] = [];
 
   // latest snapshot
-  public webcamImage: WebcamImage|undefined;
+  public webcamImage: WebcamImage | undefined;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
-  private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
+  private nextWebcam: Subject<boolean | string> = new Subject<
+    boolean | string
+  >();
 
   public ngOnInit(): void {
-    WebcamUtil.getAvailableVideoInputs()
-      .then((mediaDevices: MediaDeviceInfo[]) => {
+    WebcamUtil.getAvailableVideoInputs().then(
+      (mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
-      });
+      },
+    );
   }
 
   public triggerSnapshot(): void {
@@ -49,7 +52,7 @@ export class CameraInputComponent implements OnInit {
     this.errors.push(error);
   }
 
-  public showNextWebcam(directionOrDeviceId: boolean|string): void {
+  public showNextWebcam(directionOrDeviceId: boolean | string): void {
     // true => move forward through devices
     // false => move backwards through devices
     // string => move to device with given deviceId
@@ -69,11 +72,11 @@ export class CameraInputComponent implements OnInit {
     return this.trigger.asObservable();
   }
 
-  public get nextWebcamObservable(): Observable<boolean|string> {
+  public get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
   }
 
-  public resetCamera():void {
+  public resetCamera(): void {
     delete this.webcamImage;
   }
 

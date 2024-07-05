@@ -8,9 +8,8 @@ describe('FireAuthComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FireAuthComponent ]
-    })
-    .compileComponents();
+      declarations: [FireAuthComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FireAuthComponent);
     component = fixture.componentInstance;

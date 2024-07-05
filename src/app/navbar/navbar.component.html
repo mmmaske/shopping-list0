@@ -1,28 +1,43 @@
 <mat-toolbar-row class="flex-navbar">
-    <button mat-icon-button routerLink="list" *ngIf="this.authServ.isLoggedIn"
-        matTooltip="Lists"
-    >
-        <mat-icon fontIcon="menu"></mat-icon>
-    </button>
-    <button mat-icon-button (click)="openAddDialog()" *ngIf="this.authServ.isLoggedIn"
+  <button
+    mat-icon-button
+    routerLink="list"
+    *ngIf="this.authServ.isLoggedIn"
+    matTooltip="Lists"
+  >
+    <mat-icon fontIcon="menu"></mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    (click)="openAddDialog()"
+    *ngIf="this.authServ.isLoggedIn"
     matTooltip="Add item"
-    >
-        <mat-icon fontIcon="add"></mat-icon>
-    </button>
-    <span class="center-spacer"></span>
-    <button mat-icon-button routerLink="signup"  *ngIf="!this.authServ.isLoggedIn"
+  >
+    <mat-icon fontIcon="add"></mat-icon>
+  </button>
+  <span class="center-spacer"></span>
+  <button
+    mat-icon-button
+    routerLink="signup"
+    *ngIf="!this.authServ.isLoggedIn"
     matTooltip="Sign Up"
-    >
-        <mat-icon fontIcon="app_registration"></mat-icon>
-    </button>
-    <button mat-icon-button routerLink="signin" *ngIf="!this.authServ.isLoggedIn"
+  >
+    <mat-icon fontIcon="app_registration"></mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    routerLink="signin"
+    *ngIf="!this.authServ.isLoggedIn"
     matTooltip="Sign In"
-    >
-        <mat-icon fontIcon="login"></mat-icon>
-    </button>
-    <button mat-icon-button (click)="handleSignOut()" *ngIf="this.authServ.isLoggedIn"
+  >
+    <mat-icon fontIcon="login"></mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    (click)="handleSignOut()"
+    *ngIf="this.authServ.isLoggedIn"
     matTooltip="Sign out"
-    >
-        <mat-icon fontIcon="logout"></mat-icon>
-    </button>
+  >
+    <mat-icon fontIcon="logout"></mat-icon>
+  </button>
 </mat-toolbar-row>
