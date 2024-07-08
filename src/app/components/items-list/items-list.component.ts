@@ -88,10 +88,11 @@ export class ItemsListComponent implements OnInit {
   }
 
   retrieveByContainer(): void {
-    this.containerData = [];
+
     this.itemService
       .getContainedBy(this.currentContainerIdGetter)
       .subscribe((data) => {
+        this.containerData = [];
         data.map((item: any) => {
           item.priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
           console.log(item);
