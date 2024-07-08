@@ -9,4 +9,5 @@ export class Container {
   updatedOn?: Date;
   updatedBy?: Reference;
   sharedWith?: any;
+  displayImage?: string;
 }

@@ -6,7 +6,7 @@
           (dataEvent)="handleDataFromChild($event)"
         ></app-camera-input>
       </div>
-      <div *ngIf="!edit && fs_image">
+      <div class="product-image" *ngIf="!edit && fs_image">
         <img class="gentle-glow" src="{{ fs_image }}" />
       </div>
     </div>
@@ -24,7 +24,18 @@
     </div>
     <h4 *ngIf="!edit">
       <b>{{ currentItem.title }}</b>
-      <small *ngIf="currentItem.quantity"> x{{ currentItem.quantity }}</small>
+      <small *ngIf="currentItem.quantity">
+        x{{ currentItem.quantity }}
+        <span *ngIf="currentItem.estimatedPrice">
+          @ P{{ currentItem.estimatedPrice | number: "1.2-2" }}
+        </span>
+        <span *ngIf="currentItem.estimatedPrice && currentItem.quantity">
+          (P{{
+            currentItem.quantity * currentItem.estimatedPrice | number: "1.2-2"
+          }}
+          total)
+        </span>
+      </small>
     </h4>
 
     <mat-form-field *ngIf="edit">
@@ -35,6 +46,16 @@
         id="quantity"
         [(ngModel)]="currentItem.quantity"
         name="quantity"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="edit">
+      <mat-label for="estimatedPrice">Estimated Price</mat-label>
+      <input
+        matInput
+        type="text"
+        id="estimatedPrice"
+        [(ngModel)]="currentItem.estimatedPrice"
+        name="estimatedPrice"
       />
     </mat-form-field>
     <mat-form-field *ngIf="edit">

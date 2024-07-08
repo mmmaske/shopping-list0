@@ -28,6 +28,7 @@ export class ItemDetailsComponent implements OnInit {
     priority: '',
     purchased: false,
     sharedWith: [],
+    estimatedPrice: 0,
   };
   message = '';
   edit = false;
@@ -140,6 +141,7 @@ export class ItemDetailsComponent implements OnInit {
       priority: this.currentItem.priority,
       webcamdata: this.webcamdata,
       sharedWith: this.currentItem.sharedWith,
+      estimatedPrice: this.currentItem.estimatedPrice,
     };
 
     if (this.currentItem.id) {

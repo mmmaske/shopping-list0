@@ -1,45 +1,45 @@
 .list {
-    text-align: left;
-    max-width: 750px;
-    margin: auto;
-  }
+  text-align: left;
+  max-width: 750px;
+  margin: auto;
+}
 mat-list-item {
-    cursor: pointer;
+  cursor: pointer;
 }
 mat-list-item:hover {
-    left: 10px;
+  left: 10px;
 }
 
 @keyframes flash {
-    0% {
-        background-color: #ff8a82;
-    }
-    50% {
-        background-color: rgb(255, 94, 94);
-    }
-    100% {
-        background-color: #ff8a82;
-    }
+  0% {
+    background-color: #ff1e1e;
+  }
+  50% {
+    background-color: rgb(255, 94, 94);
+  }
+  100% {
+    background-color: #ff1e1e;
+  }
 }
 
 .extrahigh {
-    animation: flash 0.4s infinite;
+  animation: flash 0.4s infinite;
 }
 .extrahigh:hover {
-    animation: none;
-    color: black;
-    background-color: #ff746a;
+  animation: none;
+  color: black;
+  background-color: #ff1e1e;
 }
 .high {
-    background-color: #ff8a82;
+  background-color: #ffcac8;
 }
 .medium {
-    background-color: #98ffaa;
+  background-color: #fffda2;
 }
 .low {
-    background-color: #709bb8;
+  background-color: #b3ffae;
 }
 
 app-item-details {
-    padding: 0px 15px;
+  padding: 0px 15px;
 }

@@ -1,32 +1,34 @@
 .actionBtn {
-    margin-top: 5px;
-    margin-bottom: 2px;
-    font-size: 1.2em;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  font-size: 1.2em;
 }
 
 .snapshot {
-    text-align: center;
-    img {
+  text-align: center;
+  img {
     max-width: 800px;
     max-height: 800px;
-    }
+  }
 }
 
 ul.links {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 :host ::ng-deep {
-.webcam-container .webcam-wrapper, .webcam-wrapper video, .snapshot img {
-        width: 100%;
-        height: 100%;
-        border-radius:5%;
-        box-shadow: 0 0 10px rgba(0, 0, 255, 0.5); /* Initial gentle blue glow */
-        animation: glow 2s ease-in-out infinite alternate; /* Animation for gentle glow */
+  .webcam-container .webcam-wrapper,
+  .webcam-wrapper video,
+  .snapshot img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5%;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.5); /* Initial gentle blue glow */
+    animation: glow 2s ease-in-out infinite alternate; /* Animation for gentle glow */
 
-        /* Optional: Adjust the size and padding if needed */
-        padding: 10px;
-        margin-top: 20px;
-        width: 100%; /* or specify width as needed */
-        border-radius: 5%;
-    }
+    /* Optional: Adjust the size and padding if needed */
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%; /* or specify width as needed */
+    border-radius: 5%;
+  }
 }

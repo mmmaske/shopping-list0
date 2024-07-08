@@ -54,6 +54,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ListContainerComponent } from './components/list-container/list-container.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ListContainerFormComponent } from './components/list-container-form/list-container-form.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,6 +79,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     NotfoundComponent,
     NavbarComponent,
     ListContainerComponent,
+    ListContainerFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,6 +105,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatSelectModule,
     MatAutocompleteModule,
     MatGridListModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     AuthService, // auth emulator code found here

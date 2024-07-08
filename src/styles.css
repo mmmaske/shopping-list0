@@ -2,15 +2,16 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 body {
-    background-color: #343a40;
-    color: #f8f9fa;
+  background-color: #ffffff;
+  /*background-image: url(https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);*/
+  color: #343a40;
 }
 
 mat-card {
-    background-color: #343a40 !important;
-    color: #f8f9fa !important;
+  background-color: #343a40 !important;
+  color: #f8f9fa !important;
 }
 
 .loadingicon {
-    margin:auto;
+  margin: auto;
 }

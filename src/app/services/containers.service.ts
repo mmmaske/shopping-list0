@@ -24,6 +24,7 @@ export class ContainersService {
   containersRef: AngularFirestoreCollection<Container>;
   usersRef: AngularFirestoreCollection<User>;
   private storage = getStorage();
+  public activeContainer: string = '';
 
   constructor(
     private db: AngularFirestore,

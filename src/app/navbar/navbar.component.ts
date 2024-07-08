@@ -13,6 +13,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { AddItemComponent } from '../components/add-item/add-item.component';
+import { ListContainerFormComponent } from '../components/list-container-form/list-container-form.component';
 
 @Component({
   selector: 'app-navbar',
@@ -52,6 +53,17 @@ export class NavbarComponent {
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddItemComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.name = result;
+      }
+    });
+  }
+
+  openAddContainerDialog(): void {
+    const dialogRef = this.dialog.open(ListContainerFormComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');

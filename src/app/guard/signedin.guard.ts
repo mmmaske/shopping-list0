@@ -27,7 +27,7 @@ export class SignedinGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (this.authService.isLoggedIn && this.authService.isVerified) {
-      this.router.navigate(['list']);
+      this.router.navigate(['containers']);
     }
     return true;
   }

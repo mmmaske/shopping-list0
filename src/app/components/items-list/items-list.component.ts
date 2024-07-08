@@ -15,7 +15,6 @@ export class ItemsListComponent implements OnInit {
   currentItem?: Item;
   currentIndex = -1;
   currentItemId: string = this.currentItemIdGetter;
-  title = '';
   hasItems = false;
   isSelect = false;
   data = this.itemService
@@ -76,7 +75,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   redirectToItem(item_id: any, index: number): void {
-    this.router.navigate([`/list/${item_id}`]); // update the URL
+    this.router.navigate([`/item/${item_id}`]); // update the URL
     this.setActiveFromRoute(index); // update the component
   }
 

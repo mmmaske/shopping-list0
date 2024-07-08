@@ -1,9 +1,12 @@
 <mat-toolbar-row class="flex-navbar">
+  <a routerLink="home" class="label">
+    <img src="../../assets/logo.png" />
+  </a>
   <button
     mat-icon-button
-    routerLink="list"
+    routerLink="containers"
     *ngIf="this.authServ.isLoggedIn"
-    matTooltip="Lists"
+    matTooltip="Categories"
   >
     <mat-icon fontIcon="menu"></mat-icon>
   </button>
@@ -13,7 +16,15 @@
     *ngIf="this.authServ.isLoggedIn"
     matTooltip="Add item"
   >
-    <mat-icon fontIcon="add"></mat-icon>
+    <mat-icon fontIcon="add_box"></mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    (click)="openAddContainerDialog()"
+    *ngIf="this.authServ.isLoggedIn"
+    matTooltip="Add Container"
+  >
+    <mat-icon fontIcon="library_add"></mat-icon>
   </button>
   <span class="center-spacer"></span>
   <button

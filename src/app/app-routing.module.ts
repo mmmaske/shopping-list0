@@ -13,17 +13,34 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SignedinGuard } from './guard/signedin.guard';
 import { ListContainerComponent } from './components/list-container/list-container.component';
+import { ListContainerFormComponent } from './components/list-container-form/list-container-form.component';
+import { ItemDetailsComponent } from './components/item-details/item-details.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [SignedinGuard] },
-  { path: 'list', component: ItemsListComponent, canActivate: [AuthGuard] },
+  { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   {
-    path: 'list/:item_id',
-    component: ItemsListComponent,
+    path: 'item/:item_id',
+    component: ItemDetailsComponent,
     canActivate: [AuthGuard],
   },
   {
     path: 'containers',
     component: ListContainerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'container',
+    component: ListContainerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'container/:container_id',
+    component: ItemsListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'containers/add',
+    component: ListContainerFormComponent,
     canActivate: [AuthGuard],
   },
   { path: 'form', component: ItemFormComponent },

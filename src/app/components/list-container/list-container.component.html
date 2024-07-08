@@ -1,6 +1,26 @@
-<mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile>1</mat-grid-tile>
-  <mat-grid-tile>2</mat-grid-tile>
-  <mat-grid-tile>3</mat-grid-tile>
-  <mat-grid-tile>4</mat-grid-tile>
-</mat-grid-list>
+<div class="gridcontainer" *ngIf="dividedContainers.length > 0">
+  <div
+    class="grid"
+    *ngFor="let containerset of dividedContainers; let c = index"
+  >
+    <span
+      *ngFor="let container of containerset; let i = index"
+      routerLink="/container/{{ container.id }}"
+    >
+      <h4>{{ container.title }}</h4>
+      <img *ngIf="container.displayImage" src="{{ container.displayImage }}" />
+      <div class="icon-container" *ngIf="!container.displayImage">
+        <mat-icon fontIcon="receipt_long"></mat-icon>
+      </div>
+    </span>
+  </div>
+
+  <div class="add-btn">
+    <button mat-fab (click)="openAddContainerDialog()">
+      <mat-icon fontIcon="add"></mat-icon>
+    </button>
+  </div>
+</div>
+<div class="loadingicon" *ngIf="dividedContainers.length === 0">
+  <mat-spinner></mat-spinner>
+</div>
