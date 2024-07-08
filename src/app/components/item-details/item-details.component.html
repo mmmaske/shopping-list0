@@ -1,121 +1,127 @@
 <div *ngIf="currentItem" class="edit-form">
   <form>
-    <div class="form-group">
-      <div *ngIf="edit">
-        <app-camera-input
-          (dataEvent)="handleDataFromChild($event)"
-        ></app-camera-input>
-      </div>
-      <div class="product-image" *ngIf="!edit && fs_image">
-        <img class="gentle-glow" src="{{ fs_image }}" />
+    <div style="float: left">
+      <div class="form-group">
+        <div *ngIf="edit">
+          <app-camera-input
+            (dataEvent)="handleDataFromChild($event)"
+          ></app-camera-input>
+        </div>
+        <div class="product-image" *ngIf="!edit && fs_image">
+          <img class="gentle-glow" src="{{ fs_image }}" />
+        </div>
       </div>
     </div>
-    <div *ngIf="edit">
-      <mat-form-field>
-        <mat-label for="title">Title</mat-label>
+
+    <div style="float: left">
+      <div *ngIf="edit">
+        <mat-form-field>
+          <mat-label for="title">Title</mat-label>
+          <input
+            matInput
+            type="text"
+            id="title"
+            [(ngModel)]="currentItem.title"
+            name="title"
+          />
+        </mat-form-field>
+      </div>
+      <h4 *ngIf="!edit">
+        <b>{{ currentItem.title }}</b>
+        <small *ngIf="currentItem.quantity">
+          x{{ currentItem.quantity }}
+          <span *ngIf="currentItem.estimatedPrice">
+            @ P{{ currentItem.estimatedPrice | number: "1.2-2" }}
+          </span>
+          <span *ngIf="currentItem.estimatedPrice && currentItem.quantity">
+            (P{{
+              currentItem.quantity * currentItem.estimatedPrice
+                | number: "1.2-2"
+            }}
+            total)
+          </span>
+        </small>
+      </h4>
+
+      <mat-form-field *ngIf="edit">
+        <mat-label for="quantity">Quantity</mat-label>
         <input
           matInput
           type="text"
-          id="title"
-          [(ngModel)]="currentItem.title"
-          name="title"
+          id="quantity"
+          [(ngModel)]="currentItem.quantity"
+          name="quantity"
         />
       </mat-form-field>
-    </div>
-    <h4 *ngIf="!edit">
-      <b>{{ currentItem.title }}</b>
-      <small *ngIf="currentItem.quantity">
-        x{{ currentItem.quantity }}
-        <span *ngIf="currentItem.estimatedPrice">
-          @ P{{ currentItem.estimatedPrice | number: "1.2-2" }}
-        </span>
-        <span *ngIf="currentItem.estimatedPrice && currentItem.quantity">
-          (P{{
-            currentItem.quantity * currentItem.estimatedPrice | number: "1.2-2"
-          }}
-          total)
-        </span>
-      </small>
-    </h4>
-
-    <mat-form-field *ngIf="edit">
-      <mat-label for="quantity">Quantity</mat-label>
-      <input
-        matInput
-        type="text"
-        id="quantity"
-        [(ngModel)]="currentItem.quantity"
-        name="quantity"
-      />
-    </mat-form-field>
-    <mat-form-field *ngIf="edit">
-      <mat-label for="estimatedPrice">Estimated Price</mat-label>
-      <input
-        matInput
-        type="text"
-        id="estimatedPrice"
-        [(ngModel)]="currentItem.estimatedPrice"
-        name="estimatedPrice"
-      />
-    </mat-form-field>
-    <mat-form-field *ngIf="edit">
-      <mat-label for="description">Description</mat-label>
-      <textarea
-        matInput
-        type="text"
-        id="description"
-        [(ngModel)]="currentItem.description"
-        name="description"
-        >{{ currentItem.description }}</textarea
-      >
-    </mat-form-field>
-    <p *ngIf="!edit">{{ currentItem.description }}</p>
-
-    <mat-form-field *ngIf="edit">
-      <mat-label for="priority">Priority</mat-label>
-      <mat-select
-        matNativeControl
-        id="priority"
-        required
-        [(ngModel)]="currentItem.priority"
-        name="priority"
-      >
-        <mat-option
-          *ngFor="let priority of priorities"
-          value="{{ priority }}"
-          >{{ priority | uppercaseWords }}</mat-option
+      <mat-form-field *ngIf="edit">
+        <mat-label for="estimatedPrice">Estimated Price</mat-label>
+        <input
+          matInput
+          type="text"
+          id="estimatedPrice"
+          [(ngModel)]="currentItem.estimatedPrice"
+          name="estimatedPrice"
+        />
+      </mat-form-field>
+      <mat-form-field *ngIf="edit">
+        <mat-label for="description">Description</mat-label>
+        <textarea
+          matInput
+          type="text"
+          id="description"
+          [(ngModel)]="currentItem.description"
+          name="description"
+          >{{ currentItem.description }}</textarea
         >
-      </mat-select>
-    </mat-form-field>
-    <div class="form-group">
-      <div *ngIf="edit">
-        <label for="sharedWith">Share With:</label>
-        <select
-          class="form-control"
-          id="sharedWith"
+      </mat-form-field>
+      <p *ngIf="!edit">{{ currentItem.description }}</p>
+
+      <mat-form-field *ngIf="edit">
+        <mat-label for="priority">Priority</mat-label>
+        <mat-select
+          matNativeControl
+          id="priority"
           required
-          [(ngModel)]="currentItem.sharedWith"
-          name="sharedWith"
-          multiple
+          [(ngModel)]="currentItem.priority"
+          name="priority"
         >
-          <option *ngFor="let user of usersOptions" value="{{ user['uid'] }}">
-            {{ user["displayName"] }}
-          </option>
-        </select>
+          <mat-option
+            *ngFor="let priority of priorities"
+            value="{{ priority }}"
+            >{{ priority | uppercaseWords }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <div class="form-group">
+        <div *ngIf="edit">
+          <label for="sharedWith">Share With:</label>
+          <select
+            class="form-control"
+            id="sharedWith"
+            required
+            [(ngModel)]="currentItem.sharedWith"
+            name="sharedWith"
+            multiple
+          >
+            <option *ngFor="let user of usersOptions" value="{{ user['uid'] }}">
+              {{ user["displayName"] }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label><strong>Status:</strong></label>
-      {{ currentItem.purchased ? "Purchased" : "Pending" }}
-    </div>
-    <div class="form-group">
-      <label><strong>Created On:</strong></label>
-      {{ currentItem.createdOnDisplay | date: "YYYY-MM-dd HH:mm:ss" }}
-    </div>
-    <div class="form-group">
-      <label><strong>Updated On:</strong></label>
-      {{ currentItem.updatedOnDisplay | date: "YYYY-MM-dd HH:mm:ss" }}
+      <div class="form-group">
+        <label><strong>Status:</strong></label>
+        {{ currentItem.purchased ? "Purchased" : "Pending" }}
+      </div>
+      <div class="form-group">
+        <label><strong>Created On:</strong></label>
+        {{ currentItem.createdOnDisplay | date: "YYYY-MM-dd HH:mm:ss" }}
+      </div>
+      <div class="form-group">
+        <label><strong>Updated On:</strong></label>
+        {{ currentItem.updatedOnDisplay | date: "YYYY-MM-dd HH:mm:ss" }}
+      </div>
     </div>
   </form>
 

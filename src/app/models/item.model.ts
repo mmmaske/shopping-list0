@@ -14,6 +14,7 @@ export class Item {
   createdById?: string;
   updatedOn?: Date;
   sharedWith?: any;
-  container?: Reference;
+  containerRef?: Reference;
+  containerId?: string;
   estimatedPrice?: number;
 }

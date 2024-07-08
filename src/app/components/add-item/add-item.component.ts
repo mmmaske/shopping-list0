@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/items.service';
 import Swal from 'sweetalert2';
@@ -13,7 +13,8 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-
+import { ContainersService } from 'src/app/services/containers.service';
+import { map } from 'rxjs';
 @Component({
   selector: 'app-add-item',
   templateUrl: './add-item.component.html',
@@ -29,9 +30,14 @@ export class AddItemComponent {
   constructor(
     private itemService: ItemService,
     private router: Router,
+    private containerService: ContainersService,
   ) {}
 
   saveItem(): void {
+    this.form.containerId = this.containerService.activeContainer;
+    this.form.containerRef = this.containerService.activeContainerRef;
+    console.log('form input', this.form);
+
     this.itemService.create(this.form).then(() => {
       console.log('Created new item successfully!');
       Swal.fire({
@@ -46,7 +52,9 @@ export class AddItemComponent {
         /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {
           console.log('I was closed by the timer');
-          this.router.navigate(['list']);
+          this.router.navigate([
+            `container/${this.containerService.activeContainer}`,
+          ]);
         }
       });
     });

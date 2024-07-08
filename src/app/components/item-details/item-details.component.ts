@@ -12,6 +12,7 @@ import { loginDetails } from 'src/app/utils/common';
 import { environment } from 'src/app/environments/environment';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { ContainersService } from 'src/app/services/containers.service';
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
@@ -42,6 +43,7 @@ export class ItemDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private afs: AngularFirestore,
+    private cont: ContainersService,
   ) {}
 
   ngOnInit(): void {
@@ -188,7 +190,7 @@ export class ItemDetailsComponent implements OnInit {
           this.itemService
             .delete(this.currentItem.id)
             .then(() => {
-              this.router.navigate(['list']);
+              this.router.navigate([`container/${this.cont.activeContainer}`]);
               this.refreshList.emit();
               Swal.fire({
                 title: `${this.currentItem.title} was removed from your shopping list.`,

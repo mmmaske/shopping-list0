@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
+  AngularFirestoreDocument,
+  DocumentReference,
 } from '@angular/fire/compat/firestore';
 import { Item } from '../models/item.model';
 import { debug, loginDetails } from '../utils/common';
@@ -12,6 +14,7 @@ import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest, concat, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { map } from 'rxjs';
+import { ContainersService } from './containers.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -30,6 +33,7 @@ export class ItemService {
   constructor(
     private db: AngularFirestore,
     public authServ: AuthService,
+    private cont: ContainersService,
   ) {
     if (!environment.production) {
       connectStorageEmulator(this.storage, 'localhost', 9199);
@@ -83,6 +87,30 @@ export class ItemService {
     );
   }
 
+  getContainedBy(container_id: string): Observable<any> {
+    return this.containedByCollection(container_id)
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          })),
+        ),
+      );
+  }
+
+  containedByCollection(
+    container_id: string,
+  ): AngularFirestoreCollection<Item> {
+    const container: DocumentReference = this.db.firestore.doc(
+      `containers/${container_id}`,
+    );
+    return this.db.collection(this.itemPath, (ref) =>
+      ref.where('containerRef', '==', container).orderBy('updatedOn', 'desc'),
+    );
+  }
+
   getSharedWith(): AngularFirestoreCollection<Item> {
     const user = this.userRef;
     return this.db.collection(this.itemPath, (ref) =>
@@ -99,18 +127,22 @@ export class ItemService {
 
   create(item: Item): any {
     let now = new Date();
+    const container_id = this.cont.activeContainer;
+    const containerRef = this.db.firestore.doc(`containers/${container_id}`);
     if (this.localUser) {
       return this.itemsRef.add({
         ...item,
         createdOn: now,
         updatedOn: now,
         createdBy: this.userRef,
+        containerRef: containerRef,
       });
     } else {
       return this.itemsRef.add({
         ...item,
         createdOn: now,
         updatedOn: now,
+        containerRef: containerRef,
       });
     }
   }

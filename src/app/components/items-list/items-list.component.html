@@ -19,6 +19,11 @@
         </mat-list-item>
       </div>
     </mat-list>
+    <div class="add-btn">
+      <button mat-fab (click)="openAddDialog()">
+        <mat-icon fontIcon="add"></mat-icon>
+      </button>
+    </div>
   </mat-card>
   <mat-card *ngIf="currentItem">
     <app-item-details (refreshList)="refreshList()"></app-item-details>

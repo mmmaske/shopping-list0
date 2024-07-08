@@ -1,9 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ItemService } from 'src/app/services/items.service';
 import { map } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CamelCasePipe } from 'src/app/camel-case.pipe';
+import { AddItemComponent } from '../add-item/add-item.component';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { ContainersService } from 'src/app/services/containers.service';
 
 @Component({
   selector: 'app-items-list',
@@ -26,19 +37,31 @@ export class ItemsListComponent implements OnInit {
       ),
     );
   combinedData: any;
+  containerData: any;
 
   constructor(
     private itemService: ItemService,
     private router: Router,
     private route: ActivatedRoute,
+    private containerService: ContainersService,
   ) {}
+  readonly dialog = inject(MatDialog);
 
   get currentItemIdGetter() {
     return String(this.route.snapshot.paramMap.get('item_id'));
   }
+  get currentContainerIdGetter() {
+    return String(this.route.snapshot.paramMap.get('container_id'));
+  }
+
+  currentContainerIdSetter() {
+    this.containerService.activeContainer = this.currentContainerIdGetter;
+  }
 
   ngOnInit(): void {
-    this.retrieveItems();
+    this.currentContainerIdSetter();
+    // this.retrieveItems();
+    this.retrieveByContainer();
     this.setActiveFromRoute();
   }
 
@@ -49,6 +72,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   retrieveItems(): void {
+    // depreciated
     this.itemService.getCombined().subscribe((data) => {
       this.combinedData = []; // clear the combinedData array
       data.map((itemArray) => {
@@ -61,6 +85,23 @@ export class ItemsListComponent implements OnInit {
       this.items = this.combinedData; // output to item list
       this.hasItems = true;
     });
+  }
+
+  retrieveByContainer(): void {
+    this.containerData = [];
+    this.itemService
+      .getContainedBy(this.currentContainerIdGetter)
+      .subscribe((data) => {
+        data.map((item: any) => {
+          item.priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
+          console.log(item);
+          this.containerData.push(item);
+        });
+        this.items = this.containerData; // output to item list
+        this.hasItems = true;
+      });
+
+    // this.itemService.getContainedBy(this.currentContainerIdGetter)
   }
 
   retrieveItem(item_id: string) {
@@ -91,7 +132,15 @@ export class ItemsListComponent implements OnInit {
   toggleSelect() {
     this.isSelect = !this.isSelect;
   }
-  deleteSelected() {
-    // todo: use firebase transactions to delete the selected items
+
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(AddItemComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        // this.name = result;
+      }
+    });
   }
 }

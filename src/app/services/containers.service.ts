@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
+  DocumentReference,
 } from '@angular/fire/compat/firestore';
 import { Container } from '../models/container.model';
 import { debug, loginDetails } from '../utils/common';
@@ -25,6 +26,7 @@ export class ContainersService {
   usersRef: AngularFirestoreCollection<User>;
   private storage = getStorage();
   public activeContainer: string = '';
+  public activeContainerRef?: DocumentReference<Container>;
 
   constructor(
     private db: AngularFirestore,

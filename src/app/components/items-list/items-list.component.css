@@ -43,3 +43,10 @@ mat-list-item:hover {
 app-item-details {
   padding: 0px 15px;
 }
+
+div.add-btn {
+  text-align: center;
+}
+div.add-btn button {
+  margin: 15px 0px 15px 0px;
+}
