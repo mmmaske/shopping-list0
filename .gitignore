@@ -49,3 +49,4 @@ firestore-debug.log
 capacitor.config.ts
 android
 .vscode/settings.json
+local_emulator

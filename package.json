@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --disable-host-check",
+    "emulator": "firebase emulators:start --export-on-exit local_emulator --import local_emulator",
+    "go-live": "ng build ; firebase deploy --only hosting",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
