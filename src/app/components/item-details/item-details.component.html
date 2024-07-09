@@ -1,6 +1,6 @@
 <div *ngIf="currentItem" class="edit-form">
   <form>
-    <div style="float: left">
+    <div style="float: left; max-width:50%;">
       <div class="form-group">
         <div *ngIf="edit">
           <app-camera-input
@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div style="float: left">
+    <div style="float: left; max-width:50%;">
       <div *ngIf="edit">
         <mat-form-field>
           <mat-label for="title">Title</mat-label>
@@ -125,6 +125,13 @@
     </div>
   </form>
 
+  <button
+  mat-fab extended
+    *ngIf="!edit"
+    routerLink="/container/{{ currentItem.containerRef.id }}"
+  >
+  <mat-icon fontIcon="arrow_back"></mat-icon>
+  </button>
   <button
   mat-fab extended
     *ngIf="currentItem.purchased && !edit"

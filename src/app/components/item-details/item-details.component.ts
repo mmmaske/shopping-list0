@@ -13,6 +13,7 @@ import { environment } from 'src/app/environments/environment';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ContainersService } from 'src/app/services/containers.service';
+import { Container } from 'src/app/models/container.model';
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
@@ -30,6 +31,7 @@ export class ItemDetailsComponent implements OnInit {
     purchased: false,
     sharedWith: [],
     estimatedPrice: 0,
+    containerRef:Container,
   };
   message = '';
   edit = false;
