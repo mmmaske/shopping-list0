@@ -14,19 +14,19 @@
     ></webcam>
     <br />
     <button
-      class="btn btn-sm btn-primary actionBtn"
+    mat-fab
       (click)="triggerSnapshot()"
     >
-      Take A Snapshot
+        <mat-icon fontIcon="camera"></mat-icon>
     </button>
     <!--button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button>
       <br/-->
     <button
-      class="btn btn-sm btn-secondary actionBtn"
+    mat-fab extended
       (click)="showNextWebcam(true)"
       [disabled]="!multipleWebcamsAvailable"
     >
-      Next Webcam
+    <mat-icon fontIcon="cameraswitch"></mat-icon> Switch Camera
     </button>
     <!--input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow Camera Switch</label>
       <br/>
@@ -38,8 +38,8 @@
 <div class="snapshot" *ngIf="webcamImage">
   <h2>Image captured!</h2>
   <img [src]="webcamImage.imageAsDataUrl" />
-  <button class="btn btn-sm btn-warning actionBtn" (click)="resetCamera()">
-    Take another
+  <button mat-fab (click)="resetCamera()">
+    <mat-icon fontIcon="refresh"></mat-icon>
   </button>
 </div>
 

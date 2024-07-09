@@ -52,11 +52,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ListContainerComponent } from './components/list-container/list-container.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ListContainerFormComponent } from './components/list-container-form/list-container-form.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -104,6 +105,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatRippleModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
     MatGridListModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,

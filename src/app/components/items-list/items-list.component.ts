@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CamelCasePipe } from 'src/app/camel-case.pipe';
+import { Injectable } from '@angular/core';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { AddItemComponent } from '../add-item/add-item.component';
 import {
   MAT_DIALOG_DATA,
@@ -16,6 +18,9 @@ import {
 } from '@angular/material/dialog';
 import { ContainersService } from 'src/app/services/containers.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.component.html',
@@ -45,7 +50,7 @@ export class ItemsListComponent implements OnInit {
   itemContainerData:any;
 
   constructor(
-    private itemService: ItemService,
+    public itemService: ItemService,
     private router: Router,
     private route: ActivatedRoute,
     public containerService: ContainersService,
@@ -77,6 +82,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   refreshList(): void {
+    this.itemService.selectedItems=[];
     this.currentItem = undefined;
     this.currentIndex = -1;
     this.retrieveItems();
@@ -127,6 +133,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   redirectToItem(item_id: any, index: number): void {
+    if (this.itemService.selectMultiple) return;
     this.router.navigate([`/item/${item_id}`]); // update the URL
     this.setActiveFromRoute(index); // update the component
   }
@@ -141,6 +148,22 @@ export class ItemsListComponent implements OnInit {
     this.currentItem = item;
     this.currentIndex = index;
   }
+
+  updateCheckbox(event: MatCheckboxChange) {
+    if (event.checked)
+      this.itemService.selectedItems.push(event.source.value); // save document ID selectedItems
+    else {
+      //remove item ID from selectedItems
+      const index = this.itemService.selectedItems.indexOf(event.source.value);
+      if (index > -1) {
+        this.itemService.selectedItems.splice(index, 1);
+      }
+    }
+    this.itemService.selectedItems.length;
+    console.log('count selectedItems', this.itemService.selectedItems.length);
+    console.log('selectedItems', this.itemService.selectedItems);
+    // get checked elements from checkboxes
+}
   toggleSelect() {
     this.isSelect = !this.isSelect;
   }

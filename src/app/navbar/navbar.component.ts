@@ -13,6 +13,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { AddItemComponent } from '../components/add-item/add-item.component';
+import { ItemService } from '../services/items.service';
 import { ListContainerFormComponent } from '../components/list-container-form/list-container-form.component';
 
 @Component({
@@ -34,6 +35,7 @@ export class NavbarComponent {
   constructor(
     public authServ: AuthService,
     private router: Router,
+    public item:ItemService
   ) {}
   public name: string = '';
   readonly dialog = inject(MatDialog);
@@ -72,19 +74,9 @@ export class NavbarComponent {
       }
     });
   }
+
+  toggleSelectMultiple():void{
+    this.item.selectedItems = [];
+    this.item.selectMultiple = !this.item.selectMultiple;
+  }
 }
-
-// @Component({
-//     selector: 'dialog-overview-example-dialog',
-//     templateUrl: 'dialog-overview-example-dialog.html',
-//     standalone: true,
-//   })
-// export class DialogOverviewExampleDialog {
-//     readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
-//     readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-//     readonly animal = this.data.animal;
-
-//     onNoClick(): void {
-//       this.dialogRef.close();
-//     }
-//   }
