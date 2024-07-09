@@ -37,13 +37,17 @@ export class ItemsListComponent implements OnInit {
       ),
     );
   combinedData: any;
-  containerData: any;
+  containerData: any = {
+    title:'',
+    displayImage:'',
+    description:'',
+  };
 
   constructor(
     private itemService: ItemService,
     private router: Router,
     private route: ActivatedRoute,
-    private containerService: ContainersService,
+    public containerService: ContainersService,
   ) {}
   readonly dialog = inject(MatDialog);
 
@@ -57,9 +61,15 @@ export class ItemsListComponent implements OnInit {
   currentContainerIdSetter() {
     this.containerService.activeContainer = this.currentContainerIdGetter;
   }
+  async currentContainerRefSetter() {
+    const ref = await this.containerService.getContainer(this.containerService.activeContainer);
+    const data = (await ref.get()).data();
+    this.containerData = data;
+  }
 
   ngOnInit(): void {
     this.currentContainerIdSetter();
+    this.currentContainerRefSetter();
     // this.retrieveItems();
     this.retrieveByContainer();
     this.setActiveFromRoute();
@@ -88,7 +98,6 @@ export class ItemsListComponent implements OnInit {
   }
 
   retrieveByContainer(): void {
-
     this.itemService
       .getContainedBy(this.currentContainerIdGetter)
       .subscribe((data) => {

@@ -13,6 +13,7 @@ import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest } from 'rxjs';
 import { environment } from '../environments/environment';
 import { map } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,6 +24,8 @@ export class ContainersService {
   public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
   public containerCollection: any;
   containersRef: AngularFirestoreCollection<Container>;
+  containerRef?:DocumentReference<Container>;
+  containerData?:Object;
   usersRef: AngularFirestoreCollection<User>;
   private storage = getStorage();
   public activeContainer: string = '';
@@ -96,8 +99,10 @@ export class ContainersService {
   }
 
   async getContainer(container_id: string) {
-    const doc = this.containersRef.doc(container_id);
-    return doc.get();
+    const doc = await this.db.firestore.collection(`containers`).doc(container_id);
+    this.containerRef = doc;
+    this.containerData = (await doc.get()).data();
+    return this.containerRef;
   }
 
   create(container: Container): any {

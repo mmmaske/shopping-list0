@@ -10,38 +10,20 @@
   >
     <mat-icon fontIcon="menu"></mat-icon>
   </button>
-  <button
-    mat-icon-button
-    (click)="openAddDialog()"
-    *ngIf="this.authServ.isLoggedIn"
-    matTooltip="Add item"
-  >
-    <mat-icon fontIcon="add_box"></mat-icon>
-  </button>
-  <button
-    mat-icon-button
-    (click)="openAddContainerDialog()"
-    *ngIf="this.authServ.isLoggedIn"
-    matTooltip="Add Container"
-  >
-    <mat-icon fontIcon="library_add"></mat-icon>
-  </button>
+
+
+
   <span class="center-spacer"></span>
+
+
+
   <button
     mat-icon-button
-    routerLink="signup"
+    routerLink=""
     *ngIf="!this.authServ.isLoggedIn"
     matTooltip="Sign Up"
   >
     <mat-icon fontIcon="app_registration"></mat-icon>
-  </button>
-  <button
-    mat-icon-button
-    routerLink="signin"
-    *ngIf="!this.authServ.isLoggedIn"
-    matTooltip="Sign In"
-  >
-    <mat-icon fontIcon="login"></mat-icon>
   </button>
   <button
     mat-icon-button

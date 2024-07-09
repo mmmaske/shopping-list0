@@ -1,26 +1,35 @@
-<div class="gridcontainer" *ngIf="dividedContainers.length > 0">
-  <div
-    class="grid"
-    *ngFor="let containerset of dividedContainers; let c = index"
-  >
-    <span
-      *ngFor="let container of containerset; let i = index"
-      routerLink="/container/{{ container.id }}"
+<div class="gridcontainer" *ngIf="containersLoaded">
+  <div *ngIf="dividedContainers.length > 0">
+    <div
+      class="grid"
+      *ngFor="let containerset of dividedContainers; let c = index"
     >
-      <h4>{{ container.title }}</h4>
-      <img *ngIf="container.displayImage" src="{{ container.displayImage }}" />
-      <div class="icon-container" *ngIf="!container.displayImage">
-        <mat-icon fontIcon="receipt_long"></mat-icon>
-      </div>
-    </span>
+      <span
+        *ngFor="let container of containerset; let i = index"
+        routerLink="/container/{{ container.id }}"
+      >
+        <h4>{{ container.title }}</h4>
+        <img
+          *ngIf="container.displayImage"
+          src="{{ container.displayImage }}"
+        />
+        <div class="icon-container" *ngIf="!container.displayImage">
+          <mat-icon fontIcon="receipt_long"></mat-icon>
+        </div>
+      </span>
+    </div>
   </div>
-
-  <div class="add-btn">
-    <button mat-fab (click)="openAddContainerDialog()">
-      <mat-icon fontIcon="add"></mat-icon>
-    </button>
+  <div *ngIf="dividedContainers.length == 0">
+<h3>Welcome to the list</h3>
+<p>You don't have any list containers yet.</p>
+<p>Try adding one with the button below.</p>
   </div>
 </div>
-<div class="loadingicon" *ngIf="dividedContainers.length === 0">
+<div class="loadingicon" *ngIf="!containersLoaded">
   <mat-spinner></mat-spinner>
+</div>
+<div class="add-btn">
+  <button mat-fab (click)="openAddContainerDialog()">
+    <mat-icon fontIcon="add"></mat-icon>
+  </button>
 </div>

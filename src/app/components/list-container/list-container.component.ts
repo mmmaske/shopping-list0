@@ -25,6 +25,7 @@ export class ListContainerComponent implements OnInit {
   ) {}
   public containers: Container[] = [];
   public dividedContainers: Container[][] = [];
+  public containersLoaded: boolean = false;
   readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
@@ -33,6 +34,7 @@ export class ListContainerComponent implements OnInit {
 
   retrieveContainers(): void {
     this.cont.getCombined().subscribe((data) => {
+      this.containersLoaded = false;
       this.containers = []; // clear the combinedData array
       data.map((containerArray) => {
         containerArray.forEach((container) => {
@@ -41,6 +43,7 @@ export class ListContainerComponent implements OnInit {
         });
       });
       this.dividedContainers = this.divideContainers(this.containers);
+      this.containersLoaded = true;
       console.log(this.dividedContainers);
     });
   }
