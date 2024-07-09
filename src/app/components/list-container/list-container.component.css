@@ -69,8 +69,9 @@ div.add-btn {
 div.add-btn button {
   margin: 15px 0px 0px 0px;
 }
-div.gridcontainer div h3, p {
-    text-align: center;
+div.gridcontainer div h3,
+p {
+  text-align: center;
   font-weight: bolder;
   margin: 3em 0px 1em 0px;
 }

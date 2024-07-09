@@ -13,20 +13,18 @@
       (initError)="handleInitError($event)"
     ></webcam>
     <br />
-    <button
-    mat-fab
-      (click)="triggerSnapshot()"
-    >
-        <mat-icon fontIcon="camera"></mat-icon>
+    <button mat-fab (click)="triggerSnapshot()">
+      <mat-icon fontIcon="camera"></mat-icon>
     </button>
     <!--button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button>
       <br/-->
     <button
-    mat-fab extended
+      mat-fab
+      extended
       (click)="showNextWebcam(true)"
       [disabled]="!multipleWebcamsAvailable"
     >
-    <mat-icon fontIcon="cameraswitch"></mat-icon> Switch Camera
+      <mat-icon fontIcon="cameraswitch"></mat-icon> Switch Camera
     </button>
     <!--input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow Camera Switch</label>
       <br/>

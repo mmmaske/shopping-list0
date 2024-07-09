@@ -35,7 +35,7 @@ export class NavbarComponent {
   constructor(
     public authServ: AuthService,
     private router: Router,
-    public item:ItemService
+    public item: ItemService,
   ) {}
   public name: string = '';
   readonly dialog = inject(MatDialog);
@@ -75,7 +75,7 @@ export class NavbarComponent {
     });
   }
 
-  toggleSelectMultiple():void{
+  toggleSelectMultiple(): void {
     this.item.selectedItems = [];
     this.item.selectMultiple = !this.item.selectMultiple;
   }

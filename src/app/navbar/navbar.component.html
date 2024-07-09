@@ -19,7 +19,7 @@
     <mat-icon fontIcon="add"></mat-icon>
   </button>
   <button
-  *ngIf="this.authServ.isLoggedIn"
+    *ngIf="this.authServ.isLoggedIn"
     mat-icon-button
     (click)="toggleSelectMultiple()"
     matTooltip="Select Multiple"
@@ -29,18 +29,15 @@
   </button>
 
   <button
-  mat-icon-button
-  *ngIf="this.item.selectedItems.length>0"
-  (click)="this.item.handleDeleteSelected()"
-  matTooltip="Delete Selected Items"
+    mat-icon-button
+    *ngIf="this.item.selectedItems.length > 0"
+    (click)="this.item.handleDeleteSelected()"
+    matTooltip="Delete Selected Items"
   >
-  <mat-icon fontIcon="delete"></mat-icon>
-</button>
-
+    <mat-icon fontIcon="delete"></mat-icon>
+  </button>
 
   <span class="center-spacer"></span>
-
-
 
   <button
     mat-icon-button

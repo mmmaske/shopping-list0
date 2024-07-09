@@ -52,23 +52,23 @@ div.add-btn button {
 }
 
 .container-info {
-    text-align:center;
-    margin: 1em 0px 1em 0px;
+  text-align: center;
+  margin: 1em 0px 1em 0px;
 }
 .container-info span {
-    display: inline-block;
-    width:30%;
+  display: inline-block;
+  width: 30%;
 }
 .container-info span h2 {
-    float:left;
-    text-transform: uppercase;
+  float: left;
+  text-transform: uppercase;
 }
 .container-info span img {
-    float:left;
-    border-radius: 50%;
-    max-width: 135px;
+  float: left;
+  border-radius: 50%;
+  max-width: 135px;
   max-height: 135px;
 }
 .container-info span p {
-    display:inline-block;
+  display: inline-block;
 }

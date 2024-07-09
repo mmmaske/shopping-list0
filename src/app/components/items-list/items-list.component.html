@@ -1,11 +1,14 @@
 <mat-card>
-    <div class="container-info">
-        <span>
-    <img src="{{containerData.displayImage}}" *ngIf="containerData.displayImage" />
-    <h2 *ngIf="containerData.title">{{containerData.title}}</h2>
-    <p *ngIf="containerData.description">{{containerData.description}}</p>
-</span>
-</div>
+  <div class="container-info">
+    <span>
+      <img
+        src="{{ containerData.displayImage }}"
+        *ngIf="containerData.displayImage"
+      />
+      <h2 *ngIf="containerData.title">{{ containerData.title }}</h2>
+      <p *ngIf="containerData.description">{{ containerData.description }}</p>
+    </span>
+  </div>
   <mat-card>
     <div class="loadingicon" *ngIf="!hasItems">
       <mat-spinner></mat-spinner>
@@ -24,9 +27,9 @@
             (change)="updateCheckbox($event)"
           ></mat-checkbox>
           <mat-icon
-          fontIcon="arrow_right"
-          *ngIf="item.id == currentItemId"
-        ></mat-icon>
+            fontIcon="arrow_right"
+            *ngIf="item.id == currentItemId"
+          ></mat-icon>
           <mat-icon
             fontIcon="priority_high"
             *ngIf="item.priority == 'extra high'"

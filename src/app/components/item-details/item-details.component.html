@@ -1,6 +1,6 @@
 <div *ngIf="currentItem" class="edit-form">
   <form>
-    <div style="float: left; max-width:50%;">
+    <div style="float: left; max-width: 50%">
       <div class="form-group">
         <div *ngIf="edit">
           <app-camera-input
@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div style="float: left; max-width:50%;">
+    <div style="float: left; max-width: 50%">
       <div *ngIf="edit">
         <mat-form-field>
           <mat-label for="title">Title</mat-label>
@@ -126,26 +126,29 @@
   </form>
 
   <button
-  mat-fab extended
+    mat-fab
+    extended
     *ngIf="!edit"
     routerLink="/container/{{ currentItem.containerRef.id }}"
   >
-  <mat-icon fontIcon="arrow_back"></mat-icon>
+    <mat-icon fontIcon="arrow_back"></mat-icon>
   </button>
   <button
-  mat-fab extended
+    mat-fab
+    extended
     *ngIf="currentItem.purchased && !edit"
     (click)="updatePurchased(false)"
   >
-  <mat-icon fontIcon="add_reaction"></mat-icon>
+    <mat-icon fontIcon="add_reaction"></mat-icon>
     Consume
   </button>
   <button
-  mat-fab extended
+    mat-fab
+    extended
     *ngIf="!currentItem.purchased && !edit"
     (click)="updatePurchased(true)"
   >
-  <mat-icon fontIcon="shopping_cart_checkout"></mat-icon>
+    <mat-icon fontIcon="shopping_cart_checkout"></mat-icon>
     Purchase
   </button>
 
@@ -158,28 +161,18 @@
     Cancel
   </button>
 
-  <button
-  mat-fab extended
-    *ngIf="!edit"
-    type="submit"
-    (click)="editItem()"
-  >
-  <mat-icon fontIcon="edit"></mat-icon>
+  <button mat-fab extended *ngIf="!edit" type="submit" (click)="editItem()">
+    <mat-icon fontIcon="edit"></mat-icon>
     Edit
   </button>
 
-  <button
-  mat-flat-button
-    *ngIf="edit"
-    type="submit"
-    (click)="updateItem()"
-  >
-  <mat-icon fontIcon="save"></mat-icon>
+  <button mat-flat-button *ngIf="edit" type="submit" (click)="updateItem()">
+    <mat-icon fontIcon="save"></mat-icon>
     Update
   </button>
   <p>{{ message }}</p>
 </div>
 
 <div class="loadingicon" *ngIf="!currentItem">
-    <mat-spinner></mat-spinner>
+  <mat-spinner></mat-spinner>
 </div>

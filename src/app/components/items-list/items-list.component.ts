@@ -43,11 +43,11 @@ export class ItemsListComponent implements OnInit {
     );
   combinedData: any;
   containerData: any = {
-    title:'',
-    displayImage:'',
-    description:'',
+    title: '',
+    displayImage: '',
+    description: '',
   };
-  itemContainerData:any;
+  itemContainerData: any;
 
   constructor(
     public itemService: ItemService,
@@ -68,7 +68,9 @@ export class ItemsListComponent implements OnInit {
     this.containerService.activeContainer = this.currentContainerIdGetter;
   }
   async currentContainerRefSetter() {
-    const ref = await this.containerService.getContainer(this.containerService.activeContainer);
+    const ref = await this.containerService.getContainer(
+      this.containerService.activeContainer,
+    );
     const data = (await ref.get()).data();
     this.containerData = data;
   }
@@ -82,7 +84,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   refreshList(): void {
-    this.itemService.selectedItems=[];
+    this.itemService.selectedItems = [];
     this.currentItem = undefined;
     this.currentIndex = -1;
     this.retrieveItems();
@@ -163,7 +165,7 @@ export class ItemsListComponent implements OnInit {
     console.log('count selectedItems', this.itemService.selectedItems.length);
     console.log('selectedItems', this.itemService.selectedItems);
     // get checked elements from checkboxes
-}
+  }
   toggleSelect() {
     this.isSelect = !this.isSelect;
   }

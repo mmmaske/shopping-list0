@@ -31,7 +31,7 @@ export class ItemDetailsComponent implements OnInit {
     purchased: false,
     sharedWith: [],
     estimatedPrice: 0,
-    containerRef:Container,
+    containerRef: Container,
   };
   message = '';
   edit = false;
