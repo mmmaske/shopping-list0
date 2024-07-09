@@ -42,6 +42,7 @@ export class ItemsListComponent implements OnInit {
     displayImage:'',
     description:'',
   };
+  itemContainerData:any;
 
   constructor(
     private itemService: ItemService,
@@ -72,7 +73,7 @@ export class ItemsListComponent implements OnInit {
     this.currentContainerRefSetter();
     // this.retrieveItems();
     this.retrieveByContainer();
-    this.setActiveFromRoute();
+    // this.setActiveFromRoute();
   }
 
   refreshList(): void {
@@ -101,13 +102,13 @@ export class ItemsListComponent implements OnInit {
     this.itemService
       .getContainedBy(this.currentContainerIdGetter)
       .subscribe((data) => {
-        this.containerData = [];
+        this.itemContainerData = [];
         data.map((item: any) => {
           item.priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
           console.log(item);
-          this.containerData.push(item);
+          this.itemContainerData.push(item);
         });
-        this.items = this.containerData; // output to item list
+        this.items = this.itemContainerData; // output to item list
         this.hasItems = true;
       });
 
@@ -131,6 +132,7 @@ export class ItemsListComponent implements OnInit {
   }
 
   setActiveFromRoute(index: number = -1) {
+    // depreciated
     const retrieved = this.retrieveItem(this.currentItemIdGetter);
     this.setActiveItem(retrieved, index);
   }
