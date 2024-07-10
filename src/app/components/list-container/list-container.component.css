@@ -8,12 +8,17 @@ div.grid span {
   cursor: pointer;
   transition:
     flex 0.5s,
-    background 0.5s ease-out;
+    background 0.5s ease-out,
+    opacity 0.5s ease-out;
   border-radius: 25px;
 }
 div.grid span:hover {
   flex: 3;
   background: #ffb84b;
+}
+
+div.grid:hover > span:not(:hover) {
+  opacity: 0.5;
 }
 div.grid span mat-progress-bar {
   position: fixed;
