@@ -160,7 +160,7 @@ export class ItemService {
     if (typeof data.webcamdata === 'string') {
       this.uploadToFireStore(id, data.webcamdata);
     } //attempt firestore upload
-    if (typeof data.estimatedPrice !== 'number') {
+    if (data.estimatedPrice < '0') {
       data.estimatedPrice = 0;
     }
     delete data.webcamdata; // no longer need this since it is uploaded to firestore
