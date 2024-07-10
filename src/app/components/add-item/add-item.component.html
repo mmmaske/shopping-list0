@@ -45,6 +45,20 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label for="estimatedPrice">Estimated Price</mat-label>
+      <input
+        matInput
+        type="number"
+        name="estimatedPrice"
+        [(ngModel)]="form.estimatedPrice"
+        required
+        number
+        #estimatedPrice="ngModel"
+        [ngClass]="{ 'is-invalid': f.submitted && estimatedPrice.errors }"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Description</mat-label>
       <textarea
         matInput
