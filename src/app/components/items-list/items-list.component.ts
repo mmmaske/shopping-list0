@@ -32,6 +32,9 @@ export class ItemsListComponent implements OnInit {
   currentIndex = -1;
   currentItemId: string = this.currentItemIdGetter;
   hasItems = false;
+  sortableColumns: Array<string> = ['title', 'estimatedPrice', 'updatedOn'];
+  setSort = 'updatedOn';
+  setSortDirection: 'asc' | 'desc' = 'asc';
   isSelect = false;
   data = this.itemService
     .getAll()
@@ -78,32 +81,14 @@ export class ItemsListComponent implements OnInit {
   ngOnInit(): void {
     this.currentContainerIdSetter();
     this.currentContainerRefSetter();
-    // this.retrieveItems();
     this.retrieveByContainer();
-    // this.setActiveFromRoute();
   }
 
   refreshList(): void {
     this.itemService.selectedItems = [];
     this.currentItem = undefined;
     this.currentIndex = -1;
-    this.retrieveItems();
-  }
-
-  retrieveItems(): void {
-    // depreciated
-    this.itemService.getCombined().subscribe((data) => {
-      this.combinedData = []; // clear the combinedData array
-      data.map((itemArray) => {
-        itemArray.forEach((item) => {
-          console.log(item);
-          item.priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
-          this.combinedData.push(item); // insert into combinedData array
-        });
-      });
-      this.items = this.combinedData; // output to item list
-      this.hasItems = true;
-    });
+    this.retrieveByContainer();
   }
 
   retrieveByContainer(): void {
@@ -116,11 +101,50 @@ export class ItemsListComponent implements OnInit {
           console.log(item);
           this.itemContainerData.push(item);
         });
-        this.items = this.itemContainerData; // output to item list
+
+        const sorted = this.sortData(this.itemContainerData);
+        console.log(sorted);
+
+        this.items = sorted; // output to item list
         this.hasItems = true;
       });
 
     // this.itemService.getContainedBy(this.currentContainerIdGetter)
+  }
+
+  sortData(sortable: []): any {
+    let sorted: Array<Item> = [];
+    this.setSortDirection = 'asc';
+    if (this.setSort === 'title') {
+      console.log('sort by title');
+      sorted = sortable.sort(function (a: Item, b: Item) {
+        let x: any = a.title?.toLowerCase();
+        let y: any = b.title?.toLowerCase();
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      });
+    } else if (this.setSort === 'updatedOn') {
+      console.log('sort by updatedOn');
+      sorted = sortable.sort(function (a: Item, b: Item) {
+        return Number(a.updatedOn) - Number(b.updatedOn);
+      });
+      this.setSortDirection = 'desc';
+    } else if (this.setSort === 'estimatedPrice') {
+      console.log('sort by estimatedPrice');
+      sorted = sortable.sort(function (a: Item, b: Item) {
+        return Number(a.estimatedPrice) - Number(b.estimatedPrice);
+      });
+    }
+
+    if (this.setSortDirection === 'desc') {
+      sorted.reverse();
+    }
+    return sorted;
   }
 
   retrieveItem(item_id: string) {
@@ -137,13 +161,6 @@ export class ItemsListComponent implements OnInit {
   redirectToItem(item_id: any, index: number): void {
     if (this.itemService.selectMultiple) return;
     this.router.navigate([`/item/${item_id}`]); // update the URL
-    this.setActiveFromRoute(index); // update the component
-  }
-
-  setActiveFromRoute(index: number = -1) {
-    // depreciated
-    const retrieved = this.retrieveItem(this.currentItemIdGetter);
-    this.setActiveItem(retrieved, index);
   }
 
   setActiveItem(item: /*Item*/ any, index: number = -1): void {
@@ -179,5 +196,9 @@ export class ItemsListComponent implements OnInit {
         // this.name = result;
       }
     });
+  }
+
+  changeSortCol(): void {
+    this.refreshList();
   }
 }

@@ -7,44 +7,70 @@
       />
       <h2 *ngIf="containerData.title">{{ containerData.title }}</h2>
       <p *ngIf="containerData.description">{{ containerData.description }}</p>
+      <p *ngIf="containerData && items && items.length > 1">
+        <button mat-fab extended (click)="sortSelect.open()">
+          <mat-icon fontIcon="sort"></mat-icon>
+          <mat-select #sortSelect [(ngModel)]="setSort">
+            <mat-option (click)="changeSortCol()" value="title"
+              >Item name</mat-option
+            >
+            <mat-option (click)="changeSortCol()" value="estimatedPrice"
+              >Estimated Price</mat-option
+            >
+            <mat-option
+              (click)="changeSortCol()"
+              value="updatedOn"
+              selected="selected"
+              >Last Updated</mat-option
+            >
+          </mat-select>
+        </button>
+      </p>
     </span>
   </div>
-  <mat-card>
-    <div class="loadingicon" *ngIf="!hasItems">
-      <mat-spinner></mat-spinner>
-    </div>
-    <mat-list *ngIf="hasItems">
-      <div matRipple *ngFor="let item of items; let i = index">
-        <mat-divider *ngIf="i !== 0"></mat-divider>
-        <mat-list-item
-          [ngClass]="item.priorityClass"
-          [class.active]="item.id == currentItemId"
-          (click)="redirectToItem(item.id, i)"
-        >
+  <div class="loadingicon" *ngIf="!hasItems">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-list *ngIf="hasItems">
+    <div matRipple *ngFor="let item of items; let i = index">
+      <mat-divider *ngIf="i !== 0"></mat-divider>
+      <mat-list-item
+        [ngClass]="item.priorityClass"
+        [class.active]="item.id == currentItemId"
+        (click)="redirectToItem(item.id, i)"
+      >
+        <h5>
           <mat-checkbox
             value="{{ item.id }}"
             *ngIf="this.itemService.selectMultiple"
             (change)="updateCheckbox($event)"
           ></mat-checkbox>
           <mat-icon
-            fontIcon="arrow_right"
-            *ngIf="item.id == currentItemId"
-          ></mat-icon>
-          <mat-icon
             fontIcon="priority_high"
             *ngIf="item.priority == 'extra high'"
           ></mat-icon>
-          {{ item.title }}
-        </mat-list-item>
-      </div>
-    </mat-list>
-    <div class="add-btn">
-      <button mat-fab (click)="openAddDialog()">
-        <mat-icon fontIcon="add"></mat-icon>
-      </button>
+          <span class="item-title">{{ item.title }}</span>
+          <span class="item-description">{{ item.description }}</span>
+          <span
+            class="value-display"
+            *ngIf="item.estimatedPrice && item.quantity"
+          >
+            <small
+              class="total"
+              matTooltip="x{{ item.quantity }} @ P{{
+                item.estimatedPrice | number: '1.2-2'
+              }}"
+            >
+              P{{ item.quantity * item.estimatedPrice | number: "1.2-2" }}
+            </small>
+          </span>
+        </h5>
+      </mat-list-item>
     </div>
-  </mat-card>
-  <mat-card *ngIf="currentItem">
-    <app-item-details (refreshList)="refreshList()"></app-item-details>
-  </mat-card>
+  </mat-list>
+  <div class="add-btn">
+    <button mat-fab (click)="openAddDialog()">
+      <mat-icon fontIcon="add"></mat-icon>
+    </button>
+  </div>
 </mat-card>

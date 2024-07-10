@@ -72,3 +72,24 @@ div.add-btn button {
 .container-info span p {
   display: inline-block;
 }
+
+.value-display {
+  float: right;
+}
+
+h5 .item-title ~ .item-description {
+  margin: 0px 0px 0px 1.5em;
+  text-transform: lowercase;
+  font-style: italic;
+  color: #595959;
+  font-size: 0.7em;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+mat-list-item:hover .item-title ~ .item-description {
+  opacity: 1;
+}
+
+.cdk-overlay-connected-position-bounding-box .cdk-overlay-pane {
+  width: 200px !important;
+}
