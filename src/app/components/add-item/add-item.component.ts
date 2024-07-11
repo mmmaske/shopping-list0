@@ -21,6 +21,7 @@ import { map } from 'rxjs';
   styleUrls: ['./add-item.component.css'],
 })
 export class AddItemComponent {
+    selectedIcon:string|undefined;
   item: Item = new Item();
   form = this.item;
   priorities = ['extra high', 'high', 'medium', 'low'];
@@ -31,7 +32,11 @@ export class AddItemComponent {
     private itemService: ItemService,
     private router: Router,
     private containerService: ContainersService,
-  ) {}
+  ) {
+    this.form.quantity = 1;
+    this.form.estimatedPrice = 0;
+    this.form.priority = 'low';
+  }
 
   saveItem(): void {
     this.form.containerId = this.containerService.activeContainer;
@@ -68,5 +73,8 @@ export class AddItemComponent {
 
   onReset(form: NgForm): void {
     form.reset();
+  }
+
+  receiveIcon():void {
   }
 }

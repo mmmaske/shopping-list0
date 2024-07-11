@@ -58,6 +58,7 @@ import { ListContainerComponent } from './components/list-container/list-contain
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ListContainerFormComponent } from './components/list-container-form/list-container-form.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,6 +82,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     NavbarComponent,
     ListContainerComponent,
     ListContainerFormComponent,
+    IconChooserComponent,
   ],
   imports: [
     BrowserModule,
@@ -119,6 +121,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
       useValue: environment.production ? undefined : ['localhost', 8080],
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

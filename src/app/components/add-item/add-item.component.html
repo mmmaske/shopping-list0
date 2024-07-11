@@ -56,6 +56,11 @@
         #estimatedPrice="ngModel"
         [ngClass]="{ 'is-invalid': f.submitted && estimatedPrice.errors }"
       />
+      <div *ngIf="f.submitted && estimatedPrice.errors" class="invalid-feedback">
+        <div *ngIf="estimatedPrice.errors['required']">
+          Estimated price is required to be a valid number
+        </div>
+      </div>
     </mat-form-field>
 
     <mat-form-field>
@@ -98,6 +103,7 @@
         <div *ngIf="priority.errors['required']">Priority is required</div>
       </div>
     </mat-form-field>
+    <app-icon-chooser [(selectedIcon)]="selectedIcon" (selectedIconChange)="receiveIcon()"></app-icon-chooser>
   </mat-dialog-content>
   <mat-card-actions>
     <button type="submit" class="btn btn-primary">Save</button>
