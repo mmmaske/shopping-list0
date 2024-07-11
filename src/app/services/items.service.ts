@@ -179,45 +179,6 @@ export class ItemService {
     );
   }
 
-  handleDeleteSelected() {
-    if (this.selectedItems.length > 0) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `You're going to be deleting ${this.selectedItems.length} items and they can't be recovered.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const delete$ = this.deleteSelected(this.selectedItems).subscribe(
-            () => {
-              Swal.fire({
-                title: `${this.selectedItems.length} items deleted!`,
-                icon: 'success',
-                confirmButtonText:
-                  'Thank you for deleting those items, shopping list website!',
-              });
-              this.selectMultiple = false;
-              this.selectedItems = [];
-            },
-            (error) => {
-              Swal.fire({
-                title: `Unable to delete ${this.selectedItems.length} items!`,
-                text: error,
-                icon: 'error',
-                confirmButtonText: "I'm sorry, I'll try to do better next time",
-              });
-              this.selectMultiple = false;
-              this.selectedItems = [];
-            },
-          );
-        }
-      });
-    }
-  }
-
   deleteSelected(documentIds: string[]): Observable<void> {
     return from(
       this.db.firestore.runTransaction(async (transaction) => {
