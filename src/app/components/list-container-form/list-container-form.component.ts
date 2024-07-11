@@ -17,7 +17,7 @@ import {
   AngularFirestore,
   DocumentReference,
 } from '@angular/fire/compat/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 @Component({
   selector: 'app-list-container-form',
@@ -28,7 +28,11 @@ export class ListContainerFormComponent {
   container: Container = new Container();
   form = this.container;
   submitted = false;
+  currentlyUploading = false;
+  public uploadProgress:number=0;
   public selectedFile: any;
+  public uploadedFile:File|undefined;
+  public uploadedFileURL:string='';
   private storage = getStorage();
 
   readonly dialogRef = inject(MatDialogRef<ListContainerFormComponent>);
@@ -39,30 +43,13 @@ export class ListContainerFormComponent {
   ) {}
 
   saveContainer(): void {
+    this.form.displayImage = this.uploadedFileURL?this.uploadedFileURL:'';
     this.containerService
       .create(this.form)
       .then((createResult: DocumentReference) => {
         console.log('Created new container successfully!');
         const docId = createResult.id;
-        const docRef = ref(this.storage, docId);
-        if (this.selectedFile) {
-          uploadBytes(docRef, this.selectedFile).then(
-            (uploadResult: Object) => {
-              console.log('uploadresult', uploadResult);
-              getDownloadURL(docRef)
-                .then((url) => {
-                  console.log('url', url);
-                  return url;
-                })
-                .then((returned) => {
-                  console.log('returned', returned);
-                  this.containerService.update(docId, {
-                    displayImage: returned,
-                  });
-                });
-            },
-          );
-        }
+
         Swal.fire({
           title: `${this.form.title} added to your container list.`,
           timer: 1500,
@@ -92,6 +79,34 @@ export class ListContainerFormComponent {
   }
 
   onFileSelected(event: any): void {
+    this.currentlyUploading = true;
     this.selectedFile = event.target.files[0] ?? null;
+
+    if (this.selectedFile) {
+        const filename = this.containerService.userRef.id + "/" + Date.now() +'-'+ this.selectedFile.name;
+        const docRef = ref(this.storage, filename);
+        uploadBytesResumable(docRef, this.selectedFile).on('state_changed',
+            (snapshot) => {
+                this.uploadProgress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                console.log('upload progress:', this.uploadProgress);
+            },
+            (err) => {
+                console.log("File upload error: ",err);
+            },
+            () => {
+                getDownloadURL(docRef)
+                .then((url) => {
+                  console.log('url', url);
+                  return url;
+                })
+                .then((returned) => {
+                    console.log('upload complete', returned);
+                    this.currentlyUploading = false;
+                    this.uploadProgress=0;
+                    this.uploadedFile = JSON.parse(returned);
+                });
+            }
+        )
+      }
   }
 }
