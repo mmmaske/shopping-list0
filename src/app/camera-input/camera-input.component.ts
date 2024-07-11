@@ -1,6 +1,14 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import {
+  getStorage,
+  ref,
+  uploadString,
+  getDownloadURL,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { AuthService } from '../services/auth';
 
 @Component({
   selector: 'app-camera-input',
@@ -9,6 +17,8 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 })
 export class CameraInputComponent implements OnInit {
   @Output() dataEvent: EventEmitter<any> = new EventEmitter();
+
+  constructor(private auth: AuthService) {}
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -20,6 +30,9 @@ export class CameraInputComponent implements OnInit {
     // height: {ideal: 576}
   };
   public errors: WebcamInitError[] = [];
+  public selectedFile: File | null = null;
+  private capturedImageURL: string = '';
+  private uploadProgress: number | undefined;
 
   // latest snapshot
   public webcamImage: WebcamImage | undefined;
@@ -31,6 +44,8 @@ export class CameraInputComponent implements OnInit {
     boolean | string
   >();
 
+  private storage = getStorage();
+
   public ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs().then(
       (mediaDevices: MediaDeviceInfo[]) => {
@@ -41,6 +56,7 @@ export class CameraInputComponent implements OnInit {
 
   public triggerSnapshot(): void {
     this.trigger.next();
+    this.uploadToFireStore();
     this.sendDataToParent();
   }
 
@@ -81,7 +97,71 @@ export class CameraInputComponent implements OnInit {
   }
 
   sendDataToParent() {
-    const dataToSend = this.webcamImage?.imageAsDataUrl;
+    const dataToSend = this.capturedImageURL;
     this.dataEvent.emit(dataToSend);
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] ?? null;
+    console.log(this.selectedFile);
+  }
+
+  uploadToFireStore(): void {
+    const b64toBlob = (b64Data: string, contentType = '', sliceSize = 512) => {
+      const byteCharacters = atob(b64Data);
+      const byteArrays = [];
+
+      for (
+        let offset = 0;
+        offset < byteCharacters.length;
+        offset += sliceSize
+      ) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+
+      const blob = new Blob(byteArrays, { type: contentType });
+      return blob;
+    };
+    const filename = this.auth.userData.uid + '/camshot-' + Date.now() + '.jpg';
+    const fs_item = ref(this.storage, filename); // so the image is renamed to the item ID
+    if (this.webcamImage) {
+      const imageblob = b64toBlob(this.webcamImage.imageAsDataUrl);
+
+      const uploadBytes = uploadBytesResumable(fs_item, imageblob).on(
+        'state_changed',
+        (snap) => {
+          this.uploadProgress = Math.round(
+            (snap.bytesTransferred / snap.totalBytes) * 100,
+          );
+          console.log('upload progress:', this.uploadProgress);
+        },
+      );
+
+      const upload = uploadString(
+        fs_item,
+        this.webcamImage.imageAsDataUrl,
+        'data_url',
+      ).then(
+        async (snapshot) => {
+          console.log('snapshot', snapshot);
+          return await getDownloadURL(snapshot.ref).then((url) => {
+            this.capturedImageURL = url;
+            return url;
+          });
+        },
+        (err) => {
+          console.log('upload error', err);
+        },
+      );
+      console.log(upload);
+    }
   }
 }

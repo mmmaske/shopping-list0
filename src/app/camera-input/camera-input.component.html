@@ -26,6 +26,12 @@
     >
       <mat-icon fontIcon="cameraswitch"></mat-icon> Switch Camera
     </button>
+
+    <button type="button" mat-raised-button (click)="fileInput.click()">
+      Upload image
+    </button>
+    <input hidden (change)="onFileSelected($event)" #fileInput type="file" />
+    <span class="file-name">{{ selectedFile?.name }}</span>
     <!--input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow Camera Switch</label>
       <br/>
       DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
