@@ -31,7 +31,6 @@ export class ListContainerFormComponent {
   currentlyUploading = false;
   public uploadProgress:number=0;
   public selectedFile: any;
-  public uploadedFile:File|undefined;
   public uploadedFileURL:string='';
   private storage = getStorage();
 
@@ -103,7 +102,7 @@ export class ListContainerFormComponent {
                     console.log('upload complete', returned);
                     this.currentlyUploading = false;
                     this.uploadProgress=0;
-                    this.uploadedFile = JSON.parse(returned);
+                    this.uploadedFileURL = returned;
                 });
             }
         )
