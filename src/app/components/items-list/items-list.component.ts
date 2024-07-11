@@ -44,6 +44,7 @@ export class ItemsListComponent implements OnInit {
         changes.map((c) => ({ id: c.payload.doc.id, ...c.payload.doc.data() })),
       ),
     );
+  priorityIndexes = ['extrahigh', 'high', 'medium', 'low'];
   combinedData: any;
   containerData: any = {
     title: '',
@@ -97,7 +98,12 @@ export class ItemsListComponent implements OnInit {
       .subscribe((data) => {
         this.itemContainerData = [];
         data.map((item: any) => {
-          item.priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
+          const priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
+          item.priorityClass = priorityClass;
+
+          this.priorityIndexes.forEach((priority, index) => {
+            if (priority === priorityClass) item.priorityIndex = index;
+          });
           console.log(item);
           this.itemContainerData.push(item);
         });
@@ -138,6 +144,11 @@ export class ItemsListComponent implements OnInit {
       console.log('sort by estimatedPrice');
       sorted = sortable.sort(function (a: Item, b: Item) {
         return Number(a.estimatedPrice) - Number(b.estimatedPrice);
+      });
+    } else if (this.setSort === 'priorityIndex') {
+      console.log('sort by priorityIndex');
+      sorted = sortable.sort(function (a: Item, b: Item) {
+        return Number(a.priorityIndex) - Number(b.priorityIndex);
       });
     }
 

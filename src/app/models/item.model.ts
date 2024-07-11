@@ -7,6 +7,7 @@ export class Item {
   description?: string;
   purchased?: boolean;
   priority?: string;
+  priorityIndex?: number;
   priorityClass?: string;
   category?: Reference;
   createdOn?: Date;
