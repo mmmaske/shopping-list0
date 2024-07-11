@@ -1,6 +1,7 @@
 .flex-navbar {
   display: flex;
   border-bottom: 3px solid #000000;
+  background-color:#FFF;
 }
 .center-spacer {
   flex: 1 1 auto;

@@ -60,11 +60,11 @@ div.add-btn button {
   width: 30%;
 }
 .container-info span h2 {
-  float: left;
+  /* float: left; */
   text-transform: uppercase;
 }
 .container-info span img {
-  float: left;
+  /* float: left; */
   border-radius: 50%;
   max-width: 135px;
   max-height: 135px;
