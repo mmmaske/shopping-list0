@@ -1,0 +1,33 @@
+<form
+  name="form"
+  #f="ngForm"
+  (ngSubmit)="f.form.valid && onSubmit()"
+  novalidate
+>
+  <h3 mat-dialog-title>Share {{ containerData?.title }} container</h3>
+  <mat-dialog-content class="register-form">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        name="email"
+        [(ngModel)]="form.share"
+        required
+        email
+        #email="ngModel"
+        [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
+      />
+      <div *ngIf="f.submitted && email.errors" class="invalid-feedback">
+        <div *ngIf="email.errors['required']">Email is required</div>
+        <div *ngIf="email.errors['email']">Email is invalid</div>
+      </div>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-card-actions>
+    <button style="margin: 0px 0px 10px 15px" mat-fab extended type="submit">
+      <mat-icon>save</mat-icon>
+      Save
+    </button>
+  </mat-card-actions>
+</form>
