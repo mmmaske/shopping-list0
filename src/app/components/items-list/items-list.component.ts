@@ -107,7 +107,7 @@ export class ItemsListComponent implements OnInit {
         this.itemContainerData = [];
         data.map((item: any) => {
           const priorityClass = item.priority?.replace(/\s/g, ''); // remove spaces from priority
-          item.priorityClass = priorityClass;
+          item.priorityClass = !item.purchased ? priorityClass : 'purchased';
 
           this.priorityIndexes.forEach((priority, index) => {
             if (priority === priorityClass) item.priorityIndex = index;
