@@ -21,7 +21,7 @@ import { map } from 'rxjs';
   styleUrls: ['./add-item.component.css'],
 })
 export class AddItemComponent {
-    selectedIcon:string|undefined;
+  selectedIcon: string | undefined;
   item: Item = new Item();
   form = this.item;
   priorities = ['extra high', 'high', 'medium', 'low'];
@@ -75,6 +75,5 @@ export class AddItemComponent {
     form.reset();
   }
 
-  receiveIcon():void {
-  }
+  receiveIcon(): void {}
 }

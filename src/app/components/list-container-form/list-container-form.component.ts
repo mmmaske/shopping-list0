@@ -17,7 +17,12 @@ import {
   AngularFirestore,
   DocumentReference,
 } from '@angular/fire/compat/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 
 @Component({
   selector: 'app-list-container-form',
@@ -29,9 +34,9 @@ export class ListContainerFormComponent {
   form = this.container;
   submitted = false;
   currentlyUploading = false;
-  public uploadProgress:number=0;
+  public uploadProgress: number = 0;
   public selectedFile: any;
-  public uploadedFileURL:string='';
+  public uploadedFileURL: string = '';
   private storage = getStorage();
 
   readonly dialogRef = inject(MatDialogRef<ListContainerFormComponent>);
@@ -42,7 +47,7 @@ export class ListContainerFormComponent {
   ) {}
 
   saveContainer(): void {
-    this.form.displayImage = this.uploadedFileURL?this.uploadedFileURL:'';
+    this.form.displayImage = this.uploadedFileURL ? this.uploadedFileURL : '';
     this.containerService
       .create(this.form)
       .then((createResult: DocumentReference) => {
@@ -82,30 +87,38 @@ export class ListContainerFormComponent {
     this.selectedFile = event.target.files[0] ?? null;
 
     if (this.selectedFile) {
-        const filename = this.containerService.userRef.id + "/" + Date.now() +'-'+ this.selectedFile.name;
-        const docRef = ref(this.storage, filename);
-        uploadBytesResumable(docRef, this.selectedFile).on('state_changed',
-            (snapshot) => {
-                this.uploadProgress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                console.log('upload progress:', this.uploadProgress);
-            },
-            (err) => {
-                console.log("File upload error: ",err);
-            },
-            () => {
-                getDownloadURL(docRef)
-                .then((url) => {
-                  console.log('url', url);
-                  return url;
-                })
-                .then((returned) => {
-                    console.log('upload complete', returned);
-                    this.currentlyUploading = false;
-                    this.uploadProgress=0;
-                    this.uploadedFileURL = returned;
-                });
-            }
-        )
-      }
+      const filename =
+        this.containerService.userRef.id +
+        '/' +
+        Date.now() +
+        '-' +
+        this.selectedFile.name;
+      const docRef = ref(this.storage, filename);
+      uploadBytesResumable(docRef, this.selectedFile).on(
+        'state_changed',
+        (snapshot) => {
+          this.uploadProgress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+          );
+          console.log('upload progress:', this.uploadProgress);
+        },
+        (err) => {
+          console.log('File upload error: ', err);
+        },
+        () => {
+          getDownloadURL(docRef)
+            .then((url) => {
+              console.log('url', url);
+              return url;
+            })
+            .then((returned) => {
+              console.log('upload complete', returned);
+              this.currentlyUploading = false;
+              this.uploadProgress = 0;
+              this.uploadedFileURL = returned;
+            });
+        },
+      );
+    }
   }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument,
   DocumentReference,
 } from '@angular/fire/compat/firestore';
 import { Item } from '../models/item.model';
@@ -14,9 +13,6 @@ import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest, concat, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { catchError, from, map } from 'rxjs';
-import Swal from 'sweetalert2';
-import { Transaction, deleteDoc, runTransaction } from 'firebase/firestore';
-import { writeBatch } from 'firebase/firestore';
 
 import { ContainersService } from './containers.service';
 @Injectable({

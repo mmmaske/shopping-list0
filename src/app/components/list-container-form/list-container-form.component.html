@@ -54,8 +54,12 @@
     <mat-progress-bar [value]="uploadProgress"></mat-progress-bar>
   </mat-dialog-content>
   <mat-card-actions>
-    <button type="submit" class="btn btn-primary" *ngIf="!currentlyUploading">Save</button>
-    <button class="btn btn-secondary" *ngIf="currentlyUploading">Please wait...</button>
+    <button type="submit" class="btn btn-primary" *ngIf="!currentlyUploading">
+      Save
+    </button>
+    <button class="btn btn-secondary" *ngIf="currentlyUploading">
+      Please wait...
+    </button>
     <button
       type="button"
       (click)="onReset(f)"
