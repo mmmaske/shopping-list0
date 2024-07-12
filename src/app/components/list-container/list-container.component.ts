@@ -29,6 +29,7 @@ export class ListContainerComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
+    this.cont.activeContainer = '';
     this.retrieveContainers();
   }
 

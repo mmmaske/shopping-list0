@@ -50,6 +50,7 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.message = '';
+    this.cont.activeContainer = '';
     this.setActiveFromRoute();
   }
   setActiveFromRoute() {
