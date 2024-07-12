@@ -59,6 +59,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { ListContainerFormComponent } from './components/list-container-form/list-container-form.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
+import { ShareContainerFormComponent } from './components/share-container-form/share-container-form.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,6 +86,7 @@ import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
     ListContainerComponent,
     ListContainerFormComponent,
     IconChooserComponent,
+    ShareContainerFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,6 +115,7 @@ import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
     MatGridListModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    DragDropModule,
   ],
   providers: [
     AuthService, // auth emulator code found here

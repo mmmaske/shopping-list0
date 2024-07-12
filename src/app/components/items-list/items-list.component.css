@@ -101,3 +101,8 @@ h2 .container-control {
 h2 .container-control:hover {
   opacity: 0.5;
 }
+
+.purchased {
+    background-color:#a7a7a7;
+    text-decoration: line-through;
+}
