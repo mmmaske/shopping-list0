@@ -57,7 +57,7 @@ div.add-btn button {
 }
 .container-info span {
   display: inline-block;
-  width: 30%;
+  width: 80%;
 }
 .container-info span h2 {
   /* float: left; */
@@ -70,7 +70,7 @@ div.add-btn button {
   max-height: 135px;
 }
 .container-info span p {
-  display: inline-block;
+  display: block;
 }
 
 .value-display {
@@ -92,4 +92,12 @@ mat-list-item:hover .item-title ~ .item-description {
 
 .cdk-overlay-connected-position-bounding-box .cdk-overlay-pane {
   width: 200px !important;
+}
+h2 .container-control {
+  cursor: pointer;
+  display: inline;
+  opacity: 0.25;
+}
+h2 .container-control:hover {
+  opacity: 0.5;
 }

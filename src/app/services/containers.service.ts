@@ -7,6 +7,7 @@ import {
 import { Container } from '../models/container.model';
 import { debug, loginDetails } from '../utils/common';
 import { User } from '../models/user';
+import { userContainer } from '../models/userContainer.model';
 import { AuthService } from './auth';
 import { getStorage, ref, uploadString } from 'firebase/storage';
 import { connectStorageEmulator } from 'firebase/storage';
@@ -20,11 +21,14 @@ import { map } from 'rxjs';
 export class ContainersService {
   private containerPath = '/containers';
   private usersPath = '/users';
+  private userContainerPath = '/userContainer';
   public localUser: User = /*this.authServ.userData*/ loginDetails();
   public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
   public containerCollection: any;
   containersRef: AngularFirestoreCollection<Container>;
   containerRef?: DocumentReference<Container>;
+  userContainerRef: AngularFirestoreCollection<userContainer>;
+  userContainer?: DocumentReference<userContainer>;
   containerData?: Object;
   usersRef: AngularFirestoreCollection<User>;
   private storage = getStorage();
@@ -40,6 +44,7 @@ export class ContainersService {
     }
     this.containersRef = db.collection(this.containerPath);
     this.usersRef = db.collection(this.usersPath);
+    this.userContainerRef = db.collection(this.userContainerPath);
   }
 
   uploadToFireStore(id: string, file: string): void {
@@ -110,12 +115,16 @@ export class ContainersService {
   create(container: Container): any {
     let now = new Date();
     if (this.localUser) {
-      return this.containersRef.add({
-        ...container,
-        createdOn: now,
-        updatedOn: now,
-        createdBy: this.userRef,
-      });
+      return this.containersRef
+        .add({
+          ...container,
+          createdOn: now,
+          updatedOn: now,
+          createdBy: this.userRef,
+        })
+        .then(async (created) => {
+          return await this.createReference(created);
+        });
     } else {
       return this.containersRef.add({
         ...container,
@@ -123,6 +132,15 @@ export class ContainersService {
         updatedOn: now,
       });
     }
+  }
+
+  async createReference(created: DocumentReference<Container>): Promise<{}> {
+    return this.userContainerRef.add({
+      createdBy: this.userRef,
+      userRef: this.userRef,
+      containerRef: created,
+      createdOn: new Date(),
+    });
   }
 
   update(id: string, data: any): Promise<void> {

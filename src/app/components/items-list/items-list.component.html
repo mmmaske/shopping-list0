@@ -5,7 +5,15 @@
         src="{{ containerData.displayImage }}"
         *ngIf="containerData.displayImage"
       />
-      <h2 *ngIf="containerData.title">{{ containerData.title }}</h2>
+      <h2 *ngIf="containerData.title">
+        {{ containerData.title }}
+        <span (click)="handleDeleteContainer()" class="container-control">
+          <mat-icon fontIcon="delete"></mat-icon>
+        </span>
+        <span (click)="handleShareContainer()" class="container-control">
+          <mat-icon fontIcon="share"></mat-icon>
+        </span>
+      </h2>
       <p *ngIf="containerData.description">{{ containerData.description }}</p>
       <p *ngIf="containerData && items && items.length > 1">
         <button mat-fab extended (click)="sortSelect.open()">

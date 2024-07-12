@@ -17,6 +17,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { ContainersService } from 'src/app/services/containers.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -211,5 +212,60 @@ export class ItemsListComponent implements OnInit {
 
   changeSortCol(): void {
     this.refreshList();
+  }
+
+  handleDeleteContainer(): void {
+    const containerTitle = this.containerData.title;
+
+    if (this.hasItems) {
+      Swal.fire({
+        title: `Cannot delete ${containerTitle}!`,
+        text: `This container still has items. You must delete the items before deleting the container.`,
+        icon: 'warning',
+        confirmButtonText: `Okay shopping list website, I'll delete the items first.`,
+      });
+    } else {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `You're going to be deleting the ${containerTitle} container and it can't be recovered.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.containerService
+            .delete(this.containerService.activeContainer)
+            .then(
+              (deleteresult) => {
+                this.router.navigate(['/containers']);
+                Swal.fire({
+                  title: `${containerTitle} container deleted!`,
+                  icon: 'success',
+                  confirmButtonText:
+                    'Thank you for deleting that container, shopping list website!',
+                });
+                console.log(deleteresult);
+                return deleteresult;
+              },
+              (error) => {
+                Swal.fire({
+                  title: `Unable to delete ${containerTitle} items!`,
+                  text: error,
+                  icon: 'error',
+                  confirmButtonText:
+                    "I'm sorry, I'll try to do better next time",
+                });
+              },
+            );
+        }
+        return result;
+      });
+    }
+  }
+
+  handleShareContainer():void {
+    
   }
 }

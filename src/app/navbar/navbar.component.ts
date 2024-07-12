@@ -15,6 +15,7 @@ import {
 import { AddItemComponent } from '../components/add-item/add-item.component';
 import { ItemService } from '../services/items.service';
 import { ListContainerFormComponent } from '../components/list-container-form/list-container-form.component';
+import { ContainersService } from '../services/containers.service';
 
 @Component({
   selector: 'app-navbar',
@@ -36,6 +37,7 @@ export class NavbarComponent {
     public authServ: AuthService,
     private router: Router,
     public item: ItemService,
+    public container: ContainersService,
   ) {}
   public name: string = '';
   readonly dialog = inject(MatDialog);
@@ -82,17 +84,19 @@ export class NavbarComponent {
 
   handleDeleteSelected(): void {
     if (this.item.selectedItems.length > 0) {
-        Swal.fire({
-          title: 'Are you sure?',
-          text: `You're going to be deleting ${this.item.selectedItems.length} items and they can't be recovered.`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            const delete$ = this.item.deleteSelected(this.item.selectedItems).subscribe(
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `You're going to be deleting ${this.item.selectedItems.length} items and they can't be recovered.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const delete$ = this.item
+            .deleteSelected(this.item.selectedItems)
+            .subscribe(
               () => {
                 Swal.fire({
                   title: `${this.item.selectedItems.length} items deleted!`,
@@ -108,14 +112,15 @@ export class NavbarComponent {
                   title: `Unable to delete ${this.item.selectedItems.length} items!`,
                   text: error,
                   icon: 'error',
-                  confirmButtonText: "I'm sorry, I'll try to do better next time",
+                  confirmButtonText:
+                    "I'm sorry, I'll try to do better next time",
                 });
                 this.item.selectMultiple = false;
                 this.item.selectedItems = [];
               },
             );
-          }
-        });
-      }
+        }
+      });
+    }
   }
 }
