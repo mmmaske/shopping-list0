@@ -1,6 +1,6 @@
 <div *ngIf="currentItem" class="edit-form">
   <form>
-    <div style="float: left; max-width: 50%">
+    <div class="w3column" style="background-color: #aaa">
       <div class="form-group">
         <div *ngIf="edit">
           <app-camera-input
@@ -12,8 +12,15 @@
         </div>
       </div>
     </div>
-
-    <div style="float: left; max-width: 50%">
+    <div class="w3column" style="background-color: #bbb">
+      <button
+        mat-fab
+        extended
+        *ngIf="!edit"
+        routerLink="/container/{{ currentItem.containerRef.id }}"
+      >
+        <mat-icon fontIcon="arrow_back"></mat-icon>
+      </button>
       <div *ngIf="edit">
         <mat-form-field>
           <mat-label for="title">Title</mat-label>
@@ -92,23 +99,6 @@
           >
         </mat-select>
       </mat-form-field>
-      <div class="form-group">
-        <div *ngIf="edit">
-          <label for="sharedWith">Share With:</label>
-          <select
-            class="form-control"
-            id="sharedWith"
-            required
-            [(ngModel)]="currentItem.sharedWith"
-            name="sharedWith"
-            multiple
-          >
-            <option *ngFor="let user of usersOptions" value="{{ user['uid'] }}">
-              {{ user["displayName"] }}
-            </option>
-          </select>
-        </div>
-      </div>
 
       <div class="form-group">
         <label><strong>Status:</strong></label>
@@ -122,55 +112,46 @@
         <label><strong>Updated On:</strong></label>
         {{ currentItem.updatedOnDisplay | date: "YYYY-MM-dd HH:mm:ss" }}
       </div>
+
+      <button
+        mat-fab
+        extended
+        *ngIf="currentItem.purchased && !edit"
+        (click)="updatePurchased(false)"
+      >
+        <mat-icon fontIcon="add_reaction"></mat-icon>
+        Consume
+      </button>
+      <button
+        mat-fab
+        extended
+        *ngIf="!currentItem.purchased && !edit"
+        (click)="updatePurchased(true)"
+      >
+        <mat-icon fontIcon="shopping_cart_checkout"></mat-icon>
+        Purchase
+      </button>
+
+      <button mat-flat-button *ngIf="edit" (click)="deleteItem()">
+        <mat-icon fontIcon="delete"></mat-icon>
+        Delete
+      </button>
+      <button mat-flat-button *ngIf="edit" (click)="cancelEdit()">
+        <mat-icon fontIcon="undo"></mat-icon>
+        Cancel
+      </button>
+
+      <button mat-fab extended *ngIf="!edit" type="submit" (click)="editItem()">
+        <mat-icon fontIcon="edit"></mat-icon>
+        Edit
+      </button>
+
+      <button mat-flat-button *ngIf="edit" type="submit" (click)="updateItem()">
+        <mat-icon fontIcon="save"></mat-icon>
+        Update
+      </button>
     </div>
   </form>
-
-  <button
-    mat-fab
-    extended
-    *ngIf="!edit"
-    routerLink="/container/{{ currentItem.containerRef.id }}"
-  >
-    <mat-icon fontIcon="arrow_back"></mat-icon>
-  </button>
-  <button
-    mat-fab
-    extended
-    *ngIf="currentItem.purchased && !edit"
-    (click)="updatePurchased(false)"
-  >
-    <mat-icon fontIcon="add_reaction"></mat-icon>
-    Consume
-  </button>
-  <button
-    mat-fab
-    extended
-    *ngIf="!currentItem.purchased && !edit"
-    (click)="updatePurchased(true)"
-  >
-    <mat-icon fontIcon="shopping_cart_checkout"></mat-icon>
-    Purchase
-  </button>
-
-  <button mat-flat-button *ngIf="edit" (click)="deleteItem()">
-    <mat-icon fontIcon="delete"></mat-icon>
-    Delete
-  </button>
-  <button mat-flat-button *ngIf="edit" (click)="cancelEdit()">
-    <mat-icon fontIcon="undo"></mat-icon>
-    Cancel
-  </button>
-
-  <button mat-fab extended *ngIf="!edit" type="submit" (click)="editItem()">
-    <mat-icon fontIcon="edit"></mat-icon>
-    Edit
-  </button>
-
-  <button mat-flat-button *ngIf="edit" type="submit" (click)="updateItem()">
-    <mat-icon fontIcon="save"></mat-icon>
-    Update
-  </button>
-  <p>{{ message }}</p>
 </div>
 
 <div class="loadingicon" *ngIf="!currentItem">

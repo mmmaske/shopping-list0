@@ -103,6 +103,10 @@ h2 .container-control:hover {
 }
 
 .purchased {
-    background-color:#a7a7a7;
-    text-decoration: line-through;
+  background-color: #a7a7a7;
+  text-decoration: line-through;
+}
+
+.item-control {
+  float: right;
 }

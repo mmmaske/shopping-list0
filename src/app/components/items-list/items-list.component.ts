@@ -56,10 +56,6 @@ export class ItemsListComponent implements OnInit {
   };
   itemContainerData: any;
   dragTarget: CdkDrag<any> | undefined;
-  mousePosition = {
-    x: 0,
-    y: 0,
-  };
 
   constructor(
     public itemService: ItemService,
@@ -177,103 +173,86 @@ export class ItemsListComponent implements OnInit {
     });
   }
 
-  redirectToItem($event: MouseEvent, item_id: any, index: number): void {
-    if (
-      this.mousePosition.x === $event.screenX &&
-      this.mousePosition.y === $event.screenY
-    ) {
-      if (this.itemService.selectMultiple) return;
-      this.router.navigate([`/item/${item_id}`]); // update the URL
-    } else {
-      if (this.mousePosition.x > $event.screenX) {
-        this.swipeTogglePurchased(item_id);
-      } else {
-        this.swipeDeleteItem(item_id);
-      }
-    }
+  redirectToItem(item_id: any, index: number): void {
+    if (this.itemService.selectMultiple) return;
+    this.router.navigate([`/item/${item_id}`]); // update the URL
   }
   swipeTogglePurchased(currentItem_id: string) {
     console.log(currentItem_id);
     let item: any = [];
-    this.itemService
-      .getItem(currentItem_id)
-      .then((retrieved) => {
-        return retrieved.forEach((value) => {
-          item = value.data();
-          this.itemService
-        .update(currentItem_id, { purchased: !item.purchased })
-        .then(() => {
-            const purchaseMsg = !item.purchased ? "purchased":"consumed";
+    this.itemService.getItem(currentItem_id).then((retrieved) => {
+      return retrieved.forEach((value) => {
+        item = value.data();
+        this.itemService
+          .update(currentItem_id, { purchased: !item.purchased })
+          .then(() => {
+            const purchaseMsg = !item.purchased ? 'purchased' : 'consumed';
             Swal.mixin({
-                toast: true,
-                position: "bottom-end",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.onmouseenter = Swal.stopTimer;
-                  toast.onmouseleave = Swal.resumeTimer;
-                }
-              })
-              .fire({
-                icon: "success",
-                title: `${item.title} was marked as ${purchaseMsg}.`
-              });
-        })
-        .catch((err) => console.log(err));
-        });
+              toast: true,
+              position: 'bottom-end',
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            }).fire({
+              icon: 'success',
+              title: `${item.title} was marked as ${purchaseMsg}.`,
+            });
+          })
+          .catch((err) => console.log(err));
+      });
     });
-}
+  }
   swipeDeleteItem(currentItem_id: string) {
     console.log(currentItem_id);
     let item: any = [];
-    this.itemService
-      .getItem(currentItem_id)
-      .then((retrieved) => {
-        return retrieved.forEach((value) => {
-          item = value.data();
-          if (item) {
-            Swal.fire({
-              title: 'Are you sure?',
-              text: `You are deleting ${item.title} from your shopping list. You won't be able to revert this!`,
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.itemService
-                  .delete(currentItem_id)
-                  .then(() => {
-                    this.router.navigate([
-                      `container/${this.containerService.activeContainer}`,
-                    ]);
-                    this.refreshList();
-                    Swal.mixin({
-                        toast: true,
-                        position: "bottom-end",
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.onmouseenter = Swal.stopTimer;
-                          toast.onmouseleave = Swal.resumeTimer;
-                        }
-                      })
-                      .fire({
-                        icon: "success",
-                        title: `${item.title} was removed from your shopping list.`
-                      });
-                  })
-                  .catch((err) => console.log(err));
-              }
-            });
-          }
-          console.log(value.data());
-          return value.data();
-        });
+    this.itemService.getItem(currentItem_id).then((retrieved) => {
+      return retrieved.forEach((value) => {
+        item = value.data();
+        if (item) {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: `You are deleting ${item.title} from your shopping list. You won't be able to revert this!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.itemService
+                .delete(currentItem_id)
+                .then(() => {
+                  this.router.navigate([
+                    `container/${this.containerService.activeContainer}`,
+                  ]);
+                  this.refreshList();
+                  Swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    },
+                  }).fire({
+                    icon: 'success',
+                    title: `${item.title} was removed from your shopping list.`,
+                  });
+                })
+                .catch((err) => console.log(err));
+            }
+          });
+        }
+        console.log(value.data());
+        return value.data();
       });
+    });
   }
 
   setActiveItem(item: /*Item*/ any, index: number = -1): void {
@@ -377,16 +356,16 @@ export class ItemsListComponent implements OnInit {
     });
   }
 
-  onMouseDown($event: MouseEvent) {
-    console.log($event);
-    this.mousePosition.x = $event.screenX;
-    this.mousePosition.y = $event.screenY;
-  }
-  drop(ev: CdkDragEnd<any>): void {
+  drop(ev: CdkDragEnd<any>, item_id: string): void {
     console.log('drop event', ev);
     this.dragTarget = ev.source;
     this.dragReset();
     console.log(ev);
+    if (ev.distance.x < 0) {
+      this.swipeTogglePurchased(item_id);
+    } else {
+      this.swipeDeleteItem(item_id);
+    }
   }
   dragReset() {
     this.dragTarget?._dragRef.reset();
