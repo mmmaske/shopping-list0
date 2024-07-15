@@ -52,11 +52,10 @@
         [ngClass]="item.priorityClass"
         [class.active]="item.id == currentItemId"
         [class.purchased]="item.purchased"
-        (mousedown)="onMouseDown($event)"
-        (click)="redirectToItem($event, item.id, i)"
         cdkDrag
         cdkDragLockAxis="x"
-        (cdkDragEnded)="drop($event)"
+        *ngIf="item.id"
+        (cdkDragEnded)="drop($event, item.id)"
       >
         <h5>
           <mat-checkbox
@@ -82,6 +81,11 @@
             >
               P{{ item.quantity * item.estimatedPrice | number: "1.2-2" }}
             </small>
+          </span>
+          <span class="item-control">
+            <button mat-icon-button (click)="redirectToItem(item.id, i)">
+              <mat-icon fontIcon="arrow_right"></mat-icon>
+            </button>
           </span>
         </h5>
       </mat-list-item>
