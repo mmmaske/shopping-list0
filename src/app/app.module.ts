@@ -61,6 +61,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
 import { ShareContainerFormComponent } from './components/share-container-form/share-container-form.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './auth.reducer';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     DragDropModule,
+    StoreModule.forRoot({ user: userReducer }),
   ],
   providers: [
     AuthService, // auth emulator code found here
