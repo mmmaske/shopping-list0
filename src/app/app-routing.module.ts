@@ -17,7 +17,7 @@ import { ListContainerFormComponent } from './components/list-container-form/lis
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { NgrxStoreComponent } from './ngrx-store/ngrx-store.component';
 const routes: Routes = [
-    { path: 'test', component: NgrxStoreComponent },
+  { path: 'test', component: NgrxStoreComponent },
   { path: '', component: HomeComponent, canActivate: [SignedinGuard] },
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   {

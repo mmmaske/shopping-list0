@@ -5,16 +5,18 @@ import { DataState } from './data.reducer';
 import { DataService } from './data.service';
 import { selectAllData } from './data.selectors';
 
-
 @Component({
   selector: 'app-ngrx-store',
   templateUrl: './ngrx-store.component.html',
-  styleUrls: ['./ngrx-store.component.css']
+  styleUrls: ['./ngrx-store.component.css'],
 })
 export class NgrxStoreComponent {
-    data$: Observable<any[]>; // Replace with your data model
+  data$: Observable<any[]>; // Replace with your data model
 
-  constructor(private store: Store<DataState>, private dataService: DataService) {
+  constructor(
+    private store: Store<DataState>,
+    private dataService: DataService,
+  ) {
     this.data$ = this.store.select(selectAllData);
   }
 
@@ -27,7 +29,8 @@ export class NgrxStoreComponent {
   }
 
   generateRandomString(length: number): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     const charactersLength = characters.length;
 
@@ -39,11 +42,11 @@ export class NgrxStoreComponent {
     return result;
   }
 
-  clickAddDataHandler(){
+  clickAddDataHandler() {
     const obj = {
-        id:Math.random(),
-        name: this.generateRandomString(20),
-    }
+      id: Math.random(),
+      name: this.generateRandomString(20),
+    };
     this.addData(obj.id, obj.name);
   }
 }

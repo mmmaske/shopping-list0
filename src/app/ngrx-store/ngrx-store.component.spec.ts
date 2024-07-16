@@ -8,9 +8,8 @@ describe('NgrxStoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NgrxStoreComponent ]
-    })
-    .compileComponents();
+      declarations: [NgrxStoreComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NgrxStoreComponent);
     component = fixture.componentInstance;
