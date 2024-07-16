@@ -121,7 +121,7 @@ import { dataReducer } from './ngrx-store/data.reducer';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     DragDropModule,
-    StoreModule.forRoot({ data: dataReducer }),
+    StoreModule.forRoot({ randomData: dataReducer }),
   ],
   providers: [
     AuthService, // auth emulator code found here

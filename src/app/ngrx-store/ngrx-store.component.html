@@ -1,6 +1,7 @@
+<button (click)="clickAddDataHandler()">Add</button>
+
 <div *ngFor="let item of data$ | async">
   <p>{{ item.id }} - {{ item.name }}</p>
   <button (click)="removeData(item.id)">Remove</button>
 </div>
 
-<button (click)="clickAddDataHandler()">Add</button>
