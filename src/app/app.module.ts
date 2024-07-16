@@ -61,8 +61,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
 import { ShareContainerFormComponent } from './components/share-container-form/share-container-form.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { StoreModule } from '@ngrx/store';
 import { userReducer } from './auth.reducer';
+import { NgrxStoreComponent } from './ngrx-store/ngrx-store.component';
+import { StoreModule } from '@ngrx/store';
+import { dataReducer } from './ngrx-store/data.reducer';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,7 @@ import { userReducer } from './auth.reducer';
     ListContainerFormComponent,
     IconChooserComponent,
     ShareContainerFormComponent,
+    NgrxStoreComponent,
   ],
   imports: [
     BrowserModule,
@@ -118,7 +121,7 @@ import { userReducer } from './auth.reducer';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     DragDropModule,
-    StoreModule.forRoot({ user: userReducer }),
+    StoreModule.forRoot({ data: dataReducer }),
   ],
   providers: [
     AuthService, // auth emulator code found here
