@@ -17,6 +17,13 @@ import { ItemService } from '../services/items.service';
 import { ListContainerFormComponent } from '../components/list-container-form/list-container-form.component';
 import { ContainersService } from '../services/containers.service';
 
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { DataState } from '../ngrx-store/data.reducer'
+import { DataService } from '../ngrx-store/data.service';
+import { selectAllData } from '../ngrx-store/data.selectors';
+
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -38,9 +45,34 @@ export class NavbarComponent {
     private router: Router,
     public item: ItemService,
     public container: ContainersService,
+    private dataService: DataService,
   ) {}
   public name: string = '';
   readonly dialog = inject(MatDialog);
+
+  generateRandomString(length: number): string {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      result += characters.charAt(randomIndex);
+    }
+
+    return result;
+  }
+  addData(id: number, name: string) {
+    this.dataService.addData(id, name);
+  }
+  addToRandomDataState() {
+    const obj = {
+        id: Math.random(),
+        name: this.generateRandomString(20),
+      };
+      this.addData(obj.id, obj.name);
+  }
 
   handleSignOut(): void {
     this.authServ.SignOut().then((returned) => {
