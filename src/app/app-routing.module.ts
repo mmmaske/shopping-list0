@@ -15,7 +15,9 @@ import { SignedinGuard } from './guard/signedin.guard';
 import { ListContainerComponent } from './components/list-container/list-container.component';
 import { ListContainerFormComponent } from './components/list-container-form/list-container-form.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
+import { NgrxStoreComponent } from './ngrx-store/ngrx-store.component';
 const routes: Routes = [
+    { path: 'test', component: NgrxStoreComponent },
   { path: '', component: HomeComponent, canActivate: [SignedinGuard] },
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   {
