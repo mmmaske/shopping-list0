@@ -65,6 +65,9 @@ import { userReducer } from './auth.reducer';
 import { NgrxStoreComponent } from './ngrx-store/ngrx-store.component';
 import { StoreModule } from '@ngrx/store';
 import { dataReducer } from './ngrx-store/data.reducer';
+import { saveState,loadState } from './ngrx-store/data.saver';
+import { Store } from '@ngrx/store';
+import { DataState } from './ngrx-store/data.reducer';
 
 @NgModule({
   declarations: [
@@ -134,4 +137,18 @@ import { dataReducer } from './ngrx-store/data.reducer';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+
+    constructor(private store: Store<DataState>) {
+        this.loadInitialState();
+        this.store.subscribe((allData) => {
+            if(allData.entities) saveState(allData);
+        });
+      }
+      private loadInitialState() {
+        const initialState = loadState();
+        if (initialState) {
+          this.store.dispatch({ type: 'initialLoad', payload: initialState }); // Action to set initial state
+        }
+      }
+}
