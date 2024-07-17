@@ -130,9 +130,7 @@ import { UserEffects } from './user.effects';
     StoreModule.forFeature('counter', counterReducer),
     StoreModule.forFeature('user', userReducer),
     EffectsModule.forRoot([]),
-    EffectsModule.forFeature([
-        UserEffects
-    ]),
+    EffectsModule.forFeature([UserEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),

@@ -5,7 +5,7 @@ export interface AppState {
 
 export interface CounterState {
   count: number;
-  incrementTimes:string[]
+  incrementTimes: string[];
 }
 
 export interface UserState {
@@ -15,7 +15,7 @@ export interface UserState {
 
 export const initialCounterState: CounterState = {
   count: 0,
-  incrementTimes:[]
+  incrementTimes: [],
 };
 
 export const initialUserState: UserState = {

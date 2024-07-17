@@ -4,14 +4,10 @@ import * as CounterActions from './incrementer.actions';
 
 const _counterReducer = createReducer(
   initialCounterState,
-  on(CounterActions.increment, (state,{timestamp}) => ({
+  on(CounterActions.increment, (state, { timestamp }) => ({
     ...state,
     count: state.count + 1,
-    incrementTimes:[
-        ...state.incrementTimes,
-        timestamp
-    ]
-
+    incrementTimes: [...state.incrementTimes, timestamp],
   })),
   on(CounterActions.decrement, (state) => ({
     ...state,

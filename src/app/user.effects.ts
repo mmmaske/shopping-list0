@@ -5,7 +5,6 @@ import * as UserActions from './user.actions';
 
 @Injectable()
 export class UserEffects {
-
   // Example effect to handle login action
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -14,8 +13,8 @@ export class UserEffects {
         // Perform side effects like storing to local storage, etc.
         console.log(`User logged in as ${userName}`);
         return { type: 'No action needed' }; // No new action needed here, just logging
-      })
-    )
+      }),
+    ),
   );
 
   constructor(private actions$: Actions) {}

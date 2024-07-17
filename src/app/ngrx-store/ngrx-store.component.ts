@@ -18,7 +18,7 @@ export class NgrxStoreComponent {
 
   increment() {
     const now = new Date().toISOString();
-    this.store.dispatch(increment({timestamp:now}));
+    this.store.dispatch(increment({ timestamp: now }));
   }
 
   decrement() {
