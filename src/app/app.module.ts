@@ -61,13 +61,15 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
 import { ShareContainerFormComponent } from './components/share-container-form/share-container-form.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { userReducer } from './auth.reducer';
 import { NgrxStoreComponent } from './ngrx-store/ngrx-store.component';
 import { StoreModule } from '@ngrx/store';
-import { dataReducer } from './ngrx-store/data.reducer';
-import { saveState,loadState } from './ngrx-store/data.saver';
 import { Store } from '@ngrx/store';
-import { DataState } from './ngrx-store/data.reducer';
+import { counterReducer } from './incrementer.reducer';
+import { userReducer } from './user.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { increment } from './incrementer.actions';
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './user.effects';
 
 @NgModule({
   declarations: [
@@ -124,7 +126,16 @@ import { DataState } from './ngrx-store/data.reducer';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     DragDropModule,
-    StoreModule.forRoot({ randomData: dataReducer }),
+    StoreModule.forRoot({}),
+    StoreModule.forFeature('counter', counterReducer),
+    StoreModule.forFeature('user', userReducer),
+    EffectsModule.forRoot([]),
+    EffectsModule.forFeature([
+        UserEffects
+    ]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
   ],
   providers: [
     AuthService, // auth emulator code found here
@@ -137,18 +148,4 @@ import { DataState } from './ngrx-store/data.reducer';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-
-    constructor(private store: Store<DataState>) {
-        this.loadInitialState();
-        this.store.subscribe((allData) => {
-            if(allData.entities) saveState(allData);
-        });
-      }
-      private loadInitialState() {
-        const initialState = loadState();
-        if (initialState) {
-          this.store.dispatch({ type: 'initialLoad', payload: initialState }); // Action to set initial state
-        }
-      }
-}
+export class AppModule {}

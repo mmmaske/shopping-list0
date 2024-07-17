@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { DataState } from './data.reducer';
-import { DataService } from './data.service';
-import { selectAllData } from './data.selectors';
+import { AppState } from '../models/appstate.model';
+import { increment, decrement, reset } from '../incrementer.actions';
+import { login, logout } from '../user.actions';
 
 @Component({
   selector: 'app-ngrx-store',
@@ -11,42 +10,30 @@ import { selectAllData } from './data.selectors';
   styleUrls: ['./ngrx-store.component.css'],
 })
 export class NgrxStoreComponent {
-  data$: Observable<any[]>; // Replace with your data model
+  counter$ = this.store.select((state) => state.counter.count);
+  userName$ = this.store.select((state) => state.user.userName);
+  isLoggedIn$ = this.store.select((state) => state.user.isLoggedIn);
 
-  constructor(
-    private store: Store<DataState>,
-    private dataService: DataService,
-  ) {
-    this.data$ = this.store.select(selectAllData);
+  constructor(private store: Store<AppState>) {}
+
+  increment() {
+    const now = new Date().toISOString();
+    this.store.dispatch(increment({timestamp:now}));
   }
 
-  addData(id: number, name: string) {
-    this.dataService.addData(id, name);
+  decrement() {
+    this.store.dispatch(decrement());
   }
 
-  removeData(id: number) {
-    this.dataService.removeData(id);
+  reset() {
+    this.store.dispatch(reset());
   }
 
-  generateRandomString(length: number): string {
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    const charactersLength = characters.length;
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charactersLength);
-      result += characters.charAt(randomIndex);
-    }
-
-    return result;
+  login(userName: string) {
+    this.store.dispatch(login({ userName }));
   }
 
-  clickAddDataHandler() {
-    const obj = {
-      id: Math.random(),
-      name: this.generateRandomString(20),
-    };
-    this.addData(obj.id, obj.name);
+  logout() {
+    this.store.dispatch(logout());
   }
 }
