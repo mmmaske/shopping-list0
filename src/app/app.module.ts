@@ -73,6 +73,7 @@ import { UserEffects } from './user.effects';
 import { authReducer } from './auth.reducer';
 import { multiSelectReducer } from './multiselect.reducer';
 import { authEffects } from './auth.effects';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { authEffects } from './auth.effects';
     MatGridListModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatBadgeModule,
     DragDropModule,
     StoreModule.forRoot({}),
     StoreModule.forFeature('counter', counterReducer),
