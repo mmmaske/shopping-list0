@@ -72,6 +72,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './user.effects';
 import { authReducer } from './auth.reducer';
 import { multiSelectReducer } from './multiselect.reducer';
+import { authEffects } from './auth.effects';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { multiSelectReducer } from './multiselect.reducer';
     StoreModule.forFeature('multiSelect', multiSelectReducer),
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([UserEffects]),
+    EffectsModule.forFeature([authEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),

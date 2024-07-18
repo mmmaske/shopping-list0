@@ -263,13 +263,13 @@ export class ItemsListComponent implements OnInit {
   }
 
   updateCheckbox(event: MatCheckboxChange) {
-    const item_id=event.source.value;
+    const item_id = event.source.value;
     if (event.checked) {
-    this.store.dispatch(multiSelectActions.check({id:item_id}));
+      this.store.dispatch(multiSelectActions.check({ id: item_id }));
       this.itemService.selectedItems.push(item_id); // save document ID selectedItems
-    }else {
+    } else {
       //remove item ID from selectedItems
-      this.store.dispatch(multiSelectActions.uncheck({id:item_id}));
+      this.store.dispatch(multiSelectActions.uncheck({ id: item_id }));
       const index = this.itemService.selectedItems.indexOf(item_id);
       if (index > -1) {
         this.itemService.selectedItems.splice(index, 1);
