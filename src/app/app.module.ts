@@ -73,7 +73,7 @@ import { UserEffects } from './user.effects';
 import { authReducer } from './auth.reducer';
 import { multiSelectReducer } from './multiselect.reducer';
 import { authEffects } from './auth.effects';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
