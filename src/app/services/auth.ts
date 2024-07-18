@@ -13,7 +13,7 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import { environment } from '../environments/environment';
 import { authStateActions } from '../auth.actions';
 import { Store } from '@ngrx/store';
-import { initialState } from '../auth.reducer';
+import { initialUserState } from '../auth.reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +53,7 @@ export class AuthService {
       .then((result) => {
         this.SetUserData(result.user);
         return this.afAuth.authState.subscribe((user) => {
-          const action = user ? user : initialState;
+          const action = user ? user : initialUserState;
           this.dispatchLogin(action);
           return user;
         });
@@ -151,7 +151,7 @@ export class AuthService {
   async GoogleAuth() {
     const provider = new GoogleAuthProvider();
     const userData = await this.afAuth.signInWithPopup(provider).then((val) => {
-      const user = val.user ? val.user : initialState;
+      const user = val.user ? val.user : initialUserState;
       this.dispatchLogin(user);
       return val.user;
     });
@@ -160,7 +160,7 @@ export class AuthService {
   }
 
   dispatchLogin(user: User) {
-    const action: User = {
+    const action = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,

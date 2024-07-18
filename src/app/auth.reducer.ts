@@ -1,10 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { authStateActions } from './auth.actions';
 import { User } from './models/user';
-import { map } from 'rxjs';
-import { state } from '@angular/animations';
 
-export const initialState: User = {
+export const initialUserState: User = {
   uid: '',
   email: '',
   displayName: '',
@@ -13,8 +11,8 @@ export const initialState: User = {
 };
 
 export const authReducer = createReducer(
-  initialState,
+  initialUserState,
   on(authStateActions.login, (_state, { userdata }) => userdata),
-  on(authStateActions.logout, (_state, {}) => initialState),
+  on(authStateActions.logout, (_state, {}) => initialUserState),
   // on(authStateActions.loginSuccess,(_state, {token})=>({...state,token,isLoading:false}))
 );

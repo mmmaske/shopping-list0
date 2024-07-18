@@ -20,7 +20,8 @@ import { ContainersService } from 'src/app/services/containers.service';
 import Swal from 'sweetalert2';
 import { ShareContainerFormComponent } from '../share-container-form/share-container-form.component';
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
-
+import { Store } from '@ngrx/store';
+import { multiSelectActions } from 'src/app/multiselect.actions';
 @Injectable({
   providedIn: 'root',
 })
@@ -62,6 +63,7 @@ export class ItemsListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public containerService: ContainersService,
+    public store:Store
   ) {}
   readonly dialog = inject(MatDialog);
 
@@ -261,11 +263,14 @@ export class ItemsListComponent implements OnInit {
   }
 
   updateCheckbox(event: MatCheckboxChange) {
-    if (event.checked)
-      this.itemService.selectedItems.push(event.source.value); // save document ID selectedItems
-    else {
+    const item_id=event.source.value;
+    if (event.checked) {
+    this.store.dispatch(multiSelectActions.check({id:item_id}));
+      this.itemService.selectedItems.push(item_id); // save document ID selectedItems
+    }else {
       //remove item ID from selectedItems
-      const index = this.itemService.selectedItems.indexOf(event.source.value);
+      this.store.dispatch(multiSelectActions.uncheck({id:item_id}));
+      const index = this.itemService.selectedItems.indexOf(item_id);
       if (index > -1) {
         this.itemService.selectedItems.splice(index, 1);
       }

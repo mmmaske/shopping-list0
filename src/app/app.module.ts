@@ -71,6 +71,7 @@ import { increment } from './incrementer.actions';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './user.effects';
 import { authReducer } from './auth.reducer';
+import { multiSelectReducer } from './multiselect.reducer';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { authReducer } from './auth.reducer';
     StoreModule.forFeature('counter', counterReducer),
     StoreModule.forFeature('user', userReducer),
     StoreModule.forFeature('auth', authReducer),
+    StoreModule.forFeature('multiSelect', multiSelectReducer),
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([UserEffects]),
     StoreDevtoolsModule.instrument({
