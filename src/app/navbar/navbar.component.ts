@@ -35,7 +35,6 @@ export class NavbarComponent {
 
   handleSignOut(): void {
     this.authServ.SignOut().then((returned) => {
-      debug(returned);
       Swal.fire({
         title: `Why are you leaving?`,
         html: `Where are you going? How will you remember what to get there? <h2>🥺</h2> <h3>${this.imsorry}</h3><h1>${this.dontgo}</h1>`,
@@ -50,7 +49,6 @@ export class NavbarComponent {
     const dialogRef = this.dialog.open(AddItemComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         this.name = result;
       }
@@ -61,7 +59,6 @@ export class NavbarComponent {
     const dialogRef = this.dialog.open(ListContainerFormComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         this.name = result;
       }

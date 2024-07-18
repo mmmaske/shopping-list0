@@ -16,7 +16,6 @@ export class ItemFormComponent {
   };
 
   onSubmit(): void {
-    console.log(JSON.stringify(this.form, null, 2));
   }
 
   onReset(form: NgForm): void {

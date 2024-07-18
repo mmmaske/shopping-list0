@@ -23,7 +23,6 @@ export class SignInComponent {
       .GoogleAuth()
       .then((returned) => {
         const userData = this.authServ.userData;
-        debug(userData.toJSON());
         this.router.navigate(['']);
         Swal.fire({
           title: 'You did it',
@@ -47,7 +46,6 @@ export class SignInComponent {
     this.authServ
       .SignIn(this.email, this.password)
       .then((returned) => {
-        debug(loginDetails());
         this.router.navigate(['list']);
         Swal.fire({
           title: 'You did it',

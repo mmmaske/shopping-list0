@@ -39,13 +39,11 @@ export class ListContainerComponent implements OnInit {
       this.containers = []; // clear the combinedData array
       data.map((containerArray) => {
         containerArray.forEach((container) => {
-          console.log(container);
           this.containers.push(container); // insert into data array
         });
       });
       this.dividedContainers = this.divideContainers(this.containers);
       this.containersLoaded = true;
-      console.log(this.dividedContainers);
     });
   }
 
@@ -59,7 +57,6 @@ export class ListContainerComponent implements OnInit {
     const dialogRef = this.dialog.open(ListContainerFormComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         // this.name = result;
       }

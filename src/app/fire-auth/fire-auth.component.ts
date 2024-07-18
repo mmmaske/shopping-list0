@@ -50,11 +50,9 @@ export class FireAuthComponent implements OnInit {
       .createUserWithEmailAndPassword(this.email, this.password)
       .then((ret) => {
         alert('signup OK');
-        debug(ret);
       })
       .catch((error) => {
         alert('signup NG');
-        debug(error);
       });
   }
 
@@ -64,7 +62,6 @@ export class FireAuthComponent implements OnInit {
       .then((result: any) => {
         this.UserData = result.user;
         this.loggedin = true;
-        debug(result.user.uid);
         window.alert(`logged in as ${result.user.email}`);
 
         localStorage.setItem('user', JSON.stringify(this.UserData));

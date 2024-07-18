@@ -63,7 +63,7 @@ export class ItemsListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public containerService: ContainersService,
-    public store:Store
+    public store: Store,
   ) {}
   readonly dialog = inject(MatDialog);
 
@@ -110,12 +110,10 @@ export class ItemsListComponent implements OnInit {
           this.priorityIndexes.forEach((priority, index) => {
             if (priority === priorityClass) item.priorityIndex = index;
           });
-          console.log(item);
           this.itemContainerData.push(item);
         });
 
         const sorted = this.sortData(this.itemContainerData);
-        console.log(sorted);
 
         this.items = sorted; // output to item list
         this.hasItems = true;
@@ -128,7 +126,6 @@ export class ItemsListComponent implements OnInit {
     let sorted: Array<Item> = [];
     this.setSortDirection = 'asc';
     if (this.setSort === 'title') {
-      console.log('sort by title');
       sorted = sortable.sort(function (a: Item, b: Item) {
         let x: any = a.title?.toLowerCase();
         let y: any = b.title?.toLowerCase();
@@ -141,18 +138,15 @@ export class ItemsListComponent implements OnInit {
         return 0;
       });
     } else if (this.setSort === 'updatedOn') {
-      console.log('sort by updatedOn');
       sorted = sortable.sort(function (a: Item, b: Item) {
         return Number(a.updatedOn) - Number(b.updatedOn);
       });
       this.setSortDirection = 'desc';
     } else if (this.setSort === 'estimatedPrice') {
-      console.log('sort by estimatedPrice');
       sorted = sortable.sort(function (a: Item, b: Item) {
         return Number(a.estimatedPrice) - Number(b.estimatedPrice);
       });
     } else if (this.setSort === 'priorityIndex') {
-      console.log('sort by priorityIndex');
       sorted = sortable.sort(function (a: Item, b: Item) {
         return Number(a.priorityIndex) - Number(b.priorityIndex);
       });
@@ -180,7 +174,6 @@ export class ItemsListComponent implements OnInit {
     this.router.navigate([`/item/${item_id}`]); // update the URL
   }
   swipeTogglePurchased(currentItem_id: string) {
-    console.log(currentItem_id);
     let item: any = [];
     this.itemService.getItem(currentItem_id).then((retrieved) => {
       return retrieved.forEach((value) => {
@@ -209,7 +202,6 @@ export class ItemsListComponent implements OnInit {
     });
   }
   swipeDeleteItem(currentItem_id: string) {
-    console.log(currentItem_id);
     let item: any = [];
     this.itemService.getItem(currentItem_id).then((retrieved) => {
       return retrieved.forEach((value) => {
@@ -251,7 +243,6 @@ export class ItemsListComponent implements OnInit {
             }
           });
         }
-        console.log(value.data());
         return value.data();
       });
     });
@@ -276,8 +267,6 @@ export class ItemsListComponent implements OnInit {
       }
     }
     this.itemService.selectedItems.length;
-    console.log('count selectedItems', this.itemService.selectedItems.length);
-    console.log('selectedItems', this.itemService.selectedItems);
     // get checked elements from checkboxes
   }
   toggleSelect() {
@@ -288,7 +277,6 @@ export class ItemsListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddItemComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         // this.name = result;
       }
@@ -331,7 +319,6 @@ export class ItemsListComponent implements OnInit {
                   confirmButtonText:
                     'Thank you for deleting that container, shopping list website!',
                 });
-                console.log(deleteresult);
                 return deleteresult;
               },
               (error) => {
@@ -354,7 +341,6 @@ export class ItemsListComponent implements OnInit {
     const dialogRef = this.dialog.open(ShareContainerFormComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         // this.name = result;
       }
@@ -362,10 +348,8 @@ export class ItemsListComponent implements OnInit {
   }
 
   drop(ev: CdkDragEnd<any>, item_id: string): void {
-    console.log('drop event', ev);
     this.dragTarget = ev.source;
     this.dragReset();
-    console.log(ev);
     if (ev.distance.x < 0) {
       this.swipeTogglePurchased(item_id);
     } else {

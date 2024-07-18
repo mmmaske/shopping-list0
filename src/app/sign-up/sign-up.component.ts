@@ -22,7 +22,6 @@ export class SignUpComponent {
       .GoogleAuth()
       .then((returned) => {
         const userData = this.authServ.userData;
-        debug(userData.toJSON());
         this.router.navigate(['']);
         Swal.fire({
           title: 'You did it',

@@ -51,11 +51,9 @@ export class ContainersService {
     const fs_container = ref(this.storage, id); // so the image is renamed to the container ID
     const test = uploadString(fs_container, file, 'data_url').then(
       (snapshot) => {
-        debug(snapshot);
         return snapshot;
       },
     );
-    debug(test);
   }
 
   getAll(): AngularFirestoreCollection<Container> {

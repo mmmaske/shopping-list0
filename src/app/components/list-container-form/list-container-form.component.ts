@@ -51,7 +51,6 @@ export class ListContainerFormComponent {
     this.containerService
       .create(this.form)
       .then((createResult: DocumentReference) => {
-        console.log('Created new container successfully!');
         const docId = createResult.id;
 
         Swal.fire({
@@ -65,7 +64,6 @@ export class ListContainerFormComponent {
           this.form = new Container();
           /* Read more about handling dismissals below */
           if (result.dismiss === Swal.DismissReason.timer) {
-            console.log('I was closed by the timer');
             this.router.navigate(['containers']);
           }
         });
@@ -74,7 +72,6 @@ export class ListContainerFormComponent {
 
   onSubmit(): void {
     this.dialogRef.close();
-    console.log(JSON.stringify(this.form, null, 2));
     this.saveContainer();
   }
 
@@ -100,7 +97,6 @@ export class ListContainerFormComponent {
           this.uploadProgress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
           );
-          console.log('upload progress:', this.uploadProgress);
         },
         (err) => {
           console.log('File upload error: ', err);
@@ -108,11 +104,9 @@ export class ListContainerFormComponent {
         () => {
           getDownloadURL(docRef)
             .then((url) => {
-              console.log('url', url);
               return url;
             })
             .then((returned) => {
-              console.log('upload complete', returned);
               this.currentlyUploading = false;
               this.uploadProgress = 0;
               this.uploadedFileURL = returned;

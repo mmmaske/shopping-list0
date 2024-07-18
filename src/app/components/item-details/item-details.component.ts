@@ -97,7 +97,6 @@ export class ItemDetailsComponent implements OnInit {
             userData.displayName = userData.displayName
               ? userData.displayName
               : userData.email;
-            console.log(userData);
             usersOptions.push(userData);
           }
         });

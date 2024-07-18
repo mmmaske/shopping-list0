@@ -47,10 +47,8 @@ export class ItemService {
   uploadToFireStore(id: string, file: string): void {
     const fs_item = ref(this.storage, id); // so the image is renamed to the item ID
     const test = uploadString(fs_item, file, 'data_url').then((snapshot) => {
-      debug(snapshot);
       return snapshot;
     });
-    debug(test);
   }
 
   getAll(): AngularFirestoreCollection<Item> {

@@ -13,6 +13,5 @@ const _userReducer = createReducer(
 );
 
 export function userReducer(state: any, action: any) {
-  console.log(state);
   return _userReducer(state, action);
 }

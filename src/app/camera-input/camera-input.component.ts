@@ -80,7 +80,6 @@ export class CameraInputComponent implements OnInit {
   }
 
   public cameraWasSwitched(deviceId: string): void {
-    console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
   }
 
@@ -103,7 +102,6 @@ export class CameraInputComponent implements OnInit {
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] ?? null;
-    console.log(this.selectedFile);
   }
 
   uploadToFireStore(): void {
@@ -141,7 +139,6 @@ export class CameraInputComponent implements OnInit {
           this.uploadProgress = Math.round(
             (snap.bytesTransferred / snap.totalBytes) * 100,
           );
-          console.log('upload progress:', this.uploadProgress);
         },
       );
 
@@ -151,7 +148,6 @@ export class CameraInputComponent implements OnInit {
         'data_url',
       ).then(
         async (snapshot) => {
-          console.log('snapshot', snapshot);
           return await getDownloadURL(snapshot.ref).then((url) => {
             this.capturedImageURL = url;
             return url;
@@ -161,7 +157,6 @@ export class CameraInputComponent implements OnInit {
           console.log('upload error', err);
         },
       );
-      console.log(upload);
     }
   }
 }

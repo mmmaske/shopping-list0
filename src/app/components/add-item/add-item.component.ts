@@ -41,10 +41,8 @@ export class AddItemComponent {
   saveItem(): void {
     this.form.containerId = this.containerService.activeContainer;
     this.form.containerRef = this.containerService.activeContainerRef;
-    console.log('form input', this.form);
 
     this.itemService.create(this.form).then(() => {
-      console.log('Created new item successfully!');
       Swal.fire({
         title: `${this.form.title} added to your shopping list.`,
         timer: 1500,
@@ -56,7 +54,6 @@ export class AddItemComponent {
         this.form = new Item();
         /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {
-          console.log('I was closed by the timer');
           this.router.navigate([
             `container/${this.containerService.activeContainer}`,
           ]);
@@ -67,7 +64,6 @@ export class AddItemComponent {
 
   onSubmit(): void {
     this.dialogRef.close();
-    console.log(JSON.stringify(this.form, null, 2));
     this.saveItem();
   }
 
