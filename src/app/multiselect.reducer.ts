@@ -11,7 +11,5 @@ export const multiSelectReducer = createReducer(
     _state.filter((oldid) => oldid !== id.id),
   ),
 
-  on(multiSelectActions.clear, (_state) =>
-    [],
-  ),
+  on(multiSelectActions.clear, (_state) => []),
 );

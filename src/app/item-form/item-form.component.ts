@@ -15,8 +15,7 @@ export class ItemFormComponent {
     priority: '',
   };
 
-  onSubmit(): void {
-  }
+  onSubmit(): void {}
 
   onReset(form: NgForm): void {
     form.reset();
