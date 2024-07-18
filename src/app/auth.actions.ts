@@ -1,14 +1,5 @@
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { User } from './models/user';
-
-export const authState = createActionGroup({
-  source: 'Auth',
-  events: {
-    signin: props<{ userdata: User }>(),
-    signup: props<{ userdata: User }>(),
-    signout: props<{ userdata: User }>(),
-  },
-});
 
 export const authStateActions = createActionGroup({
   source: 'AuthApi',
@@ -17,5 +8,6 @@ export const authStateActions = createActionGroup({
     login: props<{ userdata: User }>(),
     loginSuccess: props<{ userdata: User }>(),
     loginFailure: props<{ userdata: User }>(),
+    logout: emptyProps(),
   },
 });

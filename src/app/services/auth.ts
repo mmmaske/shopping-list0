@@ -11,6 +11,9 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { environment } from '../environments/environment';
+import { authStateActions } from '../auth.actions';
+import { Store } from '@ngrx/store';
+import { initialState } from '../auth.reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +26,7 @@ export class AuthService {
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
+    public store: Store,
   ) {
     // for firebase emulator
     if (!environment.production)
@@ -49,6 +53,8 @@ export class AuthService {
       .then((result) => {
         this.SetUserData(result.user);
         return this.afAuth.authState.subscribe((user) => {
+          const action = user ? user : initialState;
+          this.dispatchLogin(action);
           return user;
         });
       })
@@ -137,6 +143,7 @@ export class AuthService {
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
+      this.store.dispatch(authStateActions.logout());
       localStorage.removeItem('user');
     });
   }
@@ -144,9 +151,22 @@ export class AuthService {
   async GoogleAuth() {
     const provider = new GoogleAuthProvider();
     const userData = await this.afAuth.signInWithPopup(provider).then((val) => {
+      const user = val.user ? val.user : initialState;
+      this.dispatchLogin(user);
       return val.user;
     });
     await this.SetUserData(userData);
     return this.GetUserData(userData);
+  }
+
+  dispatchLogin(user: User) {
+    const action: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
+    };
+    this.store.dispatch(authStateActions.login({ userdata: action }));
   }
 }

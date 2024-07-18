@@ -70,6 +70,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { increment } from './incrementer.actions';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './user.effects';
+import { authReducer } from './auth.reducer';
 
 @NgModule({
   declarations: [
@@ -129,6 +130,7 @@ import { UserEffects } from './user.effects';
     StoreModule.forRoot({}),
     StoreModule.forFeature('counter', counterReducer),
     StoreModule.forFeature('user', userReducer),
+    StoreModule.forFeature('auth', authReducer),
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([UserEffects]),
     StoreDevtoolsModule.instrument({
