@@ -14,6 +14,8 @@ import { environment } from '../environments/environment';
 import { authStateActions } from '../auth.actions';
 import { Store } from '@ngrx/store';
 import { initialUserState } from '../auth.reducer';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -157,6 +159,24 @@ export class AuthService {
     });
     await this.SetUserData(userData);
     return this.GetUserData(userData);
+  }
+
+  searchByEmail(email: string): Observable<{ id: string; data: any }> {
+    return this.afs
+      .collection('users', (ref) => ref.where('email', '==', email))
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          // If there is exactly one matching document, return its ID
+          if (actions.length == 1) {
+            const id = actions[0].payload.doc.id;
+            const data = actions[0].payload.doc.data();
+            return { id: id, data: data };
+          } else {
+            throw new Error('No document found with the specified email');
+          }
+        }),
+      );
   }
 
   dispatchLogin(user: User) {

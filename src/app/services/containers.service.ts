@@ -153,4 +153,16 @@ export class ContainersService {
   delete(id: string): Promise<void> {
     return this.containersRef.doc(id).delete();
   }
+
+  async share(container_id: string, user_id: string) {
+    const userRef = this.db.firestore.doc(`user/${user_id}`);
+    const containerRef = this.db.firestore.doc(`containers/${container_id}`);
+    const xref = await this.userContainerRef.add({
+      createdBy: this.userRef,
+      userRef: userRef,
+      containerRef: containerRef,
+      createdOn: new Date(),
+    });
+    return xref;
+  }
 }
