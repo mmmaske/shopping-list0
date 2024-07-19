@@ -62,8 +62,7 @@ import { IconChooserComponent } from './icon-chooser/icon-chooser.component';
 import { ShareContainerFormComponent } from './components/share-container-form/share-container-form.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgrxStoreComponent } from './ngrx-store/ngrx-store.component';
-import { StoreModule } from '@ngrx/store';
-import { Store } from '@ngrx/store';
+import { StoreModule, MetaReducer } from '@ngrx/store';
 import { counterReducer } from './incrementer.reducer';
 import { userReducer } from './user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -74,7 +73,16 @@ import { authReducer } from './auth.reducer';
 import { multiSelectReducer } from './multiselect.reducer';
 import { authEffects } from './auth.effects';
 import { MatBadgeModule } from '@angular/material/badge';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { HttpClientModule } from '@angular/common/http';
+import { localStorageSync } from 'ngrx-store-localstorage';
 
+registerLocaleData(en);
+const localStorageSyncReducer = localStorageSync({ keys: ['counter', 'user', 'auth','multiSelect'], rehydrate: true });
+export const metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
 @NgModule({
   declarations: [
     AppComponent,
@@ -131,7 +139,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatProgressSpinnerModule,
     MatBadgeModule,
     DragDropModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({},{metaReducers}),
     StoreModule.forFeature('counter', counterReducer),
     StoreModule.forFeature('user', userReducer),
     StoreModule.forFeature('auth', authReducer),
@@ -142,6 +150,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),
+    HttpClientModule,
   ],
   providers: [
     AuthService, // auth emulator code found here
@@ -150,7 +159,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     {
       provide: DATABASE_EMULATOR,
       useValue: environment.production ? undefined : ['localhost', 8080],
-    },
+    }, { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],
 })
