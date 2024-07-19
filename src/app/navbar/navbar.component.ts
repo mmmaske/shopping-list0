@@ -9,8 +9,12 @@ import { ItemService } from '../services/items.service';
 import { ListContainerFormComponent } from '../components/list-container-form/list-container-form.component';
 import { ContainersService } from '../services/containers.service';
 import * as msa from '../multiselect.actions';
-import { Store } from '@ngrx/store';
-import { selectCount } from '../multiselect.selector';
+import { Store, select } from '@ngrx/store';
+import {
+  multiSelectState,
+  selectAllChecked,
+  selectCountChecked,
+} from '../multiselect.selector';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -22,6 +26,8 @@ export class NavbarComponent {
   loggedin: boolean = this.authServ.isLoggedIn;
   title = 'Shopping List';
   itemCount$: Observable<number>;
+  isMultiSelect$: Observable<boolean>;
+  items$: Observable<string[]>;
 
   imsorry: string = `i̸͇͚̐͛̆̕̚'̸̡̢̡̯͈̯̹͖̭̠͚̥͈͍̖̝̬̹͓̝͚̣̪̝̟̍̅̏̋̍̅̈́̃̀͑̾̿́̌̅̅͐͐͗̃́̋͛̿͑̅̒̑̐͑̀̽̊́̄͊͛̇͘̚̚͜͝͝͝ͅͅm̴̬͔̝̦̝̱̪͇̲̮͍̗̻̼̩̹̗͇̑͋͛͂̅̈́̆̈́̽̿̈̂͊̎͐̐̀̆͛͐̂̅̑̍̆͛͑̕͝͠͝ ̴̨̛̦̗̻͉͚̩̰̤̰̲͚̬͓̳̗͓̖͙̩͈̼̼̬̫̖͚̅̏̅͆̌͑̋̀̄̀̀̈́͗͋͌̊̉͘͝ͅs̷̨̛͙͔̜̘͈̜̞̠̖̬̤͕͕̪̈̐̆͊̏̄̌̑̈͑͂̃̏̌̅̏͊̾̃̋͂̿̄̑͂͐́̒̓̊̕̚̚̚͘͘͘͘͜͠͠͝͝ͅo̷͍̖͈̳͖̰̬̍͐̈́̂̽̿̂̓̃͂͂̄̆̾̏̔̏͐̊͊̓͆̕͠r̷̢̤̜̦͔̜̙̜͎̭̘̫̭̩̮̝̘̯̫̼̖̦̬̺̮̻̔́͌̿̅̉̀̒̀̚͝͠ͅr̶͍̙̫̗͍̱̠̼̗̮͎̠͍̲͙̘̭͠ͅy̸̧̨̡̨̧̧̢̛̛̫͔̞̪̦̼̝͎͙͈̭̜̼̞̮̰̥̫̟̹̩̗̝̹̙̩̥̼̙̑̑̓͛̇̒̂̽͐́̈́̽̑̔͛̌̈́̔̓̅͒̚̚͘͝͠ͅ`;
 
@@ -36,7 +42,9 @@ export class NavbarComponent {
     public container: ContainersService,
     private store: Store,
   ) {
-    this.itemCount$ = this.store.select(selectCount);
+    this.itemCount$ = this.store.select(selectCountChecked);
+    this.items$ = this.store.select(selectAllChecked);
+    this.isMultiSelect$ = this.store.pipe(select(multiSelectState));
   }
   public name: string = '';
   readonly dialog = inject(MatDialog);
@@ -75,7 +83,7 @@ export class NavbarComponent {
 
   toggleSelectMultiple(): void {
     this.item.selectedItems = [];
-    this.store.dispatch(msa.multiSelectActions.clear());
+    this.store.dispatch(msa.multiSelectActions.toggle());
     this.item.selectMultiple = !this.item.selectMultiple;
   }
 

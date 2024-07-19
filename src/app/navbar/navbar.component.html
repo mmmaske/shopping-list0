@@ -19,10 +19,9 @@
     matBadgePosition="below"
     [matBadgeHidden]="(itemCount$ | async) == 0"
   >
-    <mat-icon *ngIf="this.item.selectMultiple" fontIcon="undo"></mat-icon>
-    <mat-icon *ngIf="!this.item.selectMultiple" fontIcon="check_box"></mat-icon>
+    <mat-icon *ngIf="isMultiSelect$ | async" fontIcon="undo"></mat-icon>
+    <mat-icon *ngIf="!(isMultiSelect$ | async)" fontIcon="check_box"></mat-icon>
   </button>
-
   <button
     mat-icon-button
     *ngIf="this.item.selectedItems.length > 0"

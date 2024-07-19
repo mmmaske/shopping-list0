@@ -22,6 +22,11 @@ import { ShareContainerFormComponent } from '../share-container-form/share-conta
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Store } from '@ngrx/store';
 import { multiSelectActions } from 'src/app/multiselect.actions';
+import { Observable, Subscription } from 'rxjs';
+import {
+  multiSelectState,
+  selectAllChecked,
+} from 'src/app/multiselect.selector';
 @Injectable({
   providedIn: 'root',
 })
@@ -57,6 +62,10 @@ export class ItemsListComponent implements OnInit {
   };
   itemContainerData: any;
   dragTarget: CdkDrag<any> | undefined;
+  isMultiSelect$: Observable<boolean>;
+  items$: Observable<string[]>;
+  checkedItems: string[];
+  checkedItemsRef: Subscription;
 
   constructor(
     public itemService: ItemService,
@@ -64,7 +73,16 @@ export class ItemsListComponent implements OnInit {
     private route: ActivatedRoute,
     public containerService: ContainersService,
     public store: Store,
-  ) {}
+  ) {
+    this.isMultiSelect$ = this.store.select(multiSelectState);
+    this.items$ = this.store.select(selectAllChecked);
+    this.checkedItems = [];
+    this.checkedItemsRef = this.items$.subscribe((array) => {
+      this.checkedItems = array;
+      // this.checkedItemsRef.unsubscribe();
+      console.log(this.checkedItems);
+    });
+  }
   readonly dialog = inject(MatDialog);
 
   get currentItemIdGetter() {
@@ -358,5 +376,9 @@ export class ItemsListComponent implements OnInit {
   }
   dragReset() {
     this.dragTarget?._dragRef.reset();
+  }
+
+  existsInState(item_id: string): boolean {
+    return this.checkedItems.includes(item_id);
   }
 }

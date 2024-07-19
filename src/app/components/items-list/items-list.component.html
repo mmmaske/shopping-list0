@@ -60,8 +60,9 @@
         <h5>
           <mat-checkbox
             value="{{ item.id }}"
-            *ngIf="this.itemService.selectMultiple"
+            *ngIf="isMultiSelect$ | async"
             (change)="updateCheckbox($event)"
+            [checked]="existsInState(item.id)"
           ></mat-checkbox>
           <mat-icon
             fontIcon="priority_high"

@@ -79,9 +79,13 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { HttpClientModule } from '@angular/common/http';
 import { localStorageSync } from 'ngrx-store-localstorage';
+import { multiSelectEffects } from './multiselect.effects';
 
 registerLocaleData(en);
-const localStorageSyncReducer = localStorageSync({ keys: ['counter', 'user', 'auth','multiSelect'], rehydrate: true });
+const localStorageSyncReducer = localStorageSync({
+  keys: ['counter', 'user', 'auth', 'multiSelect'],
+  rehydrate: true,
+});
 export const metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
 @NgModule({
   declarations: [
@@ -139,7 +143,7 @@ export const metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
     MatProgressSpinnerModule,
     MatBadgeModule,
     DragDropModule,
-    StoreModule.forRoot({},{metaReducers}),
+    StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature('counter', counterReducer),
     StoreModule.forFeature('user', userReducer),
     StoreModule.forFeature('auth', authReducer),
@@ -147,6 +151,7 @@ export const metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([UserEffects]),
     EffectsModule.forFeature([authEffects]),
+    EffectsModule.forFeature([multiSelectEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),
@@ -159,7 +164,8 @@ export const metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
     {
       provide: DATABASE_EMULATOR,
       useValue: environment.production ? undefined : ['localhost', 8080],
-    }, { provide: NZ_I18N, useValue: en_US },
+    },
+    { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],
 })

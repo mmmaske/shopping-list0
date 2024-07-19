@@ -1,12 +1,20 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
-const selectMultiState = createFeatureSelector<string[]>('multiSelect');
+const selectMultiState = createFeatureSelector<{
+  isMultiSelect: boolean;
+  multiSelected: [];
+}>('multiSelect');
 
-export const selectAll = createSelector(
+export const multiSelectState = createSelector(
   selectMultiState,
-  (state: string[]) => state,
+  (state: { isMultiSelect: boolean; multiSelected: [] }) => state.isMultiSelect,
 );
-export const selectCount = createSelector(
+export const selectAllChecked = createSelector(
   selectMultiState,
-  (state: string[]) => state.length,
+  (state: { isMultiSelect: boolean; multiSelected: [] }) => state.multiSelected,
+);
+export const selectCountChecked = createSelector(
+  selectMultiState,
+  (state: { isMultiSelect: boolean; multiSelected: [] }) =>
+    state.multiSelected.length,
 );

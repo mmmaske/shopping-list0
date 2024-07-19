@@ -69,18 +69,19 @@ export class ShareContainerFormComponent implements OnInit {
                 share_cont,
                 share_with,
               );
-              share_result.then((document)=>{
-                document.get().then((data)=>{
-                    if(data.data()){
-                        Swal.fire({
-                            title: `Shared this list with ${user.data.displayName}!`,
-                            text: 'They should be able to see this container in their dashboard by now.',
-                            icon: 'success',
-                            confirmButtonText: "Thank you for sharing my container, shopping list website!",
-                          });
-                    }
+              share_result.then((document) => {
+                document.get().then((data) => {
+                  if (data.data()) {
+                    Swal.fire({
+                      title: `Shared this list with ${user.data.displayName}!`,
+                      text: 'They should be able to see this container in their dashboard by now.',
+                      icon: 'success',
+                      confirmButtonText:
+                        'Thank you for sharing my container, shopping list website!',
+                    });
+                  }
                 });
-              })
+              });
             }
           });
         }

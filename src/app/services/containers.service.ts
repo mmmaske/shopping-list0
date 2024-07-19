@@ -23,7 +23,7 @@ export class ContainersService {
   private usersPath = '/users';
   private userContainerPath = '/userContainer';
   public localUser: User = /*this.authServ.userData*/ loginDetails();
-  public userRef = this.db.firestore.doc(`user/${this.localUser.uid}`);
+  public userRef = this.db.firestore.doc(`user/${this.localUser?.uid}`);
   public containerCollection: any;
   containersRef: AngularFirestoreCollection<Container>;
   containerRef?: DocumentReference<Container>;

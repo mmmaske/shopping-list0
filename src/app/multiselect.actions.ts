@@ -7,6 +7,8 @@ export const multiSelectActions = createActionGroup({
     uncheck: props<{ id: string }>(),
     delete: props<{ ids: string[] }>(),
     purchase: props<{ ids: string[] }>(),
+    reset: emptyProps(),
     clear: emptyProps(),
+    toggle: emptyProps(),
   },
 });
