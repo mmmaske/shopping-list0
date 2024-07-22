@@ -15,7 +15,7 @@ import {
   selectAllChecked,
   selectCountChecked,
 } from '../multiselect.selector';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -88,44 +88,96 @@ export class NavbarComponent {
   }
 
   handleDeleteSelected(): void {
-    if (this.item.selectedItems.length > 0) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `You're going to be deleting ${this.item.selectedItems.length} items and they can't be recovered.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const delete$ = this.item
-            .deleteSelected(this.item.selectedItems)
-            .subscribe(
-              () => {
-                Swal.fire({
-                  title: `${this.item.selectedItems.length} items deleted!`,
-                  icon: 'success',
-                  confirmButtonText:
-                    'Thank you for deleting those items, shopping list website!',
-                });
-                this.item.selectMultiple = false;
-                this.item.selectedItems = [];
-              },
-              (error) => {
-                Swal.fire({
-                  title: `Unable to delete ${this.item.selectedItems.length} items!`,
-                  text: error,
-                  icon: 'error',
-                  confirmButtonText:
-                    "I'm sorry, I'll try to do better next time",
-                });
-                this.item.selectMultiple = false;
-                this.item.selectedItems = [];
-              },
-            );
-        }
-      });
-    }
+    const sub = this.items$.subscribe((items) => {
+      if (items.length > 0) {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: `You're going to be deleting ${items.length} items and they can't be recovered.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!',
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              const delete$ = this.item.deleteSelected(items).subscribe(
+                () => {
+                  Swal.fire({
+                    title: `${items.length} items deleted!`,
+                    icon: 'success',
+                    confirmButtonText:
+                      'Thank you for deleting those items, shopping list website!',
+                  });
+                  this.item.selectMultiple = false;
+                  items = [];
+                },
+                (error) => {
+                  Swal.fire({
+                    title: `Unable to delete ${items.length} items!`,
+                    text: error,
+                    icon: 'error',
+                    confirmButtonText:
+                      "I'm sorry, I'll try to do better next time",
+                  });
+                  this.item.selectMultiple = false;
+                  items = [];
+                },
+              );
+            }
+          })
+          .finally(() => {
+            sub.unsubscribe();
+          });
+      }
+    });
+  }
+
+  handlePurchaseSelected(): void {
+    const sub = this.items$.subscribe((items) => {
+      if (items.length > 0) {
+        Swal.fire({
+          title: `Mark ${items.length} items as purchased?`,
+          text: `You're going mark ${items.length} items as purchased. This action can be reversed.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, purchase these items!',
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              const swipeTogglePurchased$ = this.item
+                .purchaseSelected(items)
+                .subscribe(
+                  () => {
+                    Swal.fire({
+                      title: `${items.length} items purchased!`,
+                      icon: 'success',
+                      confirmButtonText:
+                        'Thank you for purchasing those items, shopping list website!',
+                    });
+                    this.item.selectMultiple = false;
+                    items = [];
+                  },
+                  (error) => {
+                    Swal.fire({
+                      title: `Unable to purchase ${items.length} items!`,
+                      text: error,
+                      icon: 'error',
+                      confirmButtonText:
+                        "I'm sorry, I'll try to do better next time",
+                    });
+                    this.item.selectMultiple = false;
+                    items = [];
+                  },
+                );
+            }
+          })
+          .finally(() => {
+            sub.unsubscribe();
+          });
+      }
+    });
   }
 }

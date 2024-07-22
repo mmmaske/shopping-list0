@@ -79,8 +79,6 @@ export class ItemsListComponent implements OnInit {
     this.checkedItems = [];
     this.checkedItemsRef = this.items$.subscribe((array) => {
       this.checkedItems = array;
-      // this.checkedItemsRef.unsubscribe();
-      console.log(this.checkedItems);
     });
   }
   readonly dialog = inject(MatDialog);
@@ -188,8 +186,13 @@ export class ItemsListComponent implements OnInit {
   }
 
   redirectToItem(item_id: any, index: number): void {
-    if (this.itemService.selectMultiple) return;
-    this.router.navigate([`/item/${item_id}`]); // update the URL
+    this.isMultiSelect$.subscribe((is) => {
+      if (is) {
+        if (this.itemService.selectMultiple) return;
+      } else {
+        this.router.navigate([`/item/${item_id}`]); // update the URL
+      }
+    });
   }
   swipeTogglePurchased(currentItem_id: string) {
     let item: any = [];

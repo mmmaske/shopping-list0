@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, getModuleFactory } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -13,6 +13,7 @@ import { connectStorageEmulator } from 'firebase/storage';
 import { Observable, combineLatest, concat, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { catchError, from, map } from 'rxjs';
+import { switchMap } from 'rxjs';
 
 import { ContainersService } from './containers.service';
 @Injectable({
@@ -179,6 +180,32 @@ export class ItemService {
         for (const docId of documentIds) {
           const docRef = this.db.collection('items').doc(docId).ref;
           transaction.delete(docRef);
+        }
+      }),
+    ).pipe(
+      map(() => {}),
+      catchError((error) => {
+        console.error('Error deleting documents in transaction:', error);
+        throw error;
+      }),
+    );
+  }
+
+  purchaseSelected(documentIds: string[]): Observable<void> {
+    return from(
+      this.db.firestore.runTransaction(async (transaction) => {
+        for (const docId of documentIds) {
+          const docRef = this.db.collection('items').doc(docId).ref;
+          const docSnap = await docRef.get();
+          if (docSnap.exists) {
+            const data = docSnap.data() as { purchased?: boolean };
+            if (data && data.purchased !== undefined) {
+              const purchased = data.purchased;
+              transaction.update(docRef, {
+                purchased: !purchased,
+              });
+            }
+          }
         }
       }),
     ).pipe(

@@ -11,7 +11,10 @@
     <mat-icon fontIcon="menu"></mat-icon>
   </button>
   <button
-    *ngIf="this.authServ.isLoggedIn && this.container.activeContainer"
+    *ngIf="
+      (this.authServ.isLoggedIn && this.container.activeContainer) ||
+      (itemCount$ | async) !== 0
+    "
     mat-icon-button
     (click)="toggleSelectMultiple()"
     matTooltip="Select Multiple"
@@ -24,11 +27,19 @@
   </button>
   <button
     mat-icon-button
-    *ngIf="this.item.selectedItems.length > 0"
+    *ngIf="(itemCount$ | async) !== 0"
     (click)="handleDeleteSelected()"
     matTooltip="Delete {{ itemCount$ | async }} Items"
   >
     <mat-icon fontIcon="delete"></mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    *ngIf="(itemCount$ | async) !== 0"
+    (click)="handlePurchaseSelected()"
+    matTooltip="Purchase {{ itemCount$ | async }} Items"
+  >
+    <mat-icon fontIcon="shopping_cart"></mat-icon>
   </button>
 
   <button mat-icon-button routerLink="/test/" matTooltip="Test">
