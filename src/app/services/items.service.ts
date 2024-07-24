@@ -153,12 +153,17 @@ export class ItemService {
   update(id: string, data: any): Promise<void> {
     data.updatedOn = new Date();
     if (typeof data.webcamdata === 'string') {
-      this.uploadToFireStore(id, data.webcamdata);
+        data.displayImage = data.webcamdata;
+        delete data.webcamdata;
     } //attempt firestore upload
     if (data.estimatedPrice < '0') {
       data.estimatedPrice = 0;
     }
-    delete data.webcamdata; // no longer need this since it is uploaded to firestore
+    if (typeof data.description === 'undefined') {
+      data.description = '';
+    }
+    // delete data.webcamdata; // no longer need this since it is uploaded to firestore
+    console.log('desc',data.description);
     return this.itemsRef.doc(id).update(data);
   }
 

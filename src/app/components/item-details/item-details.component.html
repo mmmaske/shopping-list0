@@ -7,8 +7,8 @@
             (dataEvent)="handleDataFromChild($event)"
           ></app-camera-input>
         </div>
-        <div class="product-image" *ngIf="!edit && fs_image">
-          <img class="gentle-glow" src="{{ fs_image }}" />
+        <div class="product-image" *ngIf="!edit && (currentItem.displayImage)">
+          <img class="gentle-glow" src="{{ currentItem.displayImage }}" />
         </div>
       </div>
     </div>

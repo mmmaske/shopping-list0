@@ -1,5 +1,5 @@
 <div style="text-align: center">
-  <div *ngIf="!webcamImage">
+  <div *ngIf="!displayPreview">
     <webcam
       class="mmmcam"
       [trigger]="triggerObservable"
@@ -32,6 +32,7 @@
     </button>
     <input hidden (change)="onFileSelected($event)" #fileInput type="file" />
     <span class="file-name">{{ selectedFile?.name }}</span>
+    <mat-progress-bar [value]="uploadProgress"></mat-progress-bar>
     <!--input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow Camera Switch</label>
       <br/>
       DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
@@ -39,9 +40,9 @@
   </div>
 </div>
 
-<div class="snapshot" *ngIf="webcamImage">
+<div class="snapshot" *ngIf="displayPreview">
   <h2>Image captured!</h2>
-  <img [src]="webcamImage.imageAsDataUrl" />
+  <img [src]="displayPreview" />
   <button mat-fab (click)="resetCamera()">
     <mat-icon fontIcon="refresh"></mat-icon>
   </button>

@@ -108,7 +108,7 @@ export class ListContainerFormComponent {
             })
             .then((returned) => {
               this.currentlyUploading = false;
-              this.uploadProgress = 0;
+              this.uploadProgress = 100;
               this.uploadedFileURL = returned;
             });
         },

@@ -31,8 +31,10 @@ export class CameraInputComponent implements OnInit {
   };
   public errors: WebcamInitError[] = [];
   public selectedFile: File | null = null;
+  public selectedFileCustom: any;
   private capturedImageURL: string = '';
-  private uploadProgress: number | undefined;
+  public uploadProgress: number = 0;
+  public displayPreview: any;
 
   // latest snapshot
   public webcamImage: WebcamImage | undefined;
@@ -92,7 +94,7 @@ export class CameraInputComponent implements OnInit {
   }
 
   public resetCamera(): void {
-    delete this.webcamImage;
+    delete this.displayPreview;
   }
 
   sendDataToParent() {
@@ -102,6 +104,40 @@ export class CameraInputComponent implements OnInit {
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] ?? null;
+
+    if (this.selectedFile) {
+      const filename =
+        this.auth.userData.uid +
+        '/' +
+        Date.now() +
+        '-' +
+        this.selectedFile.name;
+      const docRef = ref(this.storage, filename);
+      uploadBytesResumable(docRef, this.selectedFile).on(
+        'state_changed',
+        (snapshot) => {
+          this.uploadProgress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+          );
+          console.log('uploadprogress', this.uploadProgress);
+        },
+        (err) => {
+          console.log('File upload error: ', err);
+        },
+        () => {
+          getDownloadURL(docRef)
+            .then((url) => {
+              return url;
+            })
+            .then((returned) => {
+              this.uploadProgress = 100;
+              this.capturedImageURL = returned;
+              this.displayPreview = returned;
+              this.sendDataToParent();
+            });
+        },
+      );
+    }
   }
 
   uploadToFireStore(): void {
@@ -131,6 +167,7 @@ export class CameraInputComponent implements OnInit {
     const filename = this.auth.userData.uid + '/camshot-' + Date.now() + '.jpg';
     const fs_item = ref(this.storage, filename); // so the image is renamed to the item ID
     if (this.webcamImage) {
+      this.displayPreview = this.webcamImage.imageAsDataUrl;
       const imageblob = b64toBlob(this.webcamImage.imageAsDataUrl);
 
       const uploadBytes = uploadBytesResumable(fs_item, imageblob).on(

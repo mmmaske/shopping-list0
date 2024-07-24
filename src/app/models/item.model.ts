@@ -18,4 +18,5 @@ export class Item {
   containerRef?: Reference;
   containerId?: string;
   estimatedPrice?: number;
+  displayImage?:string;
 }

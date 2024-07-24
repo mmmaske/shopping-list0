@@ -165,7 +165,7 @@ export class ItemDetailsComponent implements OnInit {
         .catch((err) => console.log(err));
       this.edit = false;
       if (this.webcamdata) {
-        this.fs_image = this.webcamdata;
+        this.currentItem.displayImage = this.webcamdata;
       }
     }
   }
@@ -211,6 +211,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   handleDataFromChild(data: any) {
+    console.log('received from cam input', data);
     this.webcamdata = data;
   }
 }
